@@ -1,0 +1,11 @@
+*** ribbon wire
+	http://uk.farnell.com/3m/3302-20/ribbon-cable-20core-28awg-per/dp/1207420
+*** 3-way pcb connector
+	uk rs-components 506-7010
+*** female molex connector
+	uk rs-components 323-7873
+*** 40khz 1cm diameter transducers
+	MURATA: uk rs-components 237-0799
+The murata transducers are a little bit pricey so here are some alternatives:
+Manorshi Black 10mm - 0.34$ - MSO-P1040H07T https://manorshi.en.alibaba.com/
+Ningbo Black 10mm - 0.38$ - FBULS1007P-T https://bestgroup.en.alibaba.com/product/987365133-800848321/dog_repeller_ultrasonic_transducer_40khz_black_plastic_ultrasonic_sensor_ultrasonic_depth_sensor.html?spm=a2700.7803228.1998738836.187.TSqSlZ

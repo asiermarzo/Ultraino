@@ -1,0 +1,20 @@
+50.8mm by 67.31mm 
+4 layers
+
+32x TC4427 SMD
+	uk rs-components 889-5409
+32x caps ceramic SMD 0805 0.1uf above 25V
+	uk rs-components 264-4416
+32x caps ceramic SMD 0805 4.7uf above 25V
+	uk rs-components 820-2778
+8x MOLEX male 16way connectors
+	http://uk.farnell.com/amphenol/t821116a1s100ceu/header-vertical-2-54mm-16way/dp/2215308
+	http://uk.farnell.com/molex/70246-1604/header-shrouded-16way/dp/1392536
+1x DC barrel
+	http://amzn.eu/7HL7QDk
+Headers pins
+	http://amzn.eu/bA4vE4o
+90deg angle pins female and female 6-way
+	http://amzn.eu/a4pMjJ7
+jumper
+	http://amzn.eu/7xdVyIM
