@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_65" class="java.beans.XMLDecoder">
+ <object class="acousticfield3d.Config" id="Config0">
+  <void class="acousticfield3d.Config" method="getField">
+   <string>lastPath</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <string>\\ads.bris.ac.uk\filestore\myfiles\StudentPG2\am14010\Desktop</string>
+   </void>
+  </void>
+ </object>
+</java>
