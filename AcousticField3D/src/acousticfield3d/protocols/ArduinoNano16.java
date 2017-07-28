@@ -26,6 +26,6 @@ public class ArduinoNano16 extends ArduinoNano{
 
     @Override
     public int getSpeed() {
-        return 2000000;
+        return 115200;
     }
 }

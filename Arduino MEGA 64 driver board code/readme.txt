@@ -3,7 +3,7 @@ DriverMEGAAnim is designed to upload 32 patterns at the same time and then send 
 DriverMEGAStatic is designed for operating without a computer since the 32 patterns are predefined and it is possible to cycle through them by external buttons.
 
 
-Please do not forget to In the public interface of Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.hardware\arduino\avr\cores\arduino\HardwareSerial.h
+Please do not forget to In the public interface of Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.h
 add the following inline functions
 
 inline bool _dataAvailable() {return _rx_buffer_head != _rx_buffer_tail; }

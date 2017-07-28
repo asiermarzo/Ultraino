@@ -57,8 +57,6 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
         bottomRadiousText = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         bottomCheck = new javax.swing.JCheckBox();
-        topNElementsText = new javax.swing.JTextField();
-        bottomNElementsText = new javax.swing.JTextField();
         topSepText = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         bottomSepText = new javax.swing.JTextField();
@@ -115,10 +113,6 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
 
         bottomCheck.setText("bottom");
 
-        topNElementsText.setText("1");
-
-        bottomNElementsText.setText("1");
-
         topSepText.setText("0.5");
 
         jLabel10.setText("Sep:");
@@ -157,11 +151,7 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(bottomCheck)
                                     .addComponent(topCheck))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(topNElementsText)
-                                    .addComponent(bottomNElementsText, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(51, 51, 51)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel7)
@@ -212,7 +202,7 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
                     .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(sidesText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
@@ -226,8 +216,7 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
                                     .addComponent(topSepText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel7)
-                                    .addComponent(topRadiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(topNElementsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(topRadiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -235,8 +224,7 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
                                     .addComponent(bottomSepText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel9)
-                                    .addComponent(bottomRadiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(bottomNElementsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(bottomRadiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -250,7 +238,7 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
                         .addComponent(topPointToCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(bottomPointToCheck)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(generateMeshButton)
                 .addContainerGap())
         );
@@ -287,14 +275,14 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
             }
             
             final boolean top = topCheck.isSelected();
-            final int topNSegments = Parse.toInt(topNElementsText.getText() );
+            final int topNSegments = 1;
             final float topSeparation = Parse.toFloat( topSepText.getText() );
             final float topRadious = Parse.toFloat( topRadiousText.getText() );
             final Vector3f topNormal = new Vector3f( topNormalText.getText() );
             final boolean topPointTo = topPointToCheck.isSelected();
             
             final boolean bottom = bottomCheck.isSelected();
-            final int bottomNSegments = Parse.toInt( bottomNElementsText.getText() );
+            final int bottomNSegments = 1;
             final float bottomSeparation = Parse.toFloat( bottomSepText.getText() );
             final float bottomRadious = Parse.toFloat( bottomRadiousText.getText() );
             final Vector3f bottomNormal = new Vector3f( bottomNormalText.getText() );
@@ -477,7 +465,6 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox bottomCheck;
-    private javax.swing.JTextField bottomNElementsText;
     private javax.swing.JTextField bottomNormalText;
     private javax.swing.JCheckBox bottomPointToCheck;
     private javax.swing.JTextField bottomRadiousText;
@@ -496,7 +483,6 @@ public class WormholesGenerateMesh extends javax.swing.JFrame {
     private javax.swing.JButton ropesSelectbutton;
     private javax.swing.JTextField sidesText;
     private javax.swing.JCheckBox topCheck;
-    private javax.swing.JTextField topNElementsText;
     private javax.swing.JTextField topNormalText;
     private javax.swing.JCheckBox topPointToCheck;
     private javax.swing.JTextField topRadiousText;
