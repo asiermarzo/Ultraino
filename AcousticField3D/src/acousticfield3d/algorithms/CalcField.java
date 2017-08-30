@@ -24,6 +24,11 @@ public class CalcField {
     }
     
     public static Vector2f calcFieldAt(final float px, final float py, final float pz, final MainForm mf){
+        final boolean discAmp = mf.miscPanel.isAmpDiscretizer();
+        final boolean discPhase = mf.miscPanel.isPhaseDiscretizer();
+        final float ampDiscStep = 1.0f / mf.miscPanel.getAmpDiscretization();
+        final float phaseDiscStep = 1.0f / mf.miscPanel.getPhaseDiscretization();
+        
         final Vector3f nor = new Vector3f();
         final Vector3f tPos = new Vector3f();
         final Vector3f diffVec = new Vector3f();
@@ -48,9 +53,9 @@ public class CalcField {
             final float k = omega / mSpeed;        // wavenumber
             float dum =  ap * 0.5f * k * M.sin( angle );
             float directivity = M.sinc(dum);
-            
-            float ampDirAtt = t.getAmplitude() * t.getPower() * directivity / dist;
-            float kdPlusPhase = k * dist + t.getPhase() * M.PI;
+                     
+            float ampDirAtt = t.calcRealDiscAmplitude(discAmp, ampDiscStep ) * directivity / dist;
+            float kdPlusPhase = k * dist + t.calcRealDiscPhase(discPhase, phaseDiscStep);
             field.x += ampDirAtt * M.cos(kdPlusPhase);
             field.y += ampDirAtt * M.sin(kdPlusPhase);
         }

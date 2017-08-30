@@ -342,8 +342,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
         sb.append("function field = Field_vortex(x,y,z,k)\n");
         sb.append("field = ...\n");
-        
-        
+       
         //sPos, tPos, normal, amp, phase, aperture, k
         for (Transducer t : mf.simulation.transducers) {
             final Vector3f pos = t.getTransform().getTranslation();
@@ -359,7 +358,27 @@ public class AddTransducersForm extends javax.swing.JFrame {
         }
         sb.append("0;\n");
         sb.append("end\n");
-
+        
+        /*
+        sb.append("function field = Field_vortex(x,y,z,k)\n");
+        sb.append("field = ...\n");
+       
+        //sPos, tPos, normal, amp, phase, aperture, k
+        for (Transducer t : mf.simulation.transducers) {
+            final Vector3f pos = t.getTransform().getTranslation();
+            final Vector3f n = t.getTransform().getRotation().mult(Vector3f.UNIT_Y).normalizeLocal();
+          
+            sb.append("pistonModel([x y z],");
+            sb.append("[" + pos.x + " " + (-pos.z) + " " + pos.y + "],");
+            sb.append("[" + n.x + " " + (-n.z) + " " + n.y + "],");
+            sb.append( t.getpAmplitude() + ",");
+            sb.append( t.getPhase() * M.PI + ",");
+            sb.append( t.getApperture()+ ",");
+            sb.append( "k) + ...\n" );
+        }
+        sb.append("0;\n");
+        sb.append("end\n");
+*/
         TextFrame.showText("Matlab field", sb.toString(), this);
         
 //    function field = pistonModel(sPos, tPos, normal, amp, phase, aperture, k)

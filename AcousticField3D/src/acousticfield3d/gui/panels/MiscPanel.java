@@ -13,6 +13,8 @@ import acousticfield3d.scene.Resources;
 import acousticfield3d.scene.Scene;
 import acousticfield3d.utils.Color;
 import acousticfield3d.utils.Parse;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 
 /**
  *
@@ -316,6 +318,23 @@ public class MiscPanel extends javax.swing.JPanel {
         mf.needUpdate();
     }//GEN-LAST:event_colorTextActionPerformed
 
+    public JCheckBox getAmpDicreCheck() {
+        return ampDicreCheck;
+    }
+
+    public JTextField getAmpDiscreText() {
+        return ampDiscreText;
+    }
+
+    public JCheckBox getPhaseDiscreCheck() {
+        return phaseDiscreCheck;
+    }
+
+    public JTextField getPhaseDiscreText() {
+        return phaseDiscreText;
+    }
+
+    
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

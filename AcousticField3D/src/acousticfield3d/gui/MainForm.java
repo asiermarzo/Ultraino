@@ -1992,4 +1992,6 @@ public final class MainForm extends javax.swing.JFrame {
         gljpanel.paint( bi.getGraphics() );
         return bi;
     }
+    
+    
 }
