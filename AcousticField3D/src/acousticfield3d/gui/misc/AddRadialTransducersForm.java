@@ -43,6 +43,8 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
         inclinationText = new javax.swing.JTextField();
         createButton = new javax.swing.JButton();
         deleteAllButton = new javax.swing.JButton();
+        alignTransducersCheck = new javax.swing.JCheckBox();
+        doubleBowlCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -72,6 +74,10 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
             }
         });
 
+        alignTransducersCheck.setText("align transducers");
+
+        doubleBowlCheck.setText("double bowl");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,7 +101,11 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(createButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(deleteAllButton)))
+                        .addComponent(deleteAllButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(alignTransducersCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(doubleBowlCheck)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,7 +123,11 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(doubleBowlCheck)
+                    .addComponent(alignTransducersCheck))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createButton)
                     .addComponent(deleteAllButton))
@@ -127,6 +141,8 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
         final int[] amount = Parse.parseIntArray(amountText.getText(), ",");
         final float radious = Parse.toFloat( radiousText.getText() );
         final float inc = Parse.toFloat( inclinationText.getText() ) * M.DEG_TO_RAD;
+        final boolean doubleBowl = doubleBowlCheck.isSelected();
+        final boolean alignTransducers = alignTransducersCheck.isSelected();
         
         final int n = amount.length;
         for (int i = 0; i < n; ++i){
@@ -135,11 +151,22 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                 final Transducer t = createTransducer();
                 final Vector3f pos = t.getTransform().getTranslation();
                 
-                pos.fromPolar(radious, M.TWO_PI * j / trans, inc * i);
+                float angle = M.TWO_PI * j / trans;
+                if (alignTransducers && i % 2 == 0){
+                    angle += M.TWO_PI / trans /2.0f;
+                }
+                pos.fromPolar(radious, angle, inc * i);
                 pos.y *= -1;
                 
                 t.pointToTarget( Vector3f.ZERO );
                 addTransducer(t);
+                
+                if (doubleBowl){
+                   final Transducer t2 = createTransducer();
+                   t2.getTransform().getTranslation().set( pos ).multLocal(1, -1, 1);
+                   t2.pointToTarget( Vector3f.ZERO );
+                   addTransducer(t2);
+                }
             }
         }
         mf.needUpdate();
@@ -162,9 +189,11 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox alignTransducersCheck;
     private javax.swing.JTextField amountText;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteAllButton;
+    private javax.swing.JCheckBox doubleBowlCheck;
     private javax.swing.JTextField inclinationText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

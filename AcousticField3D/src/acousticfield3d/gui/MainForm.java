@@ -12,6 +12,7 @@ import acousticfield3d.gui.misc.AddRadialTransducersForm;
 import acousticfield3d.gui.misc.ExportPlotsForm;
 import acousticfield3d.gui.misc.ForcePlotsFrame;
 import acousticfield3d.gui.misc.HybridSingleBeamForm;
+import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.MetaSurfaces;
 import acousticfield3d.gui.misc.ScatterObjectForm;
@@ -344,6 +345,7 @@ public final class MainForm extends javax.swing.JFrame {
         auxKeyMenu = new javax.swing.JMenuItem();
         scatterObjectMenu = new javax.swing.JMenuItem();
         bowlArrayMenu = new javax.swing.JMenuItem();
+        matlabPhasesMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1140,6 +1142,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu9.add(bowlArrayMenu);
 
+        matlabPhasesMenu.setText("MatlabPhases");
+        matlabPhasesMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matlabPhasesMenuActionPerformed(evt);
+            }
+        });
+        jMenu9.add(matlabPhasesMenu);
+
         jMenuBar1.add(jMenu9);
 
         setJMenuBar(jMenuBar1);
@@ -1678,6 +1688,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void bowlArrayMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bowlArrayMenuActionPerformed
         showNewFrame( new AddRadialTransducersForm(this));
     }//GEN-LAST:event_bowlArrayMenuActionPerformed
+
+    private void matlabPhasesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matlabPhasesMenuActionPerformed
+        showNewFrame( new ImportExportPhasesMatlabForm(this));
+    }//GEN-LAST:event_matlabPhasesMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1735,6 +1749,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane mainTabPanel;
     private javax.swing.ButtonGroup maskObjectsGroup;
     private javax.swing.JMenuItem matlabFieldMenu;
+    private javax.swing.JMenuItem matlabPhasesMenu;
     private javax.swing.JMenuItem metamaterialsMenu;
     private javax.swing.JMenuItem mouseControlMenu;
     private javax.swing.JMenuItem normSimPosMenu;

@@ -209,10 +209,17 @@ public class HybridSingleBeamForm extends javax.swing.JFrame {
             SimplePhaseAlgorithms.focus(t, focusPoint, mSpeed);
                     
             //is in A or B
-            boolean isA = 
-                    (circle && nDistanceToCenter < circleA) ||
-                    (half && angleToCenter > 0) ||
-                    (checker && M.abs(angleToCenter / 2) < M.HALF_PI);
+            boolean isA = true;
+            if (circle){
+                isA = nDistanceToCenter < circleA;
+            }else if(half){
+                isA = logicalXOR(angleToCenter > 0, nDistanceToCenter < circleA);
+            }else if (checker){
+                boolean isQuadrandOdd = ( M.floor( (angleToCenter + M.PI) / M.TWO_PI * 4 )  % 2) == 0;
+                
+                isA = logicalXOR( isQuadrandOdd, nDistanceToCenter < circleA);
+            }
+       
             
             if (isA){
                 if (aFocus){
@@ -233,6 +240,10 @@ public class HybridSingleBeamForm extends javax.swing.JFrame {
         mf.needUpdate();
     }//GEN-LAST:event_setButtonActionPerformed
 
+    public static boolean logicalXOR(boolean x, boolean y) {
+        return ( ( x || y ) && ! ( x && y ) );
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton aFocusCheck;
     private javax.swing.ButtonGroup aGroup;
