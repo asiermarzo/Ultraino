@@ -1,7 +1,7 @@
 50.8mm by 67.31mm 
 4 layers
 
-32x TC4427 SMD
+32x TC4427A SMD
 	uk rs-components 889-5409
 32x caps ceramic SMD 0805 0.1uf above 25V
 	uk rs-components 264-4416
