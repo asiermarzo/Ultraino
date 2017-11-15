@@ -30,4 +30,6 @@ inline void _discardByte() { _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_ta
 * Install the software in Arduino Nano
 
 # How to Assemble and example Applications
-Videos are coming...
+Paper: http://ieeexplore.ieee.org/document/8094247/
+Instructables: https://www.instructables.com/id/Ultrasonic-array/
+Video: https://youtu.be/h0Mh0bIv9Fk
