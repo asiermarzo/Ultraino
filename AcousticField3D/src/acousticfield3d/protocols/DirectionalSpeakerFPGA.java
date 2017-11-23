@@ -19,6 +19,7 @@ public class DirectionalSpeakerFPGA extends DeviceConnection{
     @Override
     public int getSpeed() {
         return 250000;
+        //return 230400;
     } 
     
     @Override

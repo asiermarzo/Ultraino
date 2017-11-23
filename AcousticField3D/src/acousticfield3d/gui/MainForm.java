@@ -1661,12 +1661,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_forceStudyMenuActionPerformed
 
     private void auxKeyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auxKeyMenuActionPerformed
-        if (selection.isEmpty()){
-            return;
-        }
-        final Vector3f polar = new Vector3f();
-        selection.get(0).getTransform().getTranslation().toPolar(polar);
-        System.out.println( polar.toStringSimple(" "));
+        
     }//GEN-LAST:event_auxKeyMenuActionPerformed
 
     private void wormGenMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wormGenMenuActionPerformed

@@ -6,6 +6,7 @@
 package acousticfield3d.gui.misc;
 
 import acousticfield3d.algorithms.CalcField;
+import acousticfield3d.algorithms.SimplePhaseAlgorithms;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
@@ -39,6 +40,9 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         dispText = new javax.swing.JTextField();
         showButton = new javax.swing.JButton();
+        pressButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        directionText = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -50,12 +54,23 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
 
         dispText.setText("0.05");
 
-        showButton.setText("Show");
+        showButton.setText("Forces");
         showButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showButtonActionPerformed(evt);
             }
         });
+
+        pressButton.setText("Pressure at focus");
+        pressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pressButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Direction:");
+
+        directionText.setText("0 1 0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,15 +80,24 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(pressButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dispText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(showButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(directionText))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dispText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(showButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,7 +110,12 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
                     .addComponent(dispText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(showButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pressButton)
+                    .addComponent(jLabel3)
+                    .addComponent(directionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -137,12 +166,45 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         TextFrame.showText("Forces", sb.toString(), this);
     }//GEN-LAST:event_showButtonActionPerformed
 
+    private void pressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressButtonActionPerformed
+        final int nSteps = Parse.toInt( nPointsText.getText() );
+        final float disp = Parse.toFloat( dispText.getText() );
+        final Vector3f dir = new Vector3f(directionText.getText());
+        
+        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD);
+        if (bead == null){
+            return;
+        }
+        final Vector3f pos = bead.getTransform().getTranslation().clone();
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("X \t Y \t Z \t Pressure\n");
+        for(int i = 0; i < nSteps; ++i){
+           pos.addLocalInc(dir, disp/nSteps);
+            
+            SimplePhaseAlgorithms.focus(mf.simulation.transducers, pos, mf.simulation.getMediumSpeed());
+           final double pressure = CalcField.calcFieldAt(pos.x, pos.y, pos.z, mf).length();
+          
+            
+            sb.append( (pos.x) + " \t");
+            sb.append( (pos.y) + " \t");
+            sb.append( (pos.z) + " \t");
+            sb.append(pressure + "\n");
+          
+        }
+        
+        TextFrame.showText("Pressures", sb.toString(), this);
+    }//GEN-LAST:event_pressButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField directionText;
     private javax.swing.JTextField dispText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField nPointsText;
+    private javax.swing.JButton pressButton;
     private javax.swing.JButton showButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -45,6 +45,7 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
         deleteAllButton = new javax.swing.JButton();
         alignTransducersCheck = new javax.swing.JCheckBox();
         doubleBowlCheck = new javax.swing.JCheckBox();
+        clone90Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,6 +79,13 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
 
         doubleBowlCheck.setText("double bowl");
 
+        clone90Button.setText("Clone90");
+        clone90Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clone90ButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,6 +109,8 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(createButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clone90Button)
+                        .addGap(18, 18, 18)
                         .addComponent(deleteAllButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(alignTransducersCheck)
@@ -130,7 +140,8 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createButton)
-                    .addComponent(deleteAllButton))
+                    .addComponent(deleteAllButton)
+                    .addComponent(clone90Button))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -179,6 +190,18 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
         mf.needUpdate();
     }//GEN-LAST:event_deleteAllButtonActionPerformed
 
+    private void clone90ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clone90ButtonActionPerformed
+        mf.clearSelection();
+        final ArrayList<Transducer> copy = new ArrayList<>(mf.simulation.transducers);
+        for(Transducer t : copy){
+            final Transducer tc = createTransducer();
+            tc.getTransform().getTranslation().set( t.getTransform().getTranslation());
+            tc.getTransform().rotateAround(Vector3f.ZERO, 0, 0, 90 * M.DEG_TO_RAD);
+            tc.pointToTarget( Vector3f.ZERO );
+            addTransducer(tc);
+        }
+    }//GEN-LAST:event_clone90ButtonActionPerformed
+
 
     private Transducer createTransducer(){
         return mf.addTransducersForm.createTransducer();
@@ -191,6 +214,7 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignTransducersCheck;
     private javax.swing.JTextField amountText;
+    private javax.swing.JButton clone90Button;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteAllButton;
     private javax.swing.JCheckBox doubleBowlCheck;
