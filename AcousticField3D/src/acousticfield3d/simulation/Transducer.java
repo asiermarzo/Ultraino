@@ -91,7 +91,7 @@ public class Transducer extends MeshEntity{
     }
     
     public int getDiscPhase(final int divs){
-        return calcDiscPhase(getPhase(), divs);
+        return calcDiscPhase(getPhase() + getPhaseCorrection(), divs);
     }
 
     @Override

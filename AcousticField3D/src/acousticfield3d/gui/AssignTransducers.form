@@ -84,7 +84,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="maxAmpText" min="-2" pref="43" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Component id="startButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="finishButton" min="-2" max="-2" attributes="0"/>
@@ -92,13 +92,24 @@
                               <Component id="prevButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="nextButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                              <Component id="erasePhaseCorrectionButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
                               <Component id="phaseCorrectionCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="onlyPolCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="phaseRefText" min="-2" pref="63" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="phaseCorrectionLabel" min="-2" pref="104" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace min="0" pref="71" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="erasePhaseCorrectionButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -118,15 +129,29 @@
                   <Component id="maxTransText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="erasePhaseCorrectionButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="phaseCorrectionCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="onlyPolCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="phaseRefText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="phaseCorrectionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="startButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="finishButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="erasePhaseCorrectionButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="prevButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nextButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="phaseCorrectionCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="selectTransText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -137,7 +162,7 @@
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="phaseText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="maxAmpCheck" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -229,7 +254,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="erasePhaseCorrectionButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="reset pha cor."/>
+        <Property name="text" type="java.lang.String" value="Reset Corr"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="erasePhaseCorrectionButtonActionPerformed"/>
@@ -299,6 +324,26 @@
     <Component class="javax.swing.JTextField" name="maxAmpText">
       <Properties>
         <Property name="text" type="java.lang.String" value="820"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="onlyPolCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="OnlyPolarity"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="phaseRefText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="ref"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="phaseCorrectionLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="phaseCorr"/>
       </Properties>
     </Component>
   </SubComponents>
