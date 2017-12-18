@@ -7,7 +7,6 @@ package acousticfield3d.protocols;
 
 import acousticfield3d.math.M;
 import acousticfield3d.simulation.Transducer;
-import java.util.Arrays;
 import java.util.List;
 
 /**

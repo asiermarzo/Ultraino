@@ -432,5 +432,12 @@ public class Scene {
 
     }
  
-    
+    public float getParticleRadious(){
+        Entity bead = getFirstWithTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD);
+        if (bead == null){
+            return 0.0005f;
+        }
+       
+        return bead.getTransform().getScale().maxComponent() / 2.0f;
+    }
 }

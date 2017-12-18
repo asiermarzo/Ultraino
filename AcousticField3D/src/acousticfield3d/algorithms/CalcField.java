@@ -82,7 +82,7 @@ public class CalcField {
         return total.dot(total);
     }
     
-    public static double calcGorkovAt(final float x, final float y, final float z, float particleR,  final MainForm mf){
+    public static void calcGorkovConstants(final float particleR, final MainForm mf, Vector2f consts){
         final float rohP = mf.simulation.getParticleDensity();
         final float roh = mf.simulation.getMediumDensity();
         final float cP = mf.simulation.getParticleSpeed();
@@ -104,14 +104,22 @@ public class CalcField {
         
         final double M1 = vpVol * vkPre;
         final double M2 = vpVol * vkVel*vkPreToVel*vkPreToVel;   
-
+        
+        consts.set((float)M1,(float)M2);
+    }
+    
+    public static double calcGorkovAt(final float x, final float y, final float z, float particleR,  final MainForm mf){
+        
         final Vector2f pre = calcFieldAt(x,y,z, mf);
         final float waveLength =  mf.simulation.getWavelenght();
         final double gx = calcFieldGradientDot(x,y,z, 1, 0, 0, waveLength / H_DIV, mf);
         final double gy = calcFieldGradientDot(x,y,z, 0, 1, 0, waveLength / H_DIV, mf);
         final double gz = calcFieldGradientDot(x,y,z, 0, 0, 1, waveLength / H_DIV, mf);
+        final Vector2f consts = new Vector2f();
         
-        return  M1 * pre.dot(pre) - M2 * (gx + gy + gz);
+        calcGorkovConstants(particleR, mf, consts);
+                
+        return  consts.x * pre.dot(pre) - consts.y * (gx + gy + gz);
     }
     
     public static double calcGorkovGradient(final float x, final float y, final float z,

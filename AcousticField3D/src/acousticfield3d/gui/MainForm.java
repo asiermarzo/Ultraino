@@ -9,6 +9,7 @@ package acousticfield3d.gui;
 
 import acousticfield3d.Config;
 import acousticfield3d.gui.misc.AddRadialTransducersForm;
+import acousticfield3d.gui.misc.AlgorithmsForm;
 import acousticfield3d.gui.misc.ExportPlotsForm;
 import acousticfield3d.gui.misc.ForcePlotsFrame;
 import acousticfield3d.gui.misc.HybridSingleBeamForm;
@@ -106,6 +107,7 @@ public final class MainForm extends javax.swing.JFrame {
     public final HoloPatternsForm holoPatternsForm;
     public final AddTransducersForm addTransducersForm;
     public final SimulationConfigForm simForm;
+    public final AlgorithmsForm algForm;
    
     public MouseControlForm mouseControlForm = null;
     
@@ -137,6 +139,7 @@ public final class MainForm extends javax.swing.JFrame {
         holoPatternsForm = new HoloPatternsForm(this);
         simForm = new SimulationConfigForm(this);
         addTransducersForm = new AddTransducersForm(this, simulation, scene);
+        algForm = new AlgorithmsForm(this);
  
         GLProfile glprofile = GLProfile.getDefault();
         GLCapabilities glcapabilities = new GLCapabilities(glprofile);
@@ -326,6 +329,7 @@ public final class MainForm extends javax.swing.JFrame {
         importArrayMenu = new javax.swing.JMenuItem();
         arrayExportMenu = new javax.swing.JMenuItem();
         forceStudyMenu = new javax.swing.JMenuItem();
+        optimizerMenu = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         wormGenMenu = new javax.swing.JMenuItem();
         wormMesh = new javax.swing.JMenuItem();
@@ -991,6 +995,14 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         addTransMenu.add(forceStudyMenu);
+
+        optimizerMenu.setText("Optimizers");
+        optimizerMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optimizerMenuActionPerformed(evt);
+            }
+        });
+        addTransMenu.add(optimizerMenu);
 
         jMenuBar1.add(addTransMenu);
 
@@ -1687,6 +1699,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void matlabPhasesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matlabPhasesMenuActionPerformed
         showNewFrame( new ImportExportPhasesMatlabForm(this));
     }//GEN-LAST:event_matlabPhasesMenuActionPerformed
+
+    private void optimizerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optimizerMenuActionPerformed
+        showNewFrame( algForm );
+    }//GEN-LAST:event_optimizerMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1749,6 +1765,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem mouseControlMenu;
     private javax.swing.JMenuItem normSimPosMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
+    private javax.swing.JMenuItem optimizerMenu;
     private javax.swing.JMenuItem originCamMenu;
     private javax.swing.JMenuItem otherCamMenu;
     private javax.swing.JPanel panel;
@@ -2002,6 +2019,5 @@ public final class MainForm extends javax.swing.JFrame {
         gljpanel.paint( bi.getGraphics() );
         return bi;
     }
-    
     
 }

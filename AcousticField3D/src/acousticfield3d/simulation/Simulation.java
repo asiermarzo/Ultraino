@@ -70,9 +70,6 @@ public class Simulation {
             return 0;
         }
     }
-    public float getWavelength(){
-        return getMediumSpeed() / getFrequency();
-    }
     
     //<editor-fold defaultstate="collapsed" desc="Getters and setters">
 

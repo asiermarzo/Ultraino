@@ -385,7 +385,7 @@ public class TubeGen extends javax.swing.JFrame {
             final int pbx = xyPixels / wi;
             final int pby = xyPixels / hi;
             
-            final float lambda = mf.simulation.getWavelength();
+            final float lambda = mf.simulation.getWavelenght();
             
             for(int i = 0; i < nLayers+1; ++i){
                 final float prevHeight = lambda * (nLayers-i+1) / nLayers;

@@ -11,6 +11,7 @@ import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
+import acousticfield3d.scene.Scene;
 import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.TextFrame;
 
@@ -121,6 +122,8 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+    
     private void showButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showButtonActionPerformed
         final int nSteps = Parse.toInt( nPointsText.getText() );
         final float disp = Parse.toFloat( dispText.getText() );
@@ -129,8 +132,8 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         if (bead == null){
             return;
         }
-        final Vector3f pos = bead.getTransform().getTranslation();
         
+        final Vector3f pos = bead.getTransform().getTranslation();
         final float particleR = bead.getTransform().getScale().maxComponent() / 2.0f;
 
         StringBuilder sb = new StringBuilder();
