@@ -132,7 +132,7 @@ public class Entity {
         getTransform().getRotation().lookAt(dir, Vector3f.UNIT_Y);
     }
     
-    public void rotateAround(Entity other, float rx, float ry, float rz){
-        getTransform().rotateAround( other.getTransform().getTranslation(), rx, ry, rz);
+    public void rotateAround(final Vector3f pivot, float rx, float ry, float rz){
+        getTransform().rotateAround( pivot, rx, ry, rz);
     }
 }

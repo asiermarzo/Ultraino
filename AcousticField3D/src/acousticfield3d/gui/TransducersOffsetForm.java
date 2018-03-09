@@ -8,7 +8,10 @@ package acousticfield3d.gui;
 
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
+import acousticfield3d.scene.Entity;
+import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.Transducer;
+import acousticfield3d.utils.Parse;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
@@ -84,6 +87,7 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         rxStdText = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        applyCenterButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transducers Offset");
@@ -198,6 +202,13 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
 
         jLabel19.setText("Std:");
 
+        applyCenterButton.setText("ApplyCenter");
+        applyCenterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyCenterButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -271,18 +282,6 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(yStdText, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(rzCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, Short.MAX_VALUE)
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rzSText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(rzAvgText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rzStdText, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(rxCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel16)
@@ -306,9 +305,28 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ryStdText, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(setButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(applyCenterButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rzCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, Short.MAX_VALUE)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rzSText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(rzAvgText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rzStdText))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(setButton)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -380,7 +398,9 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
                     .addComponent(rzSText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
                 .addGap(18, 18, 18)
-                .addComponent(setButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(setButton)
+                    .addComponent(applyCenterButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -467,11 +487,28 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ryCheckActionPerformed
 
+    private void applyCenterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyCenterButtonActionPerformed
+        //get selection center
+        final Vector3f selCenter = Scene.calcCenter( mf.selection );
+        
+        final float rx = Parse.toFloat( rxAvgText.getText() ) * M.DEG_TO_RAD;
+        final float ry = Parse.toFloat( ryAvgText.getText() ) * M.DEG_TO_RAD;
+        final float rz = Parse.toFloat( rzAvgText.getText() ) * M.DEG_TO_RAD;
+        
+        //apply rotation to selection
+        for(Entity e : mf.selection){
+            e.rotateAround(selCenter, rx, ry, rz);
+        }
+        
+        mf.needUpdate();
+    }//GEN-LAST:event_applyCenterButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ampAvgText;
     private javax.swing.JCheckBox ampCheck;
     private javax.swing.JTextField ampStdText;
+    private javax.swing.JButton applyCenterButton;
     private javax.swing.ButtonGroup distributionGroup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

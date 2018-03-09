@@ -7,7 +7,6 @@
 package acousticfield3d.workers;
 
 import acousticfield3d.gui.panels.AnimPanel;
-import acousticfield3d.scene.Entity;
 import acousticfield3d.simulation.Animation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +31,6 @@ public class PlayerThread extends Thread{
         return currentTime;
     }
     
-    
-
     public synchronized void playOrPause(){
         notify();
     }

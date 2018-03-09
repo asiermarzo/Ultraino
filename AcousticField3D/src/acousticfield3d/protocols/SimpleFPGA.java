@@ -5,7 +5,6 @@
  */
 package acousticfield3d.protocols;
 
-import acousticfield3d.math.M;
 import acousticfield3d.simulation.Transducer;
 import java.util.List;
 
@@ -14,10 +13,11 @@ import java.util.List;
  * @author am14010
  */
 public class SimpleFPGA extends DeviceConnection{
-    final byte PHASE_OFF = (byte) (0xFF & 32);
-    final byte START_PHASES = (byte) (0xFF & 255);
-    final byte SWAP = (byte) (0xFF & 254);
-    
+    final static byte PHASE_OFF = (byte) (0xFF & 32);
+    final static byte START_PHASES = (byte) (0xFF & 255);
+    final static byte SWAP = (byte) (0xFF & 254);
+    final static int N_TRANS = 256;
+            
     @Override
     public int getDivs() {
         return 32;
@@ -27,6 +27,13 @@ public class SimpleFPGA extends DeviceConnection{
     public int getSpeed() {
         return 250000;
     } 
+
+    @Override
+    public void switchBuffers() {
+       serial.writeByte(SWAP);
+       serial.flush();
+    }
+    
     
     @Override
     public void sendPattern(final List<Transducer> transducers) {
@@ -34,15 +41,15 @@ public class SimpleFPGA extends DeviceConnection{
             return;
         }
        
-       final int nTrans = M.nearestPowerOfTwo( transducers.size() );
-       final byte[] data = new byte[nTrans + 2];
+       final int nTrans = N_TRANS;
+       //final int nTrans = M.nearestPowerOfTwo( transducers.size() );
+       final byte[] data = new byte[nTrans + 1];
        //Arrays.fill(data, PHASE_OFF);
        final int divs = getDivs();
-       
-       
+      
         data[0] = START_PHASES; 
         for (Transducer t : transducers) {
-            final int n = t.getOrderNumber();
+            final int n = t.getOrderNumber() - number;
             //final int n = t.getDriverPinNumber();
             if (n >= 0 && n < nTrans) { //is it within range
                 int phase = t.getDiscPhase(divs);
@@ -54,7 +61,6 @@ public class SimpleFPGA extends DeviceConnection{
                 data[n+1] = (byte) (phase & 0xFF);
             }
         }
-       data[nTrans + 1] = SWAP;
        serial.write(data);
        serial.flush();
     }

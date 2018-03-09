@@ -28,7 +28,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
     public static final int Combo_Amplitude = 0;
     public static final int Combo_Phase = 1;
     public static final int Combo_PhaseAndAmp = 2;
-    public static final int Combo_TAmpDiffFr= 3;
+    public static final int Combo_QuickAmp= 3;
 
     final MainForm mf;
     
@@ -61,6 +61,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         followButton = new javax.swing.JButton();
         clearFollowButton = new javax.swing.JButton();
         stickyCheck = new javax.swing.JCheckBox();
+        QAmpCheck = new javax.swing.JRadioButton();
 
         sliceAddButton.setText("Add");
         sliceAddButton.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +111,6 @@ public class RtSlicePanel extends javax.swing.JPanel {
         });
 
         buttonGroup1.add(amplitudeCheck);
-        amplitudeCheck.setSelected(true);
         amplitudeCheck.setText("Amplitude");
         amplitudeCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +150,14 @@ public class RtSlicePanel extends javax.swing.JPanel {
 
         stickyCheck.setText("sticky");
 
+        buttonGroup1.add(QAmpCheck);
+        QAmpCheck.setText("QAmp");
+        QAmpCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QAmpCheckActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,7 +188,10 @@ public class RtSlicePanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(stickyCheck)
-                            .addComponent(ampAndPhaseCheck)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ampAndPhaseCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(QAmpCheck))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(amplitudeCheck)
                                 .addGap(18, 18, 18)
@@ -206,7 +217,9 @@ public class RtSlicePanel extends javax.swing.JPanel {
                     .addComponent(amplitudeCheck)
                     .addComponent(phaseCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ampAndPhaseCheck)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ampAndPhaseCheck)
+                    .addComponent(QAmpCheck))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sliceAddButton)
@@ -308,30 +321,24 @@ public class RtSlicePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_clearFollowButtonActionPerformed
 
-    public int getSelectSliceSource(){
-        if (amplitudeCheck.isSelected()){
-            return 0;
-        }else if (phaseCheck.isSelected()){
-            return 1;
-        }else if (ampAndPhaseCheck.isSelected()){
-            return 2;
-        }
-        
-        return 0;
-    }
-    
+    private void QAmpCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QAmpCheckActionPerformed
+        updateSliceSource();
+        mf.needUpdate();
+    }//GEN-LAST:event_QAmpCheckActionPerformed
+
     private int getSliceShader(){
-        final int i = getSelectSliceSource();
-        
-        if (i == Combo_Amplitude){
+        if (amplitudeCheck.isSelected()){
             return Resources.SHADER_SLICE_RT_AMP;
-        }else if (i == Combo_Phase){
+        }else if (phaseCheck.isSelected()){
             return Resources.SHADER_SLICE_RT_PHASE;
-        }else if (i == Combo_PhaseAndAmp){
+        }else if (ampAndPhaseCheck.isSelected()){
             return Resources.SHADER_SLICE_RT_AMPPHASE;
+        }else if (QAmpCheck.isSelected()){
+            return Resources.SHADER_SLICE_RT_QUICK_AMP;
         }
         
         return Resources.SHADER_SLICE_RT_AMP;
+      
     }
         
     private void updateSliceSource(){
@@ -345,9 +352,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
             }
         }
     }
-    
- 
-            
+             
     public float getAmpColorMin() {
         return Parse.toFloat( colAmpMinText.getText() );
     }
@@ -364,6 +369,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton QAmpCheck;
     private javax.swing.JRadioButton ampAndPhaseCheck;
     private javax.swing.JRadioButton amplitudeCheck;
     private javax.swing.ButtonGroup buttonGroup1;

@@ -40,6 +40,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton3 = new javax.swing.JButton();
         cpEnableCheck = new javax.swing.JCheckBox();
         jLabel41 = new javax.swing.JLabel();
         cpSizeText = new javax.swing.JTextField();
@@ -56,6 +57,12 @@ public class ControlPointPanel extends javax.swing.JPanel {
         selectAllButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        mirrorAddButton = new javax.swing.JButton();
+        gridWText = new javax.swing.JTextField();
+        gridHText = new javax.swing.JTextField();
+        gridAddButton = new javax.swing.JButton();
+
+        jButton3.setText("jButton3");
 
         cpEnableCheck.setText("enable");
         cpEnableCheck.addActionListener(new java.awt.event.ActionListener() {
@@ -139,6 +146,24 @@ public class ControlPointPanel extends javax.swing.JPanel {
             }
         });
 
+        mirrorAddButton.setText("MirrorAdd");
+        mirrorAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mirrorAddButtonActionPerformed(evt);
+            }
+        });
+
+        gridWText.setText("4");
+
+        gridHText.setText("3");
+
+        gridAddButton.setText("gridAdd");
+        gridAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gridAddButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -165,6 +190,12 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(gridWText, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(gridHText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(gridAddButton))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -178,7 +209,8 @@ public class ControlPointPanel extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(cpAddButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpDelButton)))
+                                .addComponent(cpDelButton))
+                            .addComponent(mirrorAddButton))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -214,7 +246,14 @@ public class ControlPointPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(mirrorAddButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(gridWText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gridHText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gridAddButton))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -355,6 +394,46 @@ public class ControlPointPanel extends javax.swing.JPanel {
         mf.needUpdate();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void mirrorAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mirrorAddButtonActionPerformed
+        final Entity e = mf.movePanel.getBeadEntity();
+        if( e == null){ return; }
+        final Vector3f sCenter = mf.simulation.getSimulationCenter();
+        final Vector3f pos = e.getTransform().getTranslation();
+        
+        final float dx = pos.x - sCenter.x;
+        final float dz = pos.z - sCenter.z;
+        final float px = sCenter.x + dx;
+        final float nx = sCenter.x - dx;
+        final float pz = sCenter.z + dz;
+        final float nz = sCenter.z - dz;
+        
+        addControlPoint (px, pos.y, nz, getNumber(), 0, false);
+        addControlPoint (nx, pos.y, pz, getNumber(), 0, false);
+        addControlPoint (nx, pos.y, nz, getNumber(), 0, false);
+        
+        mf.needUpdate();
+    }//GEN-LAST:event_mirrorAddButtonActionPerformed
+
+    private void gridAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gridAddButtonActionPerformed
+        final int w = Parse.toInt( gridWText.getText() );
+        final int h = Parse.toInt( gridHText.getText() );
+        final Vector3f sCenter = mf.simulation.getSimulationCenter();
+        final Vector3f simSize = mf.simulation.getSimulationSize();
+        final Vector3f halfsize = simSize.divide(2.0f);
+        sCenter.x -= halfsize.x;
+        sCenter.z -= halfsize.z;
+        for( int x = 0; x < w; ++x){
+            for (int y = 0; y < h; ++y){
+                addControlPoint (
+                        sCenter.x + simSize.x * x / w, 
+                        sCenter.y, 
+                        sCenter.z + simSize.z * y / h, 
+                        getNumber(), 0, false);
+            }
+        }
+       
+    }//GEN-LAST:event_gridAddButtonActionPerformed
+
 
     
     public void selectAll() {
@@ -406,12 +485,17 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JButton cpDelButton;
     private javax.swing.JCheckBox cpEnableCheck;
     private javax.swing.JTextField cpSizeText;
+    private javax.swing.JButton gridAddButton;
+    private javax.swing.JTextField gridHText;
+    private javax.swing.JTextField gridWText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel43;
+    private javax.swing.JButton mirrorAddButton;
     private javax.swing.JTextField numberText;
     private javax.swing.JButton onlyVisibleButton;
     private javax.swing.JCheckBox placeBeadAtSliceCheck;

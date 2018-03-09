@@ -7,6 +7,7 @@
 package acousticfield3d.algorithms;
 
 import acousticfield3d.algorithms.bfgs.BFGS;
+import acousticfield3d.algorithms.bfgs.BFGSProgressListener;
 import acousticfield3d.algorithms.bfgs.IFunction;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.gui.misc.AlgorithmsForm;
@@ -26,53 +27,74 @@ import java.util.Arrays;
  * @author Asier
  */
 public class BFGSOptimization{
-    final acousticfield3d.gui.misc.AlgorithmsForm form;
-    public final ArrayList<MeshEntity> controlPoints;
+    final AlgorithmsForm form;
+    public final ArrayList<Entity> controlPoints;
     
     public BFGSOptimization(AlgorithmsForm form) {
         this.form = form;
         controlPoints = new ArrayList<>();
     }
  
-    public void calc(MainForm mf, Simulation s) {
+    
+    public void calc(final MainForm mf){
+        IFunction function;
+        if (form.isPressure()){
+            function = new MultiplePressureAdaptor(controlPoints,  mf );
+        }else if(form.isGorkov()){
+            function = new MultiGorkovAdaptor(controlPoints,  mf );
+            //function = new MultiGorkovAdaptor(controlPoints.get(0).getTransform().getTranslation(),  mf );
+        }else if(form.isGLaplacian()){
+            function = new MaxGorkovLaplacianMinPressureAdaptor(
+                    controlPoints.get(0).getTransform().getTranslation(), form.getLowPressureK(), form.getLaplacianConstants(),
+                    mf );
+        }else if(form.isMultiLap()){
+            function = new MaxGorkovLaplacianMinPressureAdaptor(
+                    controlPoints.get(0).getTransform().getTranslation(), form.getLowPressureK(), form.getLaplacianConstants(),
+                    mf );
+        }else{
+            //Default
+            function = new MultiplePressureAdaptor(controlPoints,  mf );
+        }
+        calc(mf, function);
+    }
+    
+    public void calcMultiPressure(final MainForm mf, final int iters){
+        calc(mf, new MultiplePressureAdaptor(controlPoints, mf), iters);
+    }
+    
+    public void calc(final MainForm mf, final IFunction function) {
         final int steps = form.getSteps();
+        calc(mf,function,steps);
+    }
+    
+    public void calc(final MainForm mf, final IFunction function, final int nIterations) {
+        
         final double xMin = form.getXMin();
         final double gMin = form.getGMin();
         final double alpha = form.getAlpha();
         
-        final ArrayList<Entity> selection = mf.selection;
+        final BFGSProgressListener listener = form.isReport() ? form : null;
+                
+        final Simulation s = mf.simulation;
         
-        if (selection.isEmpty()){
+        if(controlPoints.isEmpty()){
             return;
         }
         
         final double[] phases = s.getTransPhasesAsArray();
-        
-        IFunction function;
-        if (form.isPressure()){
-            function = new MultiplePressureAdaptor(selection,  mf );
-        }else if(form.isGorkov()){
-            function = new MultiGorkovAdaptor(selection,  mf );
-        }else if(form.isGLaplacian()){
-            function = new MaxGorkovLaplacianMinPressureAdaptor(
-                    selection.get(0).getTransform().getTranslation(), form.getLowPressureK(), form.getLaplacianConstants(),
-                    mf );
-        }else{
-            //Default
-            function = new MultiplePressureAdaptor(selection,  mf );
-        }
-        
+
         BFGS bfgs = new BFGS();
         bfgs.setAlpha( alpha );
-        bfgs.setListener( form );
-        bfgs.setcMaxIterations( steps );
+        bfgs.setListener( listener );
+        bfgs.setcMaxIterations( nIterations );
         bfgs.setcTolX( xMin );
         bfgs.setcTolGradient( gMin );
         
         final double fx = bfgs.minimize(function, phases, phases);
-
-        if(form != null){
-            form.bfgsOnFinish(bfgs.getLastNumberOfIterations(), 
+        
+        
+        if(listener != null){
+            listener.bfgsOnFinish(bfgs.getLastNumberOfIterations(), 
                     bfgs.isMinTolX(), bfgs.isMinTolGradient(), bfgs.getHessianUpdates(),
                     fx, phases);
         }
@@ -196,7 +218,48 @@ public class BFGSOptimization{
             }
         }
     }
+     /*
+    public class MultiGorkovAdaptor implements IFunction{
+        public final CachedPointFieldCalc center;
+        private final double kLowPressure;
+        private final double[] tempGX;
+
         
+        public MultiGorkovAdaptor(final Vector3f p, MainForm mf){
+           final Renderer r = mf.renderer;
+           
+           this.kLowPressure = 1;
+           tempGX = new double[r.getnTransducers()];
+          
+           center = CachedPointFieldCalc.create(p, mf);
+           center.allocateAndInit(mf);
+        }
+       
+      
+        @Override
+        public int getDimensions() {
+            return center.getNTrans();
+        }
+
+        @Override
+        public double evaluate(double[] vars) {
+            center.updateGorkov(vars);
+            return center.evalPressure()*kLowPressure + center.evalGorkov();
+        }
+
+        @Override
+        public void gradient(double[] vars, double[] g) {
+           center.updateGorkov(vars);
+           center.gradientGorkov(tempGX);
+           center.gradientPressure(g);
+           final int d = g.length;
+           for(int i = 0; i < d; ++i){
+                g[i] = kLowPressure*g[i] + tempGX[i];
+            }
+        }
+    }
+    */
+    
     public class MultiGorkovAdaptor implements IFunction{
         public final int nPoints;
         public final CachedPointFieldCalc[] points;
@@ -213,11 +276,12 @@ public class BFGSOptimization{
             points = new CachedPointFieldCalc[nPoints];
             tempG0 = new double[r.getnTransducers()];
             tempG1 = new double[r.getnTransducers()];
-            int i = 0;
+            
             final double lpk = form.getLowPressureK();
             equalize = form.isEqualizer();
             equalizerStrength = form.getEqualizerWeight();
 
+            int i = 0;
             for(Entity e : p){
                 CachedPointFieldCalc cp = CachedPointFieldCalc.create( e.getTransform().getTranslation(), mf);
                 cp.setLowPressureK( lpk );
@@ -272,7 +336,7 @@ public class BFGSOptimization{
                     points[i+1].gradientGorkov( tempG1 );
                     
                     for (int j = 0; j < d; ++j) {
-                        g[j] += equalizerStrength * 2.0f * (tempG0[j] + tempG1[j] - (tempG0[j]*g1 + g0*tempG1[j]));
+                        g[j] += equalizerStrength * 2.0f * (g0*tempG0[j] - g0*tempG1[j] - tempG0[j]*g1 + g1*tempG1[j]);
                         g[j] += tempG0[j];
                     }
                     if (i == n1-1){
@@ -287,56 +351,62 @@ public class BFGSOptimization{
         
     }
    
-   
-    public class ForceLevitatorAdaptor implements IFunction{
-        private final CachedPointFieldCalc cpa;
-        private final double yForce;
+      public class MultiLapAdaptor implements IFunction{
+        public final int nPoints;
+        public final CachedPointFieldCalc[] points;
+        public final double[] tempG0;
+        public final double[] tempG1;
         
-        public ForceLevitatorAdaptor(final Vector3f pos, double yForce, MainForm mf){
+
+        public MultiLapAdaptor(final ArrayList<Entity> p, MainForm mf){
             final Renderer r = mf.renderer;
             
-            this.yForce = yForce;
+            nPoints = p.size();
+            points = new CachedPointFieldCalc[nPoints];
+            tempG0 = new double[r.getnTransducers()];
+            tempG1 = new double[r.getnTransducers()];
+            final double lpk = form.getLowPressureK();
            
-            cpa = CachedPointFieldCalc.create(pos, mf);
-            cpa.allocateAndInit(mf);
+            int i = 0;
+            for(Entity e : p){
+                CachedPointFieldCalc cp = CachedPointFieldCalc.create( e.getTransform().getTranslation(), mf);
+                cp.setLowPressureK( lpk );
+                cp.allocateAndInit(mf);
+                points[i] = cp;
+                i++;
+            }
         }
-
-        public CachedPointFieldCalc getCpa() {
-            return cpa;
-        }
- 
+        
         @Override
         public int getDimensions() {
-            return cpa.getNTrans();
+            return points[0].getNTrans();
         }
 
         @Override
         public double evaluate(double[] vars) {
-            cpa.updateGorkovGradient(vars);
-            final double x = cpa.evalGorkovGradientX();
-            final double y = cpa.evalGorkovGradientY() - yForce;
-            final double z = cpa.evalGorkovGradientZ();
-            return x*x + z*z + y*y;
+            double v = 0;
+            for(int i = 0; i < nPoints; ++i){
+                points[i].updateGorkovLaplacian(vars );
+                v += -points[i].evalGorkovLaplacian();
+            }
+            
+            return v;
         }
 
         @Override
         public void gradient(double[] vars, double[] g) {
-            cpa.updateGorkovGradient(vars);
-            final double fx = cpa.evalGorkovGradientX();
-            final double fy = cpa.evalGorkovGradientY();
-            final double fz = cpa.evalGorkovGradientZ();
-            final int n = g.length;
-            double[] gx = new double[n];
-            double[] gy = new double[n];
-            double[] gz = new double[n];
-            cpa.gradientGorkovGradientX(gx);
-            cpa.gradientGorkovGradientY(gy);
-            cpa.gradientGorkovGradientZ(gz);
-
-            for(int l = g.length -1; l >= 0; l--){
-                g[l] =  2.0*fx*gx[l] + 2.0*fz*gz[l] + 2.0*fy*gy[l] - 2.0*yForce*gy[l];
-            }
+            Arrays.fill(g, 0.0);
+            final int d = g.length;
+           
+                for(int i = 0; i < nPoints; ++i){
+                    points[i].updateGorkovLaplacian(vars );
+                    points[i].gradientGorkovLaplacian( tempG0 );
+                    for (int j = 0; j < d; ++j) {
+                        g[j] += - tempG0[j];
+                    }
+                }
             
-        }  
-    }
+        }
+        
+    } 
 }

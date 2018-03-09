@@ -433,4 +433,18 @@ public class TransducersPanel extends javax.swing.JPanel {
         return orderText;
     }
 
+    
+    
+    public void selectTopTransducers(final boolean topOrBottom){
+        mf.clearSelection();
+        final float midY = mf.simulation.calcTransducersMidY();
+        for(Transducer t : mf.simulation.transducers){
+            final float tY = t.getTransform().getTranslation().y;
+            if ( (topOrBottom && tY > midY) || (!topOrBottom && tY < midY)){
+                t.selected = true;
+                mf.selection.add(t);
+            }
+        }
+        mf.needUpdate();
+    }
 }

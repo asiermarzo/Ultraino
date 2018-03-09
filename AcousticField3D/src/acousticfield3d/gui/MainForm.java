@@ -16,9 +16,12 @@ import acousticfield3d.gui.misc.HybridSingleBeamForm;
 import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.MetaSurfaces;
+import acousticfield3d.gui.misc.ParticleControllerFrame;
+import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SweepTinyLevParameters;
+import acousticfield3d.gui.misc.SwitchTimer;
 import acousticfield3d.gui.misc.TubeGen;
 import acousticfield3d.gui.misc.WormholesGenerateMesh;
 import acousticfield3d.gui.misc.WormholesGenerateTubes;
@@ -52,6 +55,7 @@ import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.StringFormats;
 import acousticfield3d.utils.TextFrame;
+import acousticfield3d.workers.UpdateThread;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -87,6 +91,7 @@ public final class MainForm extends javax.swing.JFrame {
     public Simulation simulation;
     
     final BehavioursThread animationThread;
+    public final UpdateThread updateThread;
     
     public final ArrayList<Entity> selection =  new ArrayList<>();
     public final ArrayList<Entity> bag = new ArrayList<>();
@@ -108,8 +113,9 @@ public final class MainForm extends javax.swing.JFrame {
     public final AddTransducersForm addTransducersForm;
     public final SimulationConfigForm simForm;
     public final AlgorithmsForm algForm;
-   
-    public MouseControlForm mouseControlForm = null;
+    
+    
+    public final ParticleControllerFrame particleController;
     
     public final Config config;
     
@@ -141,6 +147,8 @@ public final class MainForm extends javax.swing.JFrame {
         addTransducersForm = new AddTransducersForm(this, simulation, scene);
         algForm = new AlgorithmsForm(this);
  
+        particleController = new ParticleControllerFrame(this);
+        
         GLProfile glprofile = GLProfile.getDefault();
         GLCapabilities glcapabilities = new GLCapabilities(glprofile);
         gljpanel = new GLJPanel(glcapabilities);
@@ -182,6 +190,8 @@ public final class MainForm extends javax.swing.JFrame {
         
         animationThread = new BehavioursThread(scene, this);
         //animationThread.start();
+        updateThread = new UpdateThread(this);
+        updateThread.start();
         
         if (config != null && config.lastPath != null){
             FileUtils.setLastIndicatedPath( new File( config.lastPath ) );
@@ -287,6 +297,7 @@ public final class MainForm extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         loadSimMenu = new javax.swing.JMenuItem();
         saveSimMenu = new javax.swing.JMenuItem();
+        importTransMenu = new javax.swing.JMenuItem();
         exportObjMenu = new javax.swing.JMenuItem();
         exportObjWithMtlMenu = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -316,6 +327,8 @@ public final class MainForm extends javax.swing.JFrame {
         transSetAmp0Menu = new javax.swing.JMenuItem();
         transSetAmp1Menu = new javax.swing.JMenuItem();
         offNextOnTransducerMenu = new javax.swing.JMenuItem();
+        selectTransTopMenu = new javax.swing.JMenuItem();
+        selectTransTopMenu1 = new javax.swing.JMenuItem();
         transOffsetMenu = new javax.swing.JMenuItem();
         transAssignmentMenu = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
@@ -331,25 +344,25 @@ public final class MainForm extends javax.swing.JFrame {
         forceStudyMenu = new javax.swing.JMenuItem();
         optimizerMenu = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
-        wormGenMenu = new javax.swing.JMenuItem();
-        wormMesh = new javax.swing.JMenuItem();
-        mouseControlMenu = new javax.swing.JMenuItem();
         phasePatternMenu = new javax.swing.JMenuItem();
-        sonoTweezersEmuMenu = new javax.swing.JMenuItem();
-        soundCalibDataMenu = new javax.swing.JMenuItem();
-        keyboardControlMenu = new javax.swing.JMenuItem();
-        tubeGenMenu = new javax.swing.JMenuItem();
         sendToDevicesMenu = new javax.swing.JMenuItem();
-        metamaterialsMenu = new javax.swing.JMenuItem();
         polarPlotsMenu = new javax.swing.JMenuItem();
         forcePlotsMenu = new javax.swing.JMenuItem();
         matlabFieldMenu = new javax.swing.JMenuItem();
         ImportAmpPhasesMenu = new javax.swing.JMenuItem();
-        hybridSingleBeamMenu = new javax.swing.JMenuItem();
         auxKeyMenu = new javax.swing.JMenuItem();
+        matlabPhasesMenu = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        wormGenMenu = new javax.swing.JMenuItem();
+        wormMesh = new javax.swing.JMenuItem();
+        tubeGenMenu = new javax.swing.JMenuItem();
+        metamaterialsMenu = new javax.swing.JMenuItem();
+        hybridSingleBeamMenu = new javax.swing.JMenuItem();
         scatterObjectMenu = new javax.swing.JMenuItem();
         bowlArrayMenu = new javax.swing.JMenuItem();
-        matlabPhasesMenu = new javax.swing.JMenuItem();
+        randPointsExpMenu = new javax.swing.JMenuItem();
+        sendSwitchbufMenu = new javax.swing.JMenuItem();
+        particleControllerMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -676,6 +689,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(saveSimMenu);
 
+        importTransMenu.setText("Import trans");
+        importTransMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importTransMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(importTransMenu);
+
         exportObjMenu.setText("Export to obj");
         exportObjMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -899,6 +920,24 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu4.add(offNextOnTransducerMenu);
 
+        selectTransTopMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
+        selectTransTopMenu.setText("Select top");
+        selectTransTopMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectTransTopMenuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(selectTransTopMenu);
+
+        selectTransTopMenu1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
+        selectTransTopMenu1.setText("Select bottom");
+        selectTransTopMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectTransTopMenu1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(selectTransTopMenu1);
+
         transOffsetMenu.setText("Offsets");
         transOffsetMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1008,30 +1047,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         jMenu9.setText("Utils");
 
-        wormGenMenu.setText("worm gen");
-        wormGenMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wormGenMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(wormGenMenu);
-
-        wormMesh.setText("worm mesh");
-        wormMesh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wormMeshActionPerformed(evt);
-            }
-        });
-        jMenu9.add(wormMesh);
-
-        mouseControlMenu.setText("mouseControl");
-        mouseControlMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mouseControlMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(mouseControlMenu);
-
         phasePatternMenu.setText("HoloPatterns");
         phasePatternMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1039,38 +1054,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu9.add(phasePatternMenu);
-
-        sonoTweezersEmuMenu.setText("SonoTweezers emulator");
-        sonoTweezersEmuMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sonoTweezersEmuMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(sonoTweezersEmuMenu);
-
-        soundCalibDataMenu.setText("Gen SoundCalib data");
-        soundCalibDataMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                soundCalibDataMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(soundCalibDataMenu);
-
-        keyboardControlMenu.setText("Keyboard Controller");
-        keyboardControlMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keyboardControlMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(keyboardControlMenu);
-
-        tubeGenMenu.setText("TubeGen");
-        tubeGenMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tubeGenMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(tubeGenMenu);
 
         sendToDevicesMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         sendToDevicesMenu.setText("Send to Devices");
@@ -1080,14 +1063,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu9.add(sendToDevicesMenu);
-
-        metamaterialsMenu.setText("Metamaterials");
-        metamaterialsMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                metamaterialsMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(metamaterialsMenu);
 
         polarPlotsMenu.setText("PolarPlots");
         polarPlotsMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -1121,14 +1096,6 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu9.add(ImportAmpPhasesMenu);
 
-        hybridSingleBeamMenu.setText("HybridSingleBeams");
-        hybridSingleBeamMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hybridSingleBeamMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(hybridSingleBeamMenu);
-
         auxKeyMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         auxKeyMenu.setText("AuxKey");
         auxKeyMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -1137,22 +1104,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu9.add(auxKeyMenu);
-
-        scatterObjectMenu.setText("Scatter Object");
-        scatterObjectMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scatterObjectMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(scatterObjectMenu);
-
-        bowlArrayMenu.setText("Bowl Array");
-        bowlArrayMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bowlArrayMenuActionPerformed(evt);
-            }
-        });
-        jMenu9.add(bowlArrayMenu);
 
         matlabPhasesMenu.setText("MatlabPhases");
         matlabPhasesMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -1163,6 +1114,90 @@ public final class MainForm extends javax.swing.JFrame {
         jMenu9.add(matlabPhasesMenu);
 
         jMenuBar1.add(jMenu9);
+
+        jMenu7.setText("VARIOUS");
+
+        wormGenMenu.setText("worm gen");
+        wormGenMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wormGenMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(wormGenMenu);
+
+        wormMesh.setText("worm mesh");
+        wormMesh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wormMeshActionPerformed(evt);
+            }
+        });
+        jMenu7.add(wormMesh);
+
+        tubeGenMenu.setText("TubeGen");
+        tubeGenMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tubeGenMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(tubeGenMenu);
+
+        metamaterialsMenu.setText("Metamaterials");
+        metamaterialsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                metamaterialsMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(metamaterialsMenu);
+
+        hybridSingleBeamMenu.setText("HybridSingleBeams");
+        hybridSingleBeamMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hybridSingleBeamMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(hybridSingleBeamMenu);
+
+        scatterObjectMenu.setText("Scatter Object");
+        scatterObjectMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scatterObjectMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(scatterObjectMenu);
+
+        bowlArrayMenu.setText("Bowl Array");
+        bowlArrayMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bowlArrayMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(bowlArrayMenu);
+
+        randPointsExpMenu.setText("Rand points Exp");
+        randPointsExpMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randPointsExpMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(randPointsExpMenu);
+
+        sendSwitchbufMenu.setText("Send switch buf");
+        sendSwitchbufMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendSwitchbufMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(sendSwitchbufMenu);
+
+        particleControllerMenu.setText("Particle Controllers");
+        particleControllerMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                particleControllerMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(particleControllerMenu);
+
+        jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
 
@@ -1281,7 +1316,7 @@ public final class MainForm extends javax.swing.JFrame {
             initSimulation();
             clearSelection();
             
-            movePanel.snapFirstBead();
+            movePanel.snapBeadPositions();
   
             needUpdate();
         } catch (IOException ex) {
@@ -1541,12 +1576,6 @@ public final class MainForm extends javax.swing.JFrame {
         cpPanel.addSelAsBead();
     }//GEN-LAST:event_addSelAsBeadMenuActionPerformed
 
-    private void mouseControlMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mouseControlMenuActionPerformed
-        mouseControlForm = new MouseControlForm(this);
-        mouseControlForm.setLocationRelativeTo(this);
-        mouseControlForm.setVisible(true);
-    }//GEN-LAST:event_mouseControlMenuActionPerformed
-
     private void recToSelMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recToSelMenuActionPerformed
          if (selection.size() != 1){
             return;
@@ -1571,10 +1600,6 @@ public final class MainForm extends javax.swing.JFrame {
         simForm.setVisible( true );
     }//GEN-LAST:event_simEditParamMenuActionPerformed
 
-    private void sonoTweezersEmuMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sonoTweezersEmuMenuActionPerformed
-        showNewFrame( new SonoTweezersEmulatorForm(this) );
-    }//GEN-LAST:event_sonoTweezersEmuMenuActionPerformed
-
     private void selToBagMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selToBagMenuActionPerformed
         bag.clear();
         bag.addAll( selection );
@@ -1583,10 +1608,6 @@ public final class MainForm extends javax.swing.JFrame {
     private void transOffsetMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transOffsetMenuActionPerformed
         showNewFrame( new TransducersOffsetForm(this) );
     }//GEN-LAST:event_transOffsetMenuActionPerformed
-
-    private void soundCalibDataMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soundCalibDataMenuActionPerformed
-        showNewFrame( new SoundCalibDataForm(this) );
-    }//GEN-LAST:event_soundCalibDataMenuActionPerformed
 
     private void normSimPosMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normSimPosMenuActionPerformed
         final Transform t = scene.uniformPositions( selection );
@@ -1618,10 +1639,6 @@ public final class MainForm extends javax.swing.JFrame {
         
         System.exit(0);
     }//GEN-LAST:event_onExit
-
-    private void keyboardControlMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyboardControlMenuActionPerformed
-        showNewFrame( new KeyboardControllerForm(this) );
-    }//GEN-LAST:event_keyboardControlMenuActionPerformed
 
     private void tubeGenMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tubeGenMenuActionPerformed
         showNewFrame( new TubeGen(this) );
@@ -1703,6 +1720,30 @@ public final class MainForm extends javax.swing.JFrame {
     private void optimizerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optimizerMenuActionPerformed
         showNewFrame( algForm );
     }//GEN-LAST:event_optimizerMenuActionPerformed
+
+    private void randPointsExpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randPointsExpMenuActionPerformed
+        showNewFrame( new RandPointsExpFrame(this) );
+    }//GEN-LAST:event_randPointsExpMenuActionPerformed
+
+    private void selectTransTopMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTransTopMenuActionPerformed
+        transPanel.selectTopTransducers(true);
+    }//GEN-LAST:event_selectTransTopMenuActionPerformed
+
+    private void selectTransTopMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTransTopMenu1ActionPerformed
+        transPanel.selectTopTransducers(false);
+    }//GEN-LAST:event_selectTransTopMenu1ActionPerformed
+
+    private void sendSwitchbufMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendSwitchbufMenuActionPerformed
+        showNewFrame( new SwitchTimer(this) );
+    }//GEN-LAST:event_sendSwitchbufMenuActionPerformed
+
+    private void importTransMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importTransMenuActionPerformed
+        addTransducersForm.importFromSim();
+    }//GEN-LAST:event_importTransMenuActionPerformed
+
+    private void particleControllerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_particleControllerMenuActionPerformed
+        showNewFrame( particleController );
+    }//GEN-LAST:event_particleControllerMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1736,6 +1777,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem forceStudyMenu;
     private javax.swing.JMenuItem hybridSingleBeamMenu;
     private javax.swing.JMenuItem importArrayMenu;
+    private javax.swing.JMenuItem importTransMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -1751,18 +1793,17 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JMenuItem keyboardControlMenu;
     private javax.swing.JMenuItem loadSimMenu;
     private javax.swing.JTabbedPane mainTabPanel;
     private javax.swing.ButtonGroup maskObjectsGroup;
     private javax.swing.JMenuItem matlabFieldMenu;
     private javax.swing.JMenuItem matlabPhasesMenu;
     private javax.swing.JMenuItem metamaterialsMenu;
-    private javax.swing.JMenuItem mouseControlMenu;
     private javax.swing.JMenuItem normSimPosMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
     private javax.swing.JMenuItem optimizerMenu;
@@ -1770,10 +1811,12 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem otherCamMenu;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelSlider;
+    private javax.swing.JMenuItem particleControllerMenu;
     private javax.swing.JMenuItem phasePatternMenu;
     private javax.swing.JMenuItem pointToTargetMenu;
     private javax.swing.JMenuItem polarPlotsMenu;
     private javax.swing.ButtonGroup preCubeSource;
+    private javax.swing.JMenuItem randPointsExpMenu;
     private javax.swing.JMenuItem recToSelMenu;
     private javax.swing.JMenuItem resetCamMenu;
     private javax.swing.JTextField rxText;
@@ -1782,13 +1825,14 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveSimMenu;
     private javax.swing.JMenuItem scatterObjectMenu;
     private javax.swing.JMenuItem selToBagMenu;
+    private javax.swing.JMenuItem selectTransTopMenu;
+    private javax.swing.JMenuItem selectTransTopMenu1;
+    private javax.swing.JMenuItem sendSwitchbufMenu;
     private javax.swing.JMenuItem sendToDevicesMenu;
     private javax.swing.JMenuItem simEditParamMenu;
     private javax.swing.JMenuItem simTransformMenu;
     private javax.swing.ButtonGroup slicesSource;
     private javax.swing.JLabel sliderFieldLabel;
-    private javax.swing.JMenuItem sonoTweezersEmuMenu;
-    private javax.swing.JMenuItem soundCalibDataMenu;
     private javax.swing.JTextField sxText;
     private javax.swing.JTextField syText;
     private javax.swing.JTextField szText;

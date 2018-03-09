@@ -6,21 +6,16 @@
 
 package acousticfield3d.gui.panels;
 
-import acousticfield3d.algorithms.SimplePhaseAlgorithms;
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
-import acousticfield3d.simulation.AnimKeyFrame;
+import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.Animation;
-import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 
 /**
  *
@@ -30,12 +25,14 @@ public class MovePanel extends javax.swing.JPanel {
     final MainForm mf;
   
     Vector3f startPosition;
-    float time;
-    Vector3f snapBeadPosition = new Vector3f();
+    final ArrayList<Vector3f> snapBeadPositions = new ArrayList<>();
+    Entity particleToMove = null;
+    final Vector3f initialPos = new Vector3f();
+    
+    
     
     public MovePanel(MainForm mf) {
         this.mf = mf;
-        time = 0.0f;
         startPosition = new Vector3f();
         initComponents();
     }
@@ -65,21 +62,22 @@ public class MovePanel extends javax.swing.JPanel {
         resetButton = new javax.swing.JButton();
         snapButton = new javax.swing.JButton();
         autoAddCheck = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
-        periodsLateralText = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        periodsF1Text = new javax.swing.JTextField();
-        offsetF1Text = new javax.swing.JTextField();
-        periodsF2Text = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        offsetF2Text = new javax.swing.JTextField();
-        multiTrapCheck = new javax.swing.JCheckBox();
+        moveAllCheck = new javax.swing.JCheckBox();
         neutralButton = new javax.swing.JButton();
-        lateralVortexCheck = new javax.swing.JRadioButton();
-        lateralTwinCheck = new javax.swing.JRadioButton();
-        lateralQuadCheck = new javax.swing.JRadioButton();
-        lateralHoloCheck = new javax.swing.JRadioButton();
-        f1HoloCheck = new javax.swing.JCheckBox();
+        useAlgCheck = new javax.swing.JCheckBox();
+        rXPButton = new javax.swing.JButton();
+        rYPButton = new javax.swing.JButton();
+        rZPButton = new javax.swing.JButton();
+        rZNButton = new javax.swing.JButton();
+        rYNButton = new javax.swing.JButton();
+        rXNButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        angleText = new javax.swing.JTextField();
+        startButton = new javax.swing.JButton();
+        goButton = new javax.swing.JButton();
+        stepSizeText = new javax.swing.JTextField();
+        gatherButton = new javax.swing.JButton();
+        expandButton = new javax.swing.JButton();
 
         jLabel2.setText("N:");
 
@@ -153,23 +151,7 @@ public class MovePanel extends javax.swing.JPanel {
 
         autoAddCheck.setText("genAnim");
 
-        jLabel1.setText("tLateral");
-
-        periodsLateralText.setText("40");
-
-        jLabel4.setText("F1");
-
-        periodsF1Text.setText("20");
-
-        offsetF1Text.setText("0.01");
-
-        periodsF2Text.setText("20");
-
-        jLabel5.setText("F2");
-
-        offsetF2Text.setText("-0.01");
-
-        multiTrapCheck.setText("use multitrap");
+        moveAllCheck.setText("Move All");
 
         neutralButton.setText("0");
         neutralButton.addActionListener(new java.awt.event.ActionListener() {
@@ -178,20 +160,83 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
-        lateralTrapGroup.add(lateralVortexCheck);
-        lateralVortexCheck.setSelected(true);
-        lateralVortexCheck.setText("PVortex");
+        useAlgCheck.setText("useAlg");
 
-        lateralTrapGroup.add(lateralTwinCheck);
-        lateralTwinCheck.setText("Twin");
+        rXPButton.setText("Rx+");
+        rXPButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rXPButtonActionPerformed(evt);
+            }
+        });
 
-        lateralTrapGroup.add(lateralQuadCheck);
-        lateralQuadCheck.setText("Quad");
+        rYPButton.setText("Ry+");
+        rYPButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rYPButtonActionPerformed(evt);
+            }
+        });
 
-        lateralTrapGroup.add(lateralHoloCheck);
-        lateralHoloCheck.setText("Holo");
+        rZPButton.setText("Rz+");
+        rZPButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rZPButtonActionPerformed(evt);
+            }
+        });
 
-        f1HoloCheck.setText("Holo");
+        rZNButton.setText("Rz-");
+        rZNButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rZNButtonActionPerformed(evt);
+            }
+        });
+
+        rYNButton.setText("Ry-");
+        rYNButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rYNButtonActionPerformed(evt);
+            }
+        });
+
+        rXNButton.setText("Rx-");
+        rXNButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rXNButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("angle:");
+
+        angleText.setText("1");
+
+        startButton.setText("I");
+        startButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startButtonActionPerformed(evt);
+            }
+        });
+
+        goButton.setText("Go");
+        goButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goButtonActionPerformed(evt);
+            }
+        });
+
+        stepSizeText.setText("0.0005");
+
+        gatherButton.setText(">");
+        gatherButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gatherButtonActionPerformed(evt);
+            }
+        });
+
+        expandButton.setText("<");
+        expandButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -207,6 +252,9 @@ public class MovePanel extends javax.swing.JPanel {
                                 .addGap(10, 10, 10))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(neutralButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(gatherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -218,7 +266,9 @@ public class MovePanel extends javax.swing.JPanel {
                                         .addGap(2, 2, 2))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(downButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(47, 47, 47)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(expandButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(forwardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -244,35 +294,34 @@ public class MovePanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(speedText))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(periodsF1Text)
-                            .addComponent(periodsF2Text))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(offsetF1Text)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(f1HoloCheck))
-                            .addComponent(offsetF2Text)))
+                        .addComponent(moveAllCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(useAlgCheck))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(rXNButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(rXPButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(rYNButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(rYPButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(rZPButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(rZNButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(angleText)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lateralTwinCheck)
+                                .addComponent(startButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lateralQuadCheck)
+                                .addComponent(goButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lateralHoloCheck))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(periodsLateralText, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lateralVortexCheck))
-                            .addComponent(multiTrapCheck))
+                                .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -290,7 +339,7 @@ public class MovePanel extends javax.swing.JPanel {
                     .addComponent(autoAddCheck)
                     .addComponent(jLabel3)
                     .addComponent(speedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(leftButton)
                     .addComponent(upButton)
@@ -299,61 +348,60 @@ public class MovePanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(downButton)
-                    .addComponent(backwardsButton))
+                    .addComponent(backwardsButton)
+                    .addComponent(gatherButton)
+                    .addComponent(expandButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(resetButton)
                     .addComponent(snapButton)
                     .addComponent(neutralButton))
-                .addGap(11, 11, 11)
-                .addComponent(multiTrapCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(periodsLateralText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lateralVortexCheck))
+                    .addComponent(angleText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lateralTwinCheck)
-                    .addComponent(lateralQuadCheck)
-                    .addComponent(lateralHoloCheck))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(periodsF1Text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(offsetF1Text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(f1HoloCheck))
+                    .addComponent(rXPButton)
+                    .addComponent(rYPButton)
+                    .addComponent(rZPButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(periodsF2Text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(offsetF2Text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rXNButton)
+                    .addComponent(rYNButton)
+                    .addComponent(rZNButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(moveAllCheck)
+                    .addComponent(useAlgCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startButton)
+                    .addComponent(goButton)
+                    .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     
-    public void doAutoCalcAndSend(boolean updateGraphicsAfter, boolean skipMultiTrap){
+    public void doAutoCalcAndSend(){
         final boolean autoCalc = autoCalcCheck.isSelected();
-        final boolean autoAdd = autoAddCheck.isSelected();
+        final boolean autoAddKeyFrame = autoAddCheck.isSelected();
         final boolean autoSend = autoSendCheck.isSelected();
         
-        final boolean useMultiTrap = multiTrapCheck.isSelected() && !skipMultiTrap;
-        Animation animation = null;
-        
         if (autoCalc) {
-            Entity e = getBeadEntity();
-            if (e != null){
-                final Vector3f pos = e.getTransform().getTranslation();
-                if ( useMultiTrap ){
-                    animation = calculateMultiTrap( pos );
-                }else{
+            if (! useAlgCheck.isSelected()){
+                Entity e = getBeadEntity();
+                if (e != null){
+                    final Vector3f pos = e.getTransform().getTranslation();
                     mf.trapsPanel.applyOnTarget(pos);
                 }
-            } 
+            }else{
+                mf.algForm.runBFGS(false, false, true);
+            }
         }
         
-        if( autoAdd ){
+        if( autoAddKeyFrame ){
             // add the key frame
             mf.animPanel.pressAddKeyFrame();
             
@@ -372,11 +420,7 @@ public class MovePanel extends javax.swing.JPanel {
         }
         
         if (autoSend) {
-            if ( useMultiTrap ){
-                mf.transControlPanel.sendAnim( animation.getKeyFrames().getElements() );
-            }else{
-                mf.transControlPanel.sendPattern();
-            }
+            mf.transControlPanel.sendPattern();
         }
     }
     
@@ -391,50 +435,100 @@ public class MovePanel extends javax.swing.JPanel {
         return sel.get( n );
     }
     
-    public void applyVector(float x, float y, float z, boolean skipMultitrap){
-        Entity e = getBeadEntity();
+    public void applyVector(float x, float y, float z){
+        final Entity e = getBeadEntity();
         if (e == null){ return;}
         
         final Vector3f t = new Vector3f(x, y, z);
         t.multLocal( getSpeed() );
         
-        final ArrayList<Entity> sel = mf.getSelection();
-        for (Entity ent : sel) {
-            ent.getTransform().getTranslation().addLocal(t);
+        if (moveAllCheck.isSelected()){
+            final ArrayList<Entity> sel = mf.getSelection();
+            for (Entity ent : sel) {
+                ent.getTransform().getTranslation().addLocal(t);
+            }
+        }else{
+            e.getTransform().getTranslation().addLocal(t);
         }
         
         mf.transformToGUI( e.getTransform() );
-            
-        doAutoCalcAndSend(true, skipMultitrap);
-        
+        doAutoCalcAndSend();
         mf.needUpdate();
     }
 
+    public void applyRotationOrScale(float rx,  float ry,  float rz){
+        final Entity e = getBeadEntity();
+        if (e == null || mf.selection.isEmpty() ){ return;}
+        
+        final float angles = Parse.toFloat( angleText.getText() );
+        rx *= M.DEG_TO_RAD * angles;
+        ry *= M.DEG_TO_RAD * angles;
+        rz *= M.DEG_TO_RAD * angles;
+        
+        //get selection center
+        final Vector3f selectionCenter = Scene.calcCenter( mf.selection );
+        
+        if (moveAllCheck.isSelected()){
+            final ArrayList<Entity> sel = mf.getSelection();
+            for (Entity ent : sel) {
+                ent.rotateAround(selectionCenter, rx, ry, rz);
+            }
+        }else{
+            e.rotateAround(selectionCenter, rx, ry, rz);
+        }
+        
+        mf.transformToGUI( e.getTransform() );
+        doAutoCalcAndSend();
+        mf.needUpdate();
+    }
     
-   
+   public void applyScale(final float scale){
+        final Entity e = getBeadEntity();
+        if (e == null || mf.selection.isEmpty() ){ return;}
+        
+        final float stepSize = scale * Parse.toFloat( speedText.getText() );
+        final Vector3f sCenter = Scene.calcCenter( mf.selection );
+        
+        if (moveAllCheck.isSelected()){
+            final ArrayList<Entity> sel = mf.getSelection();
+            for (Entity ent : sel) {
+                final Vector3f pos = ent.getTransform().getTranslation();
+                sCenter.y = pos.y;
+                pos.moveTowards(sCenter, stepSize);
+            }
+        }else{
+            final Vector3f pos = e.getTransform().getTranslation();
+            sCenter.y = pos.y;
+            pos.moveTowards(sCenter, stepSize);
+        }
+        
+        mf.transformToGUI( e.getTransform() );
+        doAutoCalcAndSend();
+        mf.needUpdate();
+    }
     
     private void leftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftButtonActionPerformed
-        applyVector(-1,0,0, false);
+        applyVector(-1,0,0);
     }//GEN-LAST:event_leftButtonActionPerformed
 
     private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
-         applyVector(0,1,0, false);
+         applyVector(0,1,0);
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
-        applyVector(0,-1,0, false);
+        applyVector(0,-1,0);
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
-        applyVector(1,0,0, false);
+        applyVector(1,0,0);
     }//GEN-LAST:event_rightButtonActionPerformed
 
     private void forwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardButtonActionPerformed
-        applyVector(0,0,-1, false);
+        applyVector(0,0,-1);
     }//GEN-LAST:event_forwardButtonActionPerformed
 
     private void backwardsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backwardsButtonActionPerformed
-        applyVector(0,0,1, false);
+        applyVector(0,0,1);
     }//GEN-LAST:event_backwardsButtonActionPerformed
 
  
@@ -443,14 +537,20 @@ public class MovePanel extends javax.swing.JPanel {
     }
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        Entity e = getBeadEntity();
-        if (e == null){ return;}
-        e.getTransform().getTranslation().set( snapBeadPosition );
-        
-        applyVector(0,0,0, true);
-        
+       resetParticlePos();
     }//GEN-LAST:event_resetButtonActionPerformed
 
+    public void resetParticlePos(){
+        final ArrayList<Entity> sel = mf.selection;
+        final int n = M.min(sel.size(), snapBeadPositions.size());
+        for (int i = 0; i < n; ++i){
+            sel.get(i).getTransform().getTranslation().set( snapBeadPositions.get(i) );
+        }
+
+        
+        applyVector(0,0,0);
+    }
+    
     public void selectFirstBead() {
         Entity e = mf.scene.getFirstWithTag( Entity.TAG_BEAD | Entity.TAG_CONTROL_POINT );
         if (e == null){ return;}
@@ -460,124 +560,102 @@ public class MovePanel extends javax.swing.JPanel {
     }
     
     private void snapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapButtonActionPerformed
-        snapBeadPosition();
+        snapBeadPositions();
     }//GEN-LAST:event_snapButtonActionPerformed
 
     private void neutralButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neutralButtonActionPerformed
-        applyVector(0, 0, 0, false);
+        applyVector(0, 0, 0);
     }//GEN-LAST:event_neutralButtonActionPerformed
 
+    private void rYNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rYNButtonActionPerformed
+        applyRotationOrScale(0, -1, 0);
+    }//GEN-LAST:event_rYNButtonActionPerformed
 
-    public void snapBeadPosition(){
-        Entity e = getBeadEntity();
-        if (e == null){ return;}
-        snapBeadPosition.set( e.getTransform().getTranslation() );
-    }
+    private void rXPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rXPButtonActionPerformed
+        applyRotationOrScale(1, 0, 0);
+    }//GEN-LAST:event_rXPButtonActionPerformed
+
+    private void rXNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rXNButtonActionPerformed
+        applyRotationOrScale(-1, 0, 0);
+    }//GEN-LAST:event_rXNButtonActionPerformed
+
+    private void rYPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rYPButtonActionPerformed
+        applyRotationOrScale(0, 1, 0);
+    }//GEN-LAST:event_rYPButtonActionPerformed
+
+    private void rZPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rZPButtonActionPerformed
+        applyRotationOrScale(0, 0, 1);
+    }//GEN-LAST:event_rZPButtonActionPerformed
+
+    private void rZNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rZNButtonActionPerformed
+        applyRotationOrScale(0, 0, -1);
+    }//GEN-LAST:event_rZNButtonActionPerformed
+
     
-    public void snapFirstBead(){
-        Entity e = mf.scene.getFirstWithTag( Entity.TAG_BEAD | Entity.TAG_CONTROL_POINT );
-        if (e == null){ return;}
-        snapBeadPosition.set( e.getTransform().getTranslation() );
-    }
     
-    private Animation calculateMultiTrap(Vector3f pos) {
-        final List<Transducer> transducers = mf.simulation.getTransducers();
-        final Animation a = Animation.createEmpty(4, transducers);
-        final float mSpeed = mf.simulation.getMediumSpeed();
-        final List<AnimKeyFrame> frames = a.getKeyFrames().getElements();
-        
-        int index = 0;
-        //lateral trap
-        final int periodsLateral = (int)Parse.toFloat(periodsLateralText.getText() );
-        
-        if (lateralVortexCheck.isSelected()){
-            //vortex clockwise
-            SimplePhaseAlgorithms.focus(transducers, pos, mSpeed);
-            SimplePhaseAlgorithms.addVortexSignature(transducers, 1);
-            frames.get(index).setDuration( periodsLateral  );
-            frames.get(index).snap( mf.simulation );
-            index++;
-            
-            //vortex counterclockwise           
-            SimplePhaseAlgorithms.focus(transducers, pos, mSpeed);
-            SimplePhaseAlgorithms.addVortexSignature(transducers, -1);
-            frames.get(index).setDuration( periodsLateral );
-            frames.get(index).snap( mf.simulation );
-            index++;
-        }else if(lateralTwinCheck.isSelected()){
-            SimplePhaseAlgorithms.focus(transducers, pos, mSpeed);
-            SimplePhaseAlgorithms.addTwinSignature(transducers, 90);
-            frames.get(index).setDuration( periodsLateral  );
-            frames.get(index).snap( mf.simulation );
-            index++;
-        }else if(lateralQuadCheck.isSelected()){
-            SimplePhaseAlgorithms.focus(transducers, pos, mSpeed);
-            SimplePhaseAlgorithms.addTwinSignature(transducers, 90);
-            frames.get(index).setDuration( periodsLateral  );
-            frames.get(index).snap( mf.simulation );
-            index++;
-            
-            SimplePhaseAlgorithms.focus(transducers, pos, mSpeed);
-            SimplePhaseAlgorithms.addTwinSignature(transducers, 0);
-            frames.get(index).setDuration( periodsLateral  );
-            frames.get(index).snap( mf.simulation );
-            index++;
-        }else if(lateralHoloCheck.isSelected()){
-            SimplePhaseAlgorithms.focus(transducers, pos, mSpeed);
-            mf.holoPatternsForm.addMemorizedHoloPattern();
-            frames.get(index).setDuration( periodsLateral  );
-            frames.get(index).snap( mf.simulation );
-            index++;
+    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+        particleToMove = getBeadEntity();
+        if (particleToMove != null){
+            initialPos.set( particleToMove.getTransform().getTranslation() ); 
         }
+    }//GEN-LAST:event_startButtonActionPerformed
+
+    private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+        final float stepSize = Parse.toFloat( stepSizeText.getText() );
+        final Entity particle = getBeadEntity();
+        if (particle == null || particle != particleToMove){ return; }
         
+        final Vector3f currentPos = particle.getTransform().getTranslation();
+        final Vector3f targetPos = currentPos.clone();
+        final Vector3f diffPos = new Vector3f();
         
-        
-        //F1
-        final int periodF1 = (int)Parse.toFloat( periodsF1Text.getText() );
-        if(periodF1 > 0){
-            SimplePhaseAlgorithms.focus(transducers, pos.add(0, Parse.toFloat(offsetF1Text.getText()), 0), mSpeed);
-            if (f1HoloCheck.isSelected()){
-                mf.holoPatternsForm.addMemorizedHoloPattern();
+        currentPos.set(initialPos);
+        mf.algForm.runBFGS(false, false, true);
+        mf.transControlPanel.sendPattern();
+            
+        while ( currentPos.distance(targetPos) > M.FLT_EPSILON){
+            diffPos.set( targetPos ).subtractLocal( currentPos );
+            
+            //first adjust the transversal position
+            if (diffPos.y != 0.0f){
+                diffPos.x = diffPos.z = 0.0f;
             }
-            frames.get(index).setDuration( periodF1  );
-            frames.get(index).snap( mf.simulation );
-            index++;
+            
+            final float dist = diffPos.length();
+            //resize the vector
+            diffPos.multLocal( M.min(dist, stepSize) ).divideLocal( dist );
+            
+            currentPos.addLocal( diffPos );
+            
+            mf.algForm.runBFGS(false, false, true);
+            mf.transControlPanel.sendPattern();
         }
         
-        //F2
-        final int periodF2 = (int)Parse.toFloat( periodsF2Text.getText() );
-        if(periodF2 > 0){
-            SimplePhaseAlgorithms.focus(transducers, pos.add(0, Parse.toFloat(offsetF2Text.getText()), 0), mSpeed);
-            frames.get(index).setDuration( periodF2  );
-            frames.get(index).snap( mf.simulation );
-            index++;
+    }//GEN-LAST:event_goButtonActionPerformed
+
+    private void gatherButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gatherButtonActionPerformed
+        applyScale( 1 );
+    }//GEN-LAST:event_gatherButtonActionPerformed
+
+    private void expandButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandButtonActionPerformed
+        applyScale( -1 );
+    }//GEN-LAST:event_expandButtonActionPerformed
+
+
+    public void snapBeadPositions(){
+        snapBeadPositions.clear();
+        for ( Entity e : mf.selection){
+            snapBeadPositions.add( e.getTransform().getTranslation().clone() ); 
         }
-        
-        return a;
     }
+    
 
-    public JTextField gettDownText() {
-        return periodsF2Text;
+    public void incBeadSelNumber(final int amount){
+        beadNSpinner.setValue( ((Integer)beadNSpinner.getValue()) + amount );
     }
-
-    public JTextField gettUpText() {
-        return periodsF1Text;
-    }
-
-    public JTextField getTimeLateralText() {
-        return periodsLateralText;
-    }
-
+  
     public JButton getNeutralButton() {
         return neutralButton;
-    }
-
-    public JTextField getpDownText() {
-        return offsetF2Text;
-    }
-
-    public JTextField getpUpText() {
-        return offsetF1Text;
     }
 
     public JButton getUpButton() {
@@ -591,37 +669,38 @@ public class MovePanel extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField angleText;
     private javax.swing.JCheckBox autoAddCheck;
     private javax.swing.JCheckBox autoCalcCheck;
     private javax.swing.JCheckBox autoSendCheck;
     private javax.swing.JButton backwardsButton;
     private javax.swing.JSpinner beadNSpinner;
     private javax.swing.JButton downButton;
-    private javax.swing.JCheckBox f1HoloCheck;
+    private javax.swing.JButton expandButton;
     private javax.swing.JButton forwardButton;
+    private javax.swing.JButton gatherButton;
+    private javax.swing.JButton goButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JRadioButton lateralHoloCheck;
-    private javax.swing.JRadioButton lateralQuadCheck;
     private javax.swing.ButtonGroup lateralTrapGroup;
-    private javax.swing.JRadioButton lateralTwinCheck;
-    private javax.swing.JRadioButton lateralVortexCheck;
     private javax.swing.JButton leftButton;
-    private javax.swing.JCheckBox multiTrapCheck;
+    private javax.swing.JCheckBox moveAllCheck;
     private javax.swing.JButton neutralButton;
-    private javax.swing.JTextField offsetF1Text;
-    private javax.swing.JTextField offsetF2Text;
-    private javax.swing.JTextField periodsF1Text;
-    private javax.swing.JTextField periodsF2Text;
-    private javax.swing.JTextField periodsLateralText;
+    private javax.swing.JButton rXNButton;
+    private javax.swing.JButton rXPButton;
+    private javax.swing.JButton rYNButton;
+    private javax.swing.JButton rYPButton;
+    private javax.swing.JButton rZNButton;
+    private javax.swing.JButton rZPButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton rightButton;
     private javax.swing.JButton snapButton;
     private javax.swing.JTextField speedText;
+    private javax.swing.JButton startButton;
+    private javax.swing.JTextField stepSizeText;
     private javax.swing.JButton upButton;
+    private javax.swing.JCheckBox useAlgCheck;
     // End of variables declaration//GEN-END:variables
 
     

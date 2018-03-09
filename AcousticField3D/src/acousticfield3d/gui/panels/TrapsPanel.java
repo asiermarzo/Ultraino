@@ -176,7 +176,7 @@ public class TrapsPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(vortexRadio)
                     .addComponent(mText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calcClickCheck)
                     .addComponent(sendCheck))
@@ -284,12 +284,10 @@ public class TrapsPanel extends javax.swing.JPanel {
         
         if (calcForceCheck.isSelected() || calcLaplacianCheck.isSelected()){
             
-            Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD);
-            final Vector3f pos = bead.getTransform().getTranslation();
+            final float particleR = mf.scene.getParticleRadious();
+            final Vector3f pos = wPos;
+            Vector3f v3 = new Vector3f();
             
-            final float particleR = bead != null ? bead.getTransform().getScale().maxComponent() / 2.0f: 0.0005f;
-          
-            Vector3f v3 = Vector3f.ZERO;
             if ( calcForceCheck.isSelected() ){
                v3 = CalcField.calcForceAt(pos.x, pos.y, pos.z, particleR, mf);
 

@@ -9,19 +9,17 @@ package acousticfield3d.protocols;
  *
  * @author am14010
  */
-public class ArduinoNano16 extends ArduinoNano{
-    @Override
-    public int getDivs() {
-        return 16;
-    }
+public class SimpleFPGA_128 extends SimpleFPGA{
 
     @Override
-    public int getTransducers() {
-        return 16; //To change body of generated methods, choose Tools | Templates.
+    public int getDivs() {
+        return 128;
     }
 
     @Override
     public int getSpeed() {
-        return 115200;
-    }
+        return 500000;
+    } 
+    
+  
 }

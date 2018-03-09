@@ -127,9 +127,6 @@ public class ArduinoMEGA64 extends ArduinoNano{
         //send durations
         durations.add(0); //stop frame
         sendDurations( ArrayUtils.toArray(durations) );
-        
-        //switch buffers
-        switchBuffers();
     }
     
     @Override
@@ -181,8 +178,6 @@ public class ArduinoMEGA64 extends ArduinoNano{
        }
        
        sendDurations( new int[]{1,0} );
-            
-       switchBuffers();
     }
     
     

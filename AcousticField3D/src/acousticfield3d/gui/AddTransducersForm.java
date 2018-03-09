@@ -19,6 +19,8 @@ import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.TextFrame;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -340,6 +342,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
     void exportTransducersMatlab() {
         StringBuilder sb = new StringBuilder();
 
+        /*
         sb.append("function field = Field_vortex(x,y,z, phases)\n");
         
         sb.append("apper = 0.009;\n");
@@ -357,13 +360,25 @@ public class AddTransducersForm extends javax.swing.JFrame {
             sb.append("[" + pos.x + " " + (-pos.z) + " " + pos.y + "],");
             sb.append("[" + n.x + " " + (-n.z) + " " + n.y + "],");
             sb.append( "p0,");
-            sb.append( "phases(" + index + "),");
+            //sb.append( "phases(" + index + "),");
+            sb.append( t.getPhase() * M.PI + ",");
             sb.append( "apper,");
             sb.append( "k) + ...\n" );
             ++index;
         }
         sb.append("0;\n");
         sb.append("end\n");
+        */
+        
+        for (Transducer t : mf.simulation.transducers) {
+            final Vector3f pos = t.getTransform().getTranslation();
+            final Vector3f n = t.getTransform().getRotation().mult(Vector3f.UNIT_Y).normalizeLocal();
+          
+           
+            sb.append( (t.getOrderNumber()+1) + "," + pos.x + "," + (-pos.z) + "," + pos.y + ",");
+            sb.append("" + n.x + "," + (-n.z) + "," + n.y + "\n");
+
+        }
         
         /*
         sb.append("function field = Field_vortex(x,y,z,k)\n");
@@ -605,6 +620,36 @@ public class AddTransducersForm extends javax.swing.JFrame {
     private javax.swing.JTextField spaceText;
     private javax.swing.JTextField wText;
     // End of variables declaration//GEN-END:variables
+
+    void importFromSim() {
+        String target = FileUtils.selectFile(this, "open", ".xml.gz", null);
+        if(target != null){
+            try {
+                mf.clearSelection();
+                
+                final Simulation sim2 = (Simulation) FileUtils.readCompressedObject(new File(target));
+                //get the last current transducer.
+                int currentLast = -1;
+                final ArrayList<Transducer> currentTrans = mf.simulation.transducers;
+                if (! currentTrans.isEmpty() ){
+                    currentLast = currentTrans.get( currentTrans.size() - 1).getOrderNumber();
+                }
+                
+                //add the transducers from the simulation, select them by default
+                for (Transducer t : sim2.getTransducers()){
+                    t.setOrderNumber( t.getOrderNumber() + currentLast + 1);
+                    addTransducer( t );
+                    
+                    t.selected = true;
+                    mf.selection.add(t);
+                }
+                
+                mf.needUpdate();
+            } catch (IOException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     
 }

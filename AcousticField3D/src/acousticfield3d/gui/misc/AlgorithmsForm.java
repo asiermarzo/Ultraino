@@ -7,13 +7,17 @@
 package acousticfield3d.gui.misc;
 
 import acousticfield3d.algorithms.BFGSOptimization;
+import acousticfield3d.algorithms.SimpleMultiPressure;
+import acousticfield3d.algorithms.SimplePhaseAlgorithms;
 import acousticfield3d.algorithms.bfgs.BFGSProgressListener;
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
-import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.simulation.Simulation;
+import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,14 +27,8 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     final MainForm mf;
     final BFGSOptimization bfgs;
             
-    private double[] lastX;
-    private double lastFX;
-    private double[] currentX;
-    private double currentFX;
-    private double[] X;
-    private double FX;
-            
     private int reportEvery = 1;
+    
     public AlgorithmsForm(MainForm mf) {
         this.mf = mf;
         initComponents();
@@ -77,7 +75,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         return pressureCheck.isSelected();
     }
     public boolean isIndPressure(){
-        return multiPressureCheck.isSelected();
+        return multiLapCheck.isSelected();
     }
     public boolean isGorkov(){
         return gorkovCheck.isSelected();
@@ -90,6 +88,9 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     }
     public boolean isGLaplacian(){
         return maxGLaplacian.isSelected();
+    }
+    public boolean isMultiLap(){
+        return multiLapCheck.isSelected();
     }
     
     public boolean isEqualizer(){
@@ -112,24 +113,101 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         return new Vector3f().parse( distancesText.getText() );
     }
     
-
-    private void calcAlgorithm(){
-        if(bfgs != null){
-            //gather the beads
-            bfgs.controlPoints.clear();
-            for(Entity e : mf.getSelection()){
-                if( (e instanceof MeshEntity) && ((e.getTag() & Entity.TAG_CONTROL_POINT) != 0)){
-                    bfgs.controlPoints.add((MeshEntity) e );
+    float[] prevPressPhases = null;
+    private void calcAlgorithm(boolean autoSelectAllParticles){
+        final Simulation sim = mf.simulation; 
+        final boolean reusePre = resurePreCheck.isSelected();
+        
+          //gather the control points
+        bfgs.controlPoints.clear();
+        if (!autoSelectAllParticles) {
+            for (Entity e : mf.getSelection()) {
+                if ((e.getTag() & Entity.TAG_CONTROL_POINT) != 0) {
+                    bfgs.controlPoints.add(e);
                 }
             }
-            //mf.scene.gatherMeshEntitiesWithTag( a.controlPoints, Entity.TAG_CONTROL_POINT);
+        } else {
+            bfgs.controlPoints.addAll(mf.simulation.controlPoints);
+        }
+
+        if (bfgs.controlPoints.isEmpty()) {
+            return;
+        }
             
+        if (holoPressureCheck.isSelected()){
+            final int iters = getSteps();
+            SimpleMultiPressure smp = SimpleMultiPressure.create(mf, bfgs.controlPoints);
+            for (int i = 0; i<iters; ++i){
+                smp.iterate();
+            }
+           smp.applySolution(mf.simulation);
+           
+        }else{ //regular algorithms
+            //kickstart?
+            if (kickstartCheck.isSelected()) {
+                //optimize pressure
+                if (focalKickCheck.isSelected()) {
+                    //only one particle --> simple focal
+                    if (bfgs.controlPoints.size() == 1) {
+                        SimplePhaseAlgorithms.focus(mf.simulation.transducers,
+                                bfgs.controlPoints.get(0).getTransform().getTranslation(),
+                                mf.simulation.getMediumSpeed());
+                    } else { //more particles -> use BFGS with pressure
+                        if (reusePre){ //apply the precalc phases
+                            applyPhases(); 
+                        }
+                        final int itersMultiPressure = Parse.toInt( itersMultiFocalKickText.getText() );
+                        mf.renderer.updateTransducersBuffers(sim);
+                        bfgs.calcMultiPressure(mf, itersMultiPressure);
+                        if (reusePre){ //get the results
+                           gatherPhases(); 
+                        }
+                    }
+                }
 
-            final Simulation sim = mf.simulation;            
-            mf.renderer.updateTransducersBuffers( sim );
+                //add PI into the top array
+                if (piStartTop.isSelected()) {
+                    final float midY = sim.calcTransducersMidY();
+                    for(Transducer t : sim.transducers){
+                        if (t.getTransform().getTranslation().y > midY){
+                            t.phase += 1;
+                        }
+                    }
+                }else if(piStartHalfCheck.isSelected()){
+                    final float midX = sim.calcTransducersMidX();
+                    for(Transducer t : sim.transducers){
+                        if (t.getTransform().getTranslation().x > midX){
+                            t.phase += 1;
+                        }
+                    }
+                }
+            }
 
-            bfgs.calc(mf, mf.simulation);
+            //update the buffers
+            mf.renderer.updateTransducersBuffers(sim);
 
+            //run the algorithm
+            bfgs.calc(mf);
+        }
+        
+    }
+    
+    private void gatherPhases(){
+        final ArrayList<Transducer> trans = mf.simulation.transducers;
+        final int nTrans = trans.size();
+        if (prevPressPhases == null || prevPressPhases.length != nTrans){
+            prevPressPhases = new float[nTrans];
+        }
+        for(int i = 0; i < nTrans; ++i){
+            prevPressPhases[i] = trans.get(i).getPhase();
+        }
+    }
+    private void applyPhases(){
+        if (prevPressPhases == null) { return; }
+        final ArrayList<Transducer> trans = mf.simulation.transducers;
+        final int n = M.min( trans.size(), prevPressPhases.length);
+        for(int i = 0; i < n; ++i){
+            trans.get(i).setPhase( prevPressPhases[i] );
         }
     }
     
@@ -169,7 +247,6 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         jScrollPane1 = new javax.swing.JScrollPane();
         area = new javax.swing.JTextArea();
         clearAreaButton = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         reportEveryText = new javax.swing.JTextField();
         pressureCheck = new javax.swing.JRadioButton();
         gorkovCheck = new javax.swing.JRadioButton();
@@ -180,9 +257,17 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         laplacianConstantsText = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         alphaText = new javax.swing.JTextField();
-        multiPressureCheck = new javax.swing.JRadioButton();
+        multiLapCheck = new javax.swing.JRadioButton();
         equalizerCheck = new javax.swing.JCheckBox();
         equalizerWeightText = new javax.swing.JTextField();
+        kickstartCheck = new javax.swing.JCheckBox();
+        focalKickCheck = new javax.swing.JCheckBox();
+        piStartTop = new javax.swing.JCheckBox();
+        reportCheck = new javax.swing.JCheckBox();
+        itersMultiFocalKickText = new javax.swing.JTextField();
+        resurePreCheck = new javax.swing.JCheckBox();
+        piStartHalfCheck = new javax.swing.JCheckBox();
+        holoPressureCheck = new javax.swing.JRadioButton();
 
         jButton1.setText("jButton1");
 
@@ -252,8 +337,6 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
             }
         });
 
-        jLabel6.setText("report every:");
-
         reportEveryText.setText("1000");
 
         varToOptimizeGroup.add(pressureCheck);
@@ -278,12 +361,33 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
         alphaText.setText("1.0");
 
-        varToOptimizeGroup.add(multiPressureCheck);
-        multiPressureCheck.setText("MPre");
+        varToOptimizeGroup.add(multiLapCheck);
+        multiLapCheck.setText("MultiLap");
 
         equalizerCheck.setText("equalizer");
 
         equalizerWeightText.setText("1");
+
+        kickstartCheck.setText("KickStart");
+
+        focalKickCheck.setSelected(true);
+        focalKickCheck.setText("Focal");
+
+        piStartTop.setSelected(true);
+        piStartTop.setText("PI on top");
+
+        reportCheck.setText("report");
+
+        itersMultiFocalKickText.setText("1000");
+
+        resurePreCheck.setSelected(true);
+        resurePreCheck.setText("ReusePre");
+
+        piStartHalfCheck.setSelected(true);
+        piStartHalfCheck.setText("PI on half");
+
+        varToOptimizeGroup.add(holoPressureCheck);
+        holoPressureCheck.setText("HoloPressure");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -313,38 +417,55 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepsText)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(reportEveryText, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(holoPressureCheck)
+                        .addGap(72, 72, 72))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(calcBFGSButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(reportCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(reportEveryText, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pressureCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(multiPressureCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addComponent(multiLapCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
                         .addComponent(gorkovCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(maxGLaplacian))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(equalizerCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(equalizerWeightText))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(laplacianConstantsText, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(laplacianConstantsText, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lowPressureKText)))
+                        .addComponent(lowPressureKText))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(equalizerCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(equalizerWeightText)
+                                .addGap(33, 33, 33)
+                                .addComponent(resurePreCheck))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(kickstartCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(focalKickCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(itersMultiFocalKickText)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(piStartTop)
+                            .addComponent(piStartHalfCheck))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -356,13 +477,15 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(calcBFGSButton)))
-                .addGap(18, 18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(calcBFGSButton)
+                            .addComponent(reportCheck)
+                            .addComponent(reportEveryText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(stepsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(reportEveryText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(holoPressureCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -376,7 +499,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                     .addComponent(pressureCheck)
                     .addComponent(gorkovCheck)
                     .addComponent(maxGLaplacian)
-                    .addComponent(multiPressureCheck))
+                    .addComponent(multiLapCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -386,9 +509,17 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(equalizerCheck)
-                    .addComponent(equalizerWeightText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(equalizerWeightText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resurePreCheck)
+                    .addComponent(piStartHalfCheck))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(kickstartCheck)
+                    .addComponent(focalKickCheck)
+                    .addComponent(piStartTop)
+                    .addComponent(itersMultiFocalKickText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
@@ -404,20 +535,22 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void calcBFGSButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcBFGSButtonActionPerformed
-        runBFGS( true, true );
+        runBFGS( true, true, false );
     }//GEN-LAST:event_calcBFGSButtonActionPerformed
 
-    public void runBFGS(boolean runInParallel, boolean updateAfter){
-        if (runInParallel){
-            reportEvery = getReportEvery();
-            WorkingCalc wc = new WorkingCalc();
+    public void runBFGS(boolean runInParallel, boolean updateAfter, boolean autoselectAllParticles){
+        reportEvery = getReportEvery();
+        
+        if (runInParallel){    
+            WorkingCalc wc = new WorkingCalc(updateAfter);
             wc.start();
         }else{
-            calcAlgorithm();
+            calcAlgorithm( autoselectAllParticles );
+            if(updateAfter){
+                mf.needUpdate();
+            }
         }
-        if(updateAfter){
-            mf.needUpdate();
-        }
+        
     }
     
     private void clearAreaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAreaButtonActionPerformed
@@ -426,18 +559,16 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
     @Override
     public void bfgsOnStep(int currentSteps, int totalSteps, double diffX, double diffG, int hessian) {
-        progressBar.setValue( currentSteps * 100 / totalSteps);
-        if (currentSteps % reportEvery == 0){
-            area.append( currentSteps + "/" + totalSteps + " -> " + 
-                    "diffX=" + diffX + " | diffG=" + diffG + "| hessians = " + hessian + "\n");
-        }
+            progressBar.setValue( currentSteps * 100 / totalSteps);
+            if (currentSteps % reportEvery == 0){
+                area.append( currentSteps + "/" + totalSteps + " -> " + 
+                        "diffX=" + diffX + " | diffG=" + diffG + "| hessians = " + hessian + "\n");
+            }
     }
     
     @Override
     public void bfgsOnFinish(int iters, boolean didExitX, boolean didExitG, int hessian, double fx, double[] x){
-        FX = fx;
-        X = x;
-        area.append( "Finish iters = " + iters + " x = " + didExitX + " g = " + didExitG + "| hessians = " + hessian +"\n");
+            area.append( "Finish iters = " + iters + " x = " + didExitX + " g = " + didExitG + "| hessians = " + hessian +"\n");
     }
 
     public void selectDefaultAlg(int algNumber) {
@@ -451,18 +582,45 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
             maxGLaplacian.setSelected( true );
         }
     }
-  
-    public class WorkingCalc extends Thread {
 
+    void setSteps(int steps){
+        stepsText.setText( steps + "");
+    }
+    
+    void setAlgorithm(int i) {
+        if(i == 3){
+            maxGLaplacian.setSelected(false);
+            gorkovCheck.setSelected(true);
+        }else if(i == 4){
+            maxGLaplacian.setSelected(true);
+            gorkovCheck.setSelected(false);
+        }
+    }
+  
+    public boolean isReport(){
+        return reportCheck.isSelected();
+    }
+    
+    public class WorkingCalc extends Thread {
+        private final boolean needUpdate;
+
+        public WorkingCalc(boolean needUpdate) {
+            this.needUpdate = needUpdate;
+        }
+        
         @Override
         public void run() {
             calcBFGSButton.setEnabled( false );
             try{
-                calcAlgorithm();
+                calcAlgorithm( false );
             }catch (Exception e){
                 e.printStackTrace();
             }
+            
             calcBFGSButton.setEnabled( true );
+            if(needUpdate){
+                mf.needUpdate();
+            }
         }
         
     }
@@ -477,10 +635,13 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     private javax.swing.JTextField distancesText;
     private javax.swing.JCheckBox equalizerCheck;
     private javax.swing.JTextField equalizerWeightText;
+    private javax.swing.JCheckBox focalKickCheck;
     private javax.swing.JRadioButton forceCheck;
     private javax.swing.JTextField gMinText;
     private javax.swing.JRadioButton gorkovCheck;
     private javax.swing.ButtonGroup groupHoloOrigin;
+    private javax.swing.JRadioButton holoPressureCheck;
+    private javax.swing.JTextField itersMultiFocalKickText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
@@ -491,19 +652,23 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JCheckBox kickstartCheck;
     private javax.swing.JTextField laplacianConstantsText;
     private javax.swing.JTextField lowPressureKText;
     private javax.swing.JRadioButton maxGLaplacian;
-    private javax.swing.JRadioButton multiPressureCheck;
+    private javax.swing.JRadioButton multiLapCheck;
     private javax.swing.JButton okButton;
+    private javax.swing.JCheckBox piStartHalfCheck;
+    private javax.swing.JCheckBox piStartTop;
     private javax.swing.JRadioButton pressureCheck;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JCheckBox reportCheck;
     private javax.swing.JTextField reportEveryText;
+    private javax.swing.JCheckBox resurePreCheck;
     private javax.swing.JTextField stepsText;
     private javax.swing.ButtonGroup varToOptimizeGroup;
     private javax.swing.JTextField weightsNText;

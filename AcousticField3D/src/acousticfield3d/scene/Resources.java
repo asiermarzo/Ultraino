@@ -10,6 +10,7 @@ package acousticfield3d.scene;
 import acousticfield3d.renderer.SliceRTShader;
 import acousticfield3d.renderer.Shader;
 import acousticfield3d.renderer.ShaderTransducers;
+import acousticfield3d.renderer.SliceRTQuickAmpShader;
 import acousticfield3d.shapes.Box;
 import acousticfield3d.shapes.Cylinder;
 import acousticfield3d.shapes.Mesh;
@@ -40,8 +41,8 @@ public class Resources {
     public static final int SHADER_SLICE_RT_AMP = 10;
     public static final int SHADER_SLICE_RT_PHASE = 11;
     public static final int SHADER_SLICE_RT_AMPPHASE = 12;
-    public static final int SHADER_SLICE_RT_TAMPDIFFFR = 27;
-    
+    public static final int SHADER_SLICE_RT_QUICK_AMP = 27;
+            
     public static final String MESH_CUSTOM = "custom";
     public static final String MESH_QUAD = "quad";
     public static final String MESH_QUADDS = "quadDSide";
@@ -110,7 +111,9 @@ public class Resources {
         shaders.put(SHADER_SLICE_RT_AMP, new SliceRTShader("SliceRT_V.glsl", "SliceRT_F.glsl", FieldSource.sourceAmp).init(gl, templates));
         shaders.put(SHADER_SLICE_RT_PHASE, new SliceRTShader("SliceRT_V.glsl", "SliceRT_F.glsl", FieldSource.sourcePhase).init(gl, templates));
         shaders.put(SHADER_SLICE_RT_AMPPHASE, new SliceRTShader("SliceRT_V.glsl", "SliceRT_F.glsl", FieldSource.sourceAmpPhase).init(gl, templates));
+        shaders.put(SHADER_SLICE_RT_QUICK_AMP, new SliceRTQuickAmpShader("SliceRT_V.glsl", "SliceRTQuickAmp_F.glsl").init(gl, templates));
        
+      
         //load meshes
         meshes.put(MESH_BOX, new Box(0.5f, 0.5f, 0.5f) );
         meshes.put(MESH_SPHERE, new Sphere(8, 8, 0.5f) );

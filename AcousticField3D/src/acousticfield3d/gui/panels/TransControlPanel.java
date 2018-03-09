@@ -7,21 +7,19 @@
 package acousticfield3d.gui.panels;
 
 import acousticfield3d.gui.MainForm;
-import acousticfield3d.math.M;
 import acousticfield3d.protocols.ArduinoMEGA64;
 import acousticfield3d.protocols.ArduinoMEGA64_Anim;
 import acousticfield3d.protocols.ArduinoNano;
 import acousticfield3d.protocols.ArduinoNano16;
 import acousticfield3d.protocols.DeviceConnection;
-import acousticfield3d.protocols.DirectionalSpeakerFPGA;
 import acousticfield3d.protocols.SimpleFPGA;
+import acousticfield3d.protocols.SimpleFPGA_128;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.simulation.AnimKeyFrame;
-import acousticfield3d.simulation.Animation;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
-import acousticfield3d.utils.TextFrame;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +32,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     final MainForm mf;
     
     DeviceConnection device = null;
+    final List<DeviceConnection> extraDevices = new ArrayList<>();
     
     public TransControlPanel(MainForm mf) {
         this.mf = mf;
@@ -63,6 +62,8 @@ public class TransControlPanel extends javax.swing.JPanel {
         phaseDownButton = new javax.swing.JButton();
         durationsText = new javax.swing.JTextField();
         durationsButton = new javax.swing.JButton();
+        connectExtraButton = new javax.swing.JButton();
+        extraNumberText = new javax.swing.JTextField();
 
         sendButton.setText("Send");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +100,7 @@ public class TransControlPanel extends javax.swing.JPanel {
             }
         });
 
-        deviceCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MEGA", "SimpleFPGA", "Nano8", "Directional Speaker", "MEGA_Anim", "Nano16" }));
+        deviceCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MEGA", "SimpleFPGA", "Nano8", "MEGA_Anim", "Nano16", "SimpleFPGA 128" }));
 
         jLabel1.setText("Phase");
 
@@ -147,6 +148,15 @@ public class TransControlPanel extends javax.swing.JPanel {
             }
         });
 
+        connectExtraButton.setText("Con Extra");
+        connectExtraButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectExtraButtonActionPerformed(evt);
+            }
+        });
+
+        extraNumberText.setText("256");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,7 +189,11 @@ public class TransControlPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(sendAnimButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(durationsButton)))
+                        .addComponent(durationsButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(connectExtraButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(extraNumberText)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -205,7 +219,11 @@ public class TransControlPanel extends javax.swing.JPanel {
                     .addComponent(onButton)
                     .addComponent(offButton)
                     .addComponent(phaseDownButton))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(connectExtraButton)
+                    .addComponent(extraNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deviceCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -275,42 +293,75 @@ public class TransControlPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_durationsButtonActionPerformed
 
+    private void connectExtraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectExtraButtonActionPerformed
+        final DeviceConnection dc = getDeviceConnection(-1);
+        dc.setNumber( Parse.toInt( extraNumberText.getText() ));
+        extraDevices.add(dc);
+    }//GEN-LAST:event_connectExtraButtonActionPerformed
 
+
+    private DeviceConnection getDeviceConnection(int port){
+        final int index = deviceCombo.getSelectedIndex();
+        DeviceConnection dc;
+        if (index == 0){ //  ArduinoMEGA64
+            dc = new ArduinoMEGA64(); 
+        }else if (index == 1){ //  SimpleFPGA
+            dc = new SimpleFPGA();
+        }else if (index == 2){ // NANO
+            dc = new ArduinoNano();
+        }else if (index == 3){ // MEGA Anim
+            dc = new ArduinoMEGA64_Anim();
+        }else if (index == 4){ // Nano16
+            dc = new ArduinoNano16();
+        }else if (index == 5){ // Simple FPGA 128
+            dc = new SimpleFPGA_128();
+        }else{
+            dc = new DeviceConnection();
+        }
+        dc.connect( port ); //pop the GUI for selecting the port
+        return dc;
+    }
+    
     public void initComm(int port){
         stopComm();
-        
-       
-        final int index = deviceCombo.getSelectedIndex();
-        if (index == 0){ //  ArduinoMEGA64
-            device = new ArduinoMEGA64(); 
-        }else if (index == 1){ //  SimpleFPGA
-            device = new SimpleFPGA();
-        }else if (index == 2){ // NANO
-            device = new ArduinoNano();
-        }else if (index == 3){ // Directional Speaker
-            device = new DirectionalSpeakerFPGA();
-        }else if (index == 4){ // MEGA Anim
-            device = new ArduinoMEGA64_Anim();
-        }else if (index == 5){ // Nano16
-            device = new ArduinoNano16();
-        }else{
-            device = new DeviceConnection();
-        }
-        device.connect( port ); //pop the GUI for selecting the port
+        device = getDeviceConnection(port);
     }
+    
+    
     
     public void stopComm(){
         if (device != null){
-            try{
-                device.disconnect();
-            }catch(Exception ex){}
+            disconnectDevice(device);
             device = null;
+        }
+        for( DeviceConnection dc : extraDevices){
+            disconnectDevice(dc);
+        }
+        extraDevices.clear();
+    }
+    
+    private void disconnectDevice(final DeviceConnection dc) {
+        try {
+            device.disconnect();
+        } catch (Exception ex) {
         }
     }
     
     public void sendPattern(){
         if (device != null){
-            device.sendPattern( mf.simulation.getTransducers() );
+            if( ! extraDevices.isEmpty() ){
+                device.sendPattern( mf.simulation.getTransducers() );
+                for(DeviceConnection dc : extraDevices){
+                    dc.sendPattern( mf.simulation.getTransducers() );
+                }
+                device.switchBuffers();
+                for(DeviceConnection dc : extraDevices){
+                    dc.switchBuffers();
+                }
+            }else{
+                device.sendPattern( mf.simulation.getTransducers() );
+                device.switchBuffers();
+            }
         }
     }
     
@@ -320,7 +371,7 @@ public class TransControlPanel extends javax.swing.JPanel {
                 device.sendDurations( new int[]{frame} );
                 
             }else{
-                device.sendPattern( mf.simulation.getTransducers() );
+                sendPattern();
             }
         }
     }
@@ -340,6 +391,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     public void sendAnim(final List<AnimKeyFrame> keyFrames){
         if (device != null){
             device.sendAnim(keyFrames);
+            device.switchBuffers();
         }
     }
 
@@ -370,9 +422,11 @@ public class TransControlPanel extends javax.swing.JPanel {
     }  
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton connectExtraButton;
     private javax.swing.JComboBox deviceCombo;
     private javax.swing.JButton durationsButton;
     private javax.swing.JTextField durationsText;
+    private javax.swing.JTextField extraNumberText;
     private javax.swing.JButton initSerialButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton offButton;

@@ -20,8 +20,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -31,6 +31,10 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="neutralButton" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="gatherButton" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -45,7 +49,9 @@
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="downButton" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="expandButton" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -80,48 +86,48 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="speedText" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="periodsF1Text" max="32767" attributes="0"/>
-                          <Component id="periodsF2Text" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="offsetF1Text" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="f1HoloCheck" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="offsetF2Text" max="32767" attributes="0"/>
-                      </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="moveAllCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="useAlgCheck" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lateralTwinCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lateralQuadCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lateralHoloCheck" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="rXNButton" max="32767" attributes="0"/>
+                                      <Component id="rXPButton" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="rYNButton" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="rYPButton" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="rZPButton" max="32767" attributes="0"/>
+                                      <Component id="rZNButton" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="angleText" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="startButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="periodsLateralText" min="-2" pref="45" max="-2" attributes="0"/>
+                              <Component id="goButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lateralVortexCheck" min="-2" max="-2" attributes="0"/>
+                              <Component id="stepSizeText" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="multiTrapCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -141,7 +147,7 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="speedText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="leftButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="upButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -152,6 +158,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="downButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="backwardsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="gatherButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="expandButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -159,32 +167,33 @@
                   <Component id="snapButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="neutralButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-              <Component id="multiTrapCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="periodsLateralText" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lateralVortexCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="angleText" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="rXPButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rYPButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rZPButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lateralTwinCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lateralQuadCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lateralHoloCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rXNButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rYNButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rZNButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="periodsF1Text" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="offsetF1Text" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="f1HoloCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="moveAllCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="useAlgCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="periodsF2Text" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="offsetF2Text" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="startButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="goButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="stepSizeText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -295,49 +304,9 @@
         <Property name="text" type="java.lang.String" value="genAnim"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JCheckBox" name="moveAllCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="tLateral"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="periodsLateralText">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="40"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="F1"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="periodsF1Text">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="20"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="offsetF1Text">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0.01"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="periodsF2Text">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="20"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="F2"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="offsetF2Text">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="-0.01"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="multiTrapCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="use multitrap"/>
+        <Property name="text" type="java.lang.String" value="Move All"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="neutralButton">
@@ -348,43 +317,105 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="neutralButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="lateralVortexCheck">
+    <Component class="javax.swing.JCheckBox" name="useAlgCheck">
       <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="lateralTrapGroup"/>
-        </Property>
-        <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="PVortex"/>
+        <Property name="text" type="java.lang.String" value="useAlg"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="lateralTwinCheck">
+    <Component class="javax.swing.JButton" name="rXPButton">
       <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="lateralTrapGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Twin"/>
+        <Property name="text" type="java.lang.String" value="Rx+"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rXPButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="rYPButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ry+"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rYPButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="rZPButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Rz+"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rZPButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="rZNButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Rz-"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rZNButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="rYNButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ry-"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rYNButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="rXNButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Rx-"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rXNButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="angle:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="lateralQuadCheck">
+    <Component class="javax.swing.JTextField" name="angleText">
       <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="lateralTrapGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Quad"/>
+        <Property name="text" type="java.lang.String" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="lateralHoloCheck">
+    <Component class="javax.swing.JButton" name="startButton">
       <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="lateralTrapGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Holo"/>
+        <Property name="text" type="java.lang.String" value="I"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="goButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Go"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="stepSizeText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.0005"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="f1HoloCheck">
+    <Component class="javax.swing.JButton" name="gatherButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Holo"/>
+        <Property name="text" type="java.lang.String" value="&gt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gatherButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="expandButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="expandButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

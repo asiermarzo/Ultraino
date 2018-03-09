@@ -50,7 +50,11 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="stickyCheck" min="-2" max="-2" attributes="0"/>
-                          <Component id="ampAndPhaseCheck" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="ampAndPhaseCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="QAmpCheck" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="amplitudeCheck" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -85,7 +89,10 @@
                   <Component id="phaseCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="ampAndPhaseCheck" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="ampAndPhaseCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="QAmpCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="sliceAddButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -168,7 +175,6 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Amplitude"/>
       </Properties>
       <Events>
@@ -217,6 +223,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="sticky"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="QAmpCheck">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="QAmp"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="QAmpCheckActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

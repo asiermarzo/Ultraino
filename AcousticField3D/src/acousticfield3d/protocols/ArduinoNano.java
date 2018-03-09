@@ -7,7 +7,6 @@ package acousticfield3d.protocols;
 
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.simulation.AnimKeyFrame;
-import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.TextFrame;
 import java.util.List;
@@ -47,7 +46,6 @@ public class ArduinoNano extends DeviceConnection{
             serial.writeByte( (data[i] & 0xF0) | 0x1 );
             serial.writeByte( ((data[i] << 4) & 0xF0) | 0x1  );
         }
-        switchBuffers();
     }
 
     @Override

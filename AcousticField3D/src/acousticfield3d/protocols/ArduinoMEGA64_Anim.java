@@ -122,9 +122,6 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
 
         }
         
-        
-        //switch buffers
-        switchBuffers();
     }
     
     @Override
@@ -174,8 +171,6 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
                 serial.writeByte( ((data[dataIndex] << 4) & 0xF0) | (i+1)  );
            }
        }
-            
-       switchBuffers();
     }
     
     

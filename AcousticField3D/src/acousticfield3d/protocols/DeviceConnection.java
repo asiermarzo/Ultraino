@@ -11,14 +11,18 @@ import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.uartComm.SerialComms;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
  * @author am14010
  */
 public class DeviceConnection implements SerialComms.Listener{
+    protected int number;
     protected SerialComms serial;
+
+    public DeviceConnection(){
+        this.number = 0;
+    }
     
     public void connect(int port){
         disconnect();
@@ -117,6 +121,15 @@ public class DeviceConnection implements SerialComms.Listener{
         return data;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    
     @Override
     public void rxMsg(byte[] data, int len) {
   

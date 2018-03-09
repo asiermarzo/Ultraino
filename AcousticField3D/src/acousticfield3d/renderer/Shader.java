@@ -35,7 +35,7 @@ import com.jogamp.opengl.GL2;
  * @author Asier
  */
 public class Shader {
-    private String vProgram, fProgram;
+    private final String vProgram, fProgram;
    
     int shaderProgramID;
     int fragmentShader, vertexShader;

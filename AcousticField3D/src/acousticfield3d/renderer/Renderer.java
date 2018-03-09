@@ -31,8 +31,7 @@ import com.jogamp.opengl.GL2;
 public class Renderer {
     private final Scene scene;
     private final MainForm form;
-   
-   
+    
     private boolean cullFace;
     private boolean depthTest;
     private boolean blend;
@@ -45,6 +44,8 @@ public class Renderer {
     FloatBuffer positions;
     FloatBuffer normals;
     FloatBuffer specs;
+    FloatBuffer normalsY;
+    FloatBuffer phaseAndAmp;
     
     boolean needToReuploadTexture;
     private boolean needToReloadShaders;
@@ -104,10 +105,7 @@ public class Renderer {
             Resources.get().reloadShaders(gl);
         }
         
-        //update mouse controller
-        if (form.mouseControlForm != null){
-            form.mouseControlForm.tick();
-        }
+        form.particleController.tick();
         
         Simulation simulation = form.getSimulation();
         updateTransducersBuffers(simulation);
@@ -117,7 +115,7 @@ public class Renderer {
             Resources.get().updateShaderTransducers(nTransducers, gl);
         }
    
-        //tick the entities
+        //tick the entities if they needed something to do (probably not)
         for(Entity e : scene.getEntities()){
             e.update( simulation );
         }
@@ -128,19 +126,30 @@ public class Renderer {
     public void updateTransducersBuffers(Simulation simulation) {
         //transducers data
         nTransducers = simulation.getTransducers().size();
+        final int minCapacity1 = 1  * nTransducers;
+        final int minCapacity2 = 2  * nTransducers;
         final int minCapacity3 = 3  * nTransducers;
         final int minCapacity4 = 4  * nTransducers;
         if (positions != null && positions.capacity() < minCapacity3) { BufferUtils.destroyDirectBuffer(positions); positions = null;}
         if (normals != null && normals.capacity() < minCapacity3) { BufferUtils.destroyDirectBuffer(normals); normals = null;}
         if (specs != null && specs.capacity() < minCapacity4) { BufferUtils.destroyDirectBuffer(specs); specs = null;}
-
+        
+        if (normalsY != null && normalsY.capacity() < minCapacity1) { BufferUtils.destroyDirectBuffer(normalsY); normalsY = null;}
+        if (phaseAndAmp != null && phaseAndAmp.capacity() < minCapacity2) { BufferUtils.destroyDirectBuffer(phaseAndAmp); phaseAndAmp = null;}
+        
         if (positions == null){ positions = BufferUtils.createFloatBuffer(minCapacity3); }
         if (normals == null){ normals = BufferUtils.createFloatBuffer( minCapacity3); }
         if (specs == null){ specs = BufferUtils.createFloatBuffer(minCapacity4); }
         
+        if (normalsY == null){ normalsY = BufferUtils.createFloatBuffer( minCapacity1); }
+        if (phaseAndAmp == null){ phaseAndAmp = BufferUtils.createFloatBuffer(minCapacity2); }
+        
+        
         positions.rewind();
         normals.rewind();
         specs.rewind();
+        normalsY.rewind();
+        phaseAndAmp.rewind();
         
         //calculate transducer uniform
         // x y z 1 -> positions
@@ -165,20 +174,26 @@ public class Renderer {
             normals.put( transNormal.x );
             normals.put( transNormal.y );
             normals.put( transNormal.z );
+            normalsY.put( transNormal.y );
             
             final float omega = M.TWO_PI * t.getFrequency();      // angular frequency
             final float k = omega / mSpeed;        // wavenumber
+            final float amp = t.calcRealDiscAmplitude(discAmp, ampDiscStep );
+            final float phase = t.calcRealDiscPhase(discPhase, phaseDiscStep);
             specs.put( k ); // k
-            
-            specs.put( t.calcRealDiscAmplitude(discAmp, ampDiscStep ) ); // amp
-            specs.put( t.calcRealDiscPhase(discPhase, phaseDiscStep) ); // phase
-            
+            specs.put( amp ); // amp
+            specs.put( phase ); // phase
             specs.put( t.getApperture() ); // width
+            
+            phaseAndAmp.put( phase );
+            phaseAndAmp.put( amp );
         }
         
         positions.rewind();
         normals.rewind();
         specs.rewind();
+        normalsY.rewind();
+        phaseAndAmp.rewind();
     }
     
     private void postRender(GL2 gl){

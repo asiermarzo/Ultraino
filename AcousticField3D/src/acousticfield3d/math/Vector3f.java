@@ -119,6 +119,12 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         this.y = y;
         this.z = z;
     }
+    
+     public Vector3f(double x, double y, double z) {
+        this.x = (float)x;
+        this.y = (float)y;
+        this.z = (float)z;
+    }
 
     /**
      * Constructor instantiates a new <code>Vector3f</code> that is a copy
@@ -494,7 +500,24 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
     public float distance(final Vector3f v) {
         return M.sqrt(distanceSquared(v));
     }
+    
+    public float distance(float px, float py, float pz){
+        final float diffX = x - px;
+        final float diffY = y - py;
+        final float diffZ = z - pz;
+        return M.sqrt( diffX*diffX + diffY*diffY + diffZ*diffZ);
+    }
 
+    public float distanceY(final Vector3f v) {
+        return M.abs(v.y - y);
+    }
+    
+    public float distanceXZ(final Vector3f v) {
+        float diffX = v.x-x;
+        float diffZ = v.z-z;
+        return M.sqrt(diffX*diffX + diffZ*diffZ);
+    }
+    
     /**
      *
      * <code>mult</code> multiplies this vector by a scalar. The resultant
@@ -1253,6 +1276,14 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         x = radious * M.sin( inclination ) * M.cos( azimuth );
         y = radious * M.cos( inclination );
         z = -radious * M.sin( inclination ) * M.sin( azimuth );
+        return this;
+    }
+
+    public Vector3f moveTowards(Vector3f target,final float stepSize) {
+        final float dist = distance( target );
+        x += (target.x-x)*stepSize/dist;
+        y += (target.y-y)*stepSize/dist;
+        z += (target.z-z)*stepSize/dist;
         return this;
     }
 }

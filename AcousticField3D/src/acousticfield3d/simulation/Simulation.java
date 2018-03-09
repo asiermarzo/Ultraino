@@ -315,4 +315,19 @@ public class Simulation {
         return phases;
     }
     
+    public float calcTransducersMidY(){
+        float midY = 0;
+        for(Transducer t : transducers){
+            midY += t.getTransform().getTranslation().y;
+        }
+        return midY / transducers.size();
+    }
+    
+    public float calcTransducersMidX(){
+        float midX = 0;
+        for(Transducer t : transducers){
+            midX += t.getTransform().getTranslation().x;
+        }
+        return midX / transducers.size();
+    }
 }

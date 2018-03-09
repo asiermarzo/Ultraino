@@ -104,8 +104,6 @@ public class SliceRTShader extends ShaderTransducers{
         sourceCode = sourceCode.replaceAll("_USE_AMP_", source == FieldSource.sourceAmp ? "" : "//");
         sourceCode = sourceCode.replaceAll("_USE_PHASE_", source == FieldSource.sourcePhase ? "" : "//");
         sourceCode = sourceCode.replaceAll("_USE_AMPPHASE_", source == FieldSource.sourceAmpPhase ? "" : "//");
-        sourceCode = sourceCode.replaceAll("_USE_TAMP_", source == FieldSource.sourceTamp ? "" : "//");
-        sourceCode = sourceCode.replaceAll("_USE_TAMPDIFFFR_", source == FieldSource.sourceTAmpDiffFr ? "" : "//");
         
         return sourceCode;
     }

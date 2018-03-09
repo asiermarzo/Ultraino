@@ -63,6 +63,38 @@ public class CalcField {
         return field;
     }
     
+    public static Vector2f calcFieldForTransAtNoPhase(final Transducer t, final float px, final float py, final float pz, final MainForm mf){
+        final Vector3f nor = new Vector3f();
+        final Vector3f tPos = new Vector3f();
+        final Vector3f diffVec = new Vector3f();
+        
+        final Vector2f field = new Vector2f();
+       
+        final float mSpeed = mf.simForm.getMediumSpeed();
+        
+        tPos.set(t.getTransform().getTranslation());
+        t.getTransform().getRotation().mult(Vector3f.UNIT_Y, nor);
+        diffVec.set(px, py, pz).subtractLocal(tPos);
+        final float dist = diffVec.length();
+        final float nn = nor.length();
+        diffVec.divideLocal(dist);
+
+        float angle = M.acos(diffVec.dot(nor) / nn);
+
+        final float ap = t.getApperture();
+        final float omega = M.TWO_PI * t.getFrequency();      // angular frequency
+        final float k = omega / mSpeed;        // wavenumber
+        float dum = ap * 0.5f * k * M.sin(angle);
+        float directivity = M.sinc(dum);
+
+        float ampDirAtt = 1 * directivity / dist;
+        float kdPlusPhase = k * dist + 0;
+        field.x += ampDirAtt * M.cos(kdPlusPhase);
+        field.y += ampDirAtt * M.sin(kdPlusPhase);
+    
+        return field;
+    }
+    
     public static double calcFieldGradientDot(final float x, final float y, final float z,
             final float dx,final float dy,final float dz,
             final float h, final MainForm mf){
@@ -144,16 +176,27 @@ public class CalcField {
         
         return new Vector3f( (float)-fx, (float)-fy, (float)-fz );
     }
-    
-    public static Vector3f calcForceGradient(final float x, final float y, final float z,
-             final float dx,final float dy,final float dz, 
-             final float h, final float particleR,
-            final MainForm mf){
         
-        final Vector3f N2 = calcForceAt(x - dx*h*2, y - dy*h*2, z - dz*h*2, particleR, mf);
-        final Vector3f N1 = calcForceAt(x - dx*h*1, y - dy*h*1, z - dz*h*1, particleR, mf);
-        final Vector3f P1 = calcForceAt(x + dx*h*1, y + dy*h*1, z + dz*h*1, particleR, mf);
-        final Vector3f P2 = calcForceAt(x + dx*h*2, y + dy*h*2, z + dz*h*2, particleR, mf);
+    public static Vector3f calcForceGradients(final float x, final float y, final float z, final float particleR, final MainForm mf){
+        final float waveLength =  mf.simulation.getWavelenght();
+        
+        final float h = waveLength/H_DIV;
+        final Vector3f N2 = new Vector3f(
+                -calcGorkovGradient(x-2*h,y,z,1,0,0, h, particleR, mf),
+                -calcGorkovGradient(x,y-2*h,z,0,1,0, h, particleR, mf),
+                -calcGorkovGradient(x,y,z-2*h,0,0,1, h, particleR, mf));
+        final Vector3f N1 = new Vector3f(
+                -calcGorkovGradient(x-h,y,z,1,0,0, h, particleR, mf),
+                -calcGorkovGradient(x,y-h,z,0,1,0, h, particleR, mf),
+                -calcGorkovGradient(x,y,z-h,0,0,1, h, particleR, mf));
+        final Vector3f P1 = new Vector3f(
+                -calcGorkovGradient(x+h,y,z,1,0,0, h, particleR, mf),
+                -calcGorkovGradient(x,y+h,z,0,1,0, h, particleR, mf),
+                -calcGorkovGradient(x,y,z+h,0,0,1, h, particleR, mf));
+        final Vector3f P2 = new Vector3f(
+                -calcGorkovGradient(x+2*h,y,z,1,0,0, h, particleR, mf),
+                -calcGorkovGradient(x,y+2*h,z,0,1,0, h, particleR, mf),
+                -calcGorkovGradient(x,y,z+2*h,0,0,1, h, particleR, mf));
         
         final Vector3f forceG = new Vector3f();
         N2.multLocal(+1);
@@ -162,16 +205,6 @@ public class CalcField {
         P2.multLocal(-1);
         forceG.addLocal(N2).addLocal(N1).addLocal(P1).addLocal(P2).divideLocal(12 * h);
         
-        return forceG;
-    }
-    
-    public static Vector3f calcForceGradients(final float x, final float y, final float z, final float particleR, final MainForm mf){
-        final float waveLength =  mf.simulation.getWavelenght();
-        
-        final double fx = calcForceGradient(x,y,z,1,0,0,waveLength/H_DIV, particleR, mf).x;
-        final double fy = calcForceGradient(x,y,z,0,1,0,waveLength/H_DIV, particleR, mf).y;
-        final double fz = calcForceGradient(x,y,z,0,0,1,waveLength/H_DIV, particleR, mf).z;
-        
-        return new Vector3f( (float)fx, (float)fy, (float)fz );
+        return new Vector3f( forceG.x, forceG.y, forceG.z );
     }
 }
