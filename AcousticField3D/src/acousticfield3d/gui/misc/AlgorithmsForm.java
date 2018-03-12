@@ -316,7 +316,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
         jLabel3.setText("Steps:");
 
-        stepsText.setText("3000");
+        stepsText.setText("5");
 
         jLabel4.setText("xMin:");
 
@@ -343,6 +343,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         pressureCheck.setText("Pressure");
 
         varToOptimizeGroup.add(gorkovCheck);
+        gorkovCheck.setSelected(true);
         gorkovCheck.setText("MinGorkov");
 
         lowPressureKText.setText("1");
@@ -350,7 +351,6 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         jLabel10.setText("LowPK");
 
         varToOptimizeGroup.add(maxGLaplacian);
-        maxGLaplacian.setSelected(true);
         maxGLaplacian.setText("MaxLapMinAmp");
 
         jLabel12.setText("WeightsXYZ:");
@@ -368,6 +368,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
         equalizerWeightText.setText("1");
 
+        kickstartCheck.setSelected(true);
         kickstartCheck.setText("KickStart");
 
         focalKickCheck.setSelected(true);
@@ -378,12 +379,11 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
         reportCheck.setText("report");
 
-        itersMultiFocalKickText.setText("1000");
+        itersMultiFocalKickText.setText("3000");
 
         resurePreCheck.setSelected(true);
         resurePreCheck.setText("ReusePre");
 
-        piStartHalfCheck.setSelected(true);
         piStartHalfCheck.setText("PI on half");
 
         varToOptimizeGroup.add(holoPressureCheck);

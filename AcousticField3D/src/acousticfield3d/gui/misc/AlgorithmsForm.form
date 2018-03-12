@@ -290,7 +290,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="stepsText">
       <Properties>
-        <Property name="text" type="java.lang.String" value="3000"/>
+        <Property name="text" type="java.lang.String" value="5"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -354,6 +354,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="varToOptimizeGroup"/>
         </Property>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="MinGorkov"/>
       </Properties>
     </Component>
@@ -372,7 +373,6 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="varToOptimizeGroup"/>
         </Property>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="MaxLapMinAmp"/>
       </Properties>
     </Component>
@@ -416,6 +416,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="kickstartCheck">
       <Properties>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="KickStart"/>
       </Properties>
     </Component>
@@ -438,7 +439,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="itersMultiFocalKickText">
       <Properties>
-        <Property name="text" type="java.lang.String" value="1000"/>
+        <Property name="text" type="java.lang.String" value="3000"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="resurePreCheck">
@@ -449,7 +450,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="piStartHalfCheck">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="PI on half"/>
       </Properties>
     </Component>
