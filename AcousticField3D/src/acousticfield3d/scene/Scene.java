@@ -407,7 +407,7 @@ public class Scene {
         t.getTranslation().set( aTransformed.negateLocal() );
         
         for(Entity e : entities){
-            if( (e.tag & (Entity.TAG_TRANSDUCER | Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD )) != 0){
+            if( (e.tag & (Entity.TAG_TRANSDUCER | Entity.TAG_CONTROL_POINT )) != 0){
                 e.getTransform().combineWithParentNoScale(t);
             }
         }
@@ -425,6 +425,14 @@ public class Scene {
         return center;
     }
       
+      public static float averageDistance(final Vector3f center, final List<? extends Entity> entities){
+          float dist = 0;
+          for(Entity e : entities){
+              dist += e.getTransform().getTranslation().distance(center);
+          }
+          return dist / entities.size();
+      }
+      
     public void recenterTo(final List<? extends Entity> entities, final Vector3f center) {       
         for(Entity e :entities){
             e.getTransform().getTranslation().subtractLocal(center);
@@ -433,7 +441,7 @@ public class Scene {
     }
  
     public float getParticleRadious(){
-        Entity bead = getFirstWithTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD);
+        Entity bead = getFirstWithTag( Entity.TAG_CONTROL_POINT );
         if (bead == null){
             return 0.0005f;
         }

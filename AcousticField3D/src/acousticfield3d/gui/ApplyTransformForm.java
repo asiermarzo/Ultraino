@@ -94,7 +94,7 @@ public class ApplyTransformForm extends javax.swing.JFrame {
         }
         
         for(Entity e : mf.scene.getEntities()){
-            if( (e.getTag() & (Entity.TAG_TRANSDUCER | Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD )) != 0){
+            if( (e.getTag() & (Entity.TAG_TRANSDUCER | Entity.TAG_CONTROL_POINT )) != 0){
                 e.getTransform().combineWithParent(t);
             }
         }

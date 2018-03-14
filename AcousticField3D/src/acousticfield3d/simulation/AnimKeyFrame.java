@@ -6,7 +6,9 @@
 
 package acousticfield3d.simulation;
 
-import acousticfield3d.math.M;
+import acousticfield3d.math.Vector3f;
+import acousticfield3d.scene.Entity;
+import acousticfield3d.scene.MeshEntity;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,29 +18,50 @@ import java.util.List;
  */
 public class AnimKeyFrame {
     public int number;
-    HashMap<Transducer, TransState> transStates;
+    
+    HashMap<Transducer, Float> transAmplitudes;
+    HashMap<Transducer, Float> transPhases;
+    HashMap<Entity, Vector3f> pointsPositions;
+    
     public float duration;
 
     public AnimKeyFrame() {
-        transStates = new HashMap<>();
+        transAmplitudes = new HashMap<>();
+        transPhases = new HashMap<>();
+        pointsPositions = new HashMap<>();
     }
 
+    public HashMap<Transducer, Float> getTransAmplitudes() {
+        return transAmplitudes;
+    }
+
+    public void setTransAmplitudes(HashMap<Transducer, Float> transAmplitudes) {
+        this.transAmplitudes = transAmplitudes;
+    }
+
+    public HashMap<Transducer, Float> getTransPhases() {
+        return transPhases;
+    }
+
+    public void setTransPhases(HashMap<Transducer, Float> transPhases) {
+        this.transPhases = transPhases;
+    }
+
+    public HashMap<Entity, Vector3f> getPointsPositions() {
+        return pointsPositions;
+    }
+
+    public void setPointsPositions(HashMap<Entity, Vector3f> pointsPositions) {
+        this.pointsPositions = pointsPositions;
+    }
+
+    
     public int getNumber() {
         return number;
     }
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    
-
-    public HashMap<Transducer, TransState> getTransStates() {
-        return transStates;
-    }
-
-    public void setTransStates(HashMap<Transducer, TransState> transStates) {
-        this.transStates = transStates;
     }
 
     public float getDuration() {
@@ -55,33 +78,48 @@ public class AnimKeyFrame {
     }
     
     public void deleteTrans(Transducer t){
-        transStates.remove(t);
+        transAmplitudes.remove(t);
+        transPhases.remove(t);
     }
     
     public void deleteTrans(List<Transducer> trans){
         for(Transducer t : trans ){
-            transStates.remove(t);
+            transAmplitudes.remove(t);
+            transPhases.remove(t);
         }
     }
+    
     
     public void snap(Simulation s){
-        transStates.clear();
+        transAmplitudes.clear();
+        transPhases.clear();
+        pointsPositions.clear();
         for(Transducer t : s.transducers){
-            TransState ts = new TransState();
-            transStates.put(t, ts);
-            ts.transducer = t;
-            ts.snap();
+            transAmplitudes.put(t, t.getpAmplitude());
+            transPhases.put(t, t.getPhase());
+        }
+        for(Entity e : s.controlPoints){
+            pointsPositions.put(e, e.getTransform().getTranslation().clone());
         }
     }
     
-    public void apply(Simulation s){
-        for(Transducer t : transStates.keySet()){
-            TransState ts = transStates.get(t);
-            ts.apply();
+    public void apply(){
+        for(Transducer t : transAmplitudes.keySet()){
+            t.setAmplitude( transAmplitudes.get(t) );
+            t.setPhase( transPhases.get(t) );
+        }
+        for(Entity e : pointsPositions.keySet()){
+            e.getTransform().getTranslation().set( pointsPositions.get(e) );
         }
     }
     
-    public void applyInter(Simulation s, AnimKeyFrame b, float p){
+    void addTrans(Transducer t) {
+       transAmplitudes.put(t, t.getpAmplitude());
+       transPhases.put(t, t.getPhase());
+    }
+        
+    /*
+    public void applyInter(AnimKeyFrame b, float p){
         for(Transducer t : transStates.keySet()){
             TransState tsA = transStates.get(t);
             TransState tsB = b.transStates.get(t);
@@ -93,12 +131,9 @@ public class AnimKeyFrame {
             
         }
     }
+*/
+    
 
-    void addTrans(Transducer t) {
-        TransState ts = new TransState();
-        ts.transducer = t;
-        ts.snap();
-    }
   
     
 }

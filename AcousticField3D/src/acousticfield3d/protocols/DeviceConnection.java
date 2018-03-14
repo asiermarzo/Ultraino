@@ -91,7 +91,7 @@ public class DeviceConnection implements SerialComms.Listener{
         return data;
     }
     
-    public static byte[] calcSignals01AnimFrame(final int nTrans, final Collection<TransState> transducers, final int divs){
+    public static byte[] calcSignals01AnimFrame(final int nTrans, final AnimKeyFrame key, final int divs){
         final int transPerByte = 8;
         final int divsHalf = divs / 2;
         final int nBytes = nTrans * divs / transPerByte;
@@ -99,11 +99,12 @@ public class DeviceConnection implements SerialComms.Listener{
         
         final byte[] data = new byte[nBytes];
         
-        for(TransState t : transducers){
-            final int n = t.getTransducer().getDriverPinNumber();
-            if (t.getAmplitude() > 0.0f){
+        for(Transducer t : key.getTransAmplitudes().keySet() ){
+            final int n = t.getDriverPinNumber();
+            
+            if (key.getTransAmplitudes().get(t) > 0.0f){
                 if (n >= 0 && n < nTrans){ //is it within range
-                    final int phase = Transducer.calcDiscPhase(t.getPhase(), divs);
+                    final int phase = Transducer.calcDiscPhase( key.getTransPhases().get(t) , divs);
                     int targetByte = n / transPerByte;
 
                     final int value = 1 << (n - targetByte * transPerByte);

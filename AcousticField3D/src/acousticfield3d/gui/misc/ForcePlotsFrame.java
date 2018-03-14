@@ -128,7 +128,7 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         final int nSteps = Parse.toInt( nPointsText.getText() );
         final float disp = Parse.toFloat( dispText.getText() );
         
-        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD);
+        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT );
         if (bead == null){
             return;
         }
@@ -174,7 +174,7 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         final float disp = Parse.toFloat( dispText.getText() );
         final Vector3f dir = new Vector3f(directionText.getText());
         
-        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD);
+        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT );
         if (bead == null){
             return;
         }

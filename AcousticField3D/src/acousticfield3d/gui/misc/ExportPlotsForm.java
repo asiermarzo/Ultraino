@@ -167,12 +167,13 @@ public class ExportPlotsForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lineRadio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(startXText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7)
-                        .addComponent(endXText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(endXText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(startXText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(exportButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -201,7 +202,7 @@ public class ExportPlotsForm extends javax.swing.JFrame {
                 final float rads = M.degToRad(angle);
                 p.set(c).addLocal( M.sin(rads) * distance, M.cos(rads) * distance, 0);
                 
-                mf.cpPanel.addControlPoint(p, -1, -1, false);
+                mf.cpPanel.addControlPoint(p, -1, -1);
             
                 final float amplitude = CalcField.calcFieldAt(p, mf).length();
                 sb.append(angle + "\t" + amplitude + "\t" + M.log10(amplitude) + "\n");
@@ -209,7 +210,7 @@ public class ExportPlotsForm extends javax.swing.JFrame {
                 final float x = M.lerp(startX, endX, i / (float)(nPoints-1));
                 p.set(c).addLocal(x, distance, 0);
                 
-                mf.cpPanel.addControlPoint(p, -1, -1, false);
+                mf.cpPanel.addControlPoint(p, -1, -1);
             
                 final float amplitude = CalcField.calcFieldAt(p, mf).length();
                 sb.append(x + "\t" + amplitude + "\t" + M.log10(amplitude) + "\n");

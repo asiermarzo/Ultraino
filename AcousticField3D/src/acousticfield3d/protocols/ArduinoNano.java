@@ -68,7 +68,7 @@ public class ArduinoNano extends DeviceConnection{
         int ik = 0;
         for (AnimKeyFrame k : frames) {
             sb.append("{");
-            final byte[] data = calcSignals01AnimFrame(8, k.getTransStates().values(), 24);
+            final byte[] data = calcSignals01AnimFrame(8, k, 24);
             final int l = data.length;
             for (int in = 0; in < l; ++in) {
                 sb.append("0x" + Integer.toHexString(data[in] & 0xFF));

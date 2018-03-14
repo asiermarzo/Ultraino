@@ -6,12 +6,18 @@
 
 package acousticfield3d.simulation;
 
+import acousticfield3d.math.Vector3f;
+import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.utils.GenericListModel;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,7 +28,6 @@ public class Animation {
     public String name;
     private int number;
     public GenericListModel<AnimKeyFrame> keyFrames;
-    public ArrayList<MeshEntity> controlPoints;
 
     public static Animation createEmpty(final int frames, final List<Transducer> trans){
         final Animation r = new Animation();
@@ -42,7 +47,6 @@ public class Animation {
     public Animation() {
         name = "no name";
         keyFrames = new GenericListModel<>();
-        controlPoints = new ArrayList<>();
     }
 
     public int getNumber() {
@@ -52,16 +56,6 @@ public class Animation {
     public void setNumber(int number) {
         this.number = number;
     }
-
-    public ArrayList<MeshEntity> getControlPoints() {
-        return controlPoints;
-    }
-
-    public void setControlPoints(ArrayList<MeshEntity> controlPoints) {
-        this.controlPoints = controlPoints;
-    }
-
-    
     
     public String getName() {
         return name;
@@ -107,7 +101,8 @@ public class Animation {
         return dur;
     }
     
-    public boolean applyAtTime(float dur, Simulation s){
+    /*
+    public boolean applyAtTime(float dur){
         float prevStep = 0;
         float nextStep = 0;
         
@@ -117,7 +112,7 @@ public class Animation {
             nextStep += key.duration;
             if (dur >= prevStep && dur <= nextStep && index < size-1){
                 float p = (dur-prevStep)/(nextStep-prevStep);
-                key.applyInter(s, keyFrames.getAt(index+1), p);
+                key.applyInter(keyFrames.getAt(index+1), p);
                 return true;
             }
             prevStep = nextStep;
@@ -125,11 +120,12 @@ public class Animation {
         }
         return false;
     }
+    */
     
     public void applyAtFrame(int frame, Simulation simulation) {
         final int size = keyFrames.getSize();
         if (frame >= 0 && frame < size){
-            keyFrames.getAt(frame).apply( simulation );
+            keyFrames.getAt(frame).apply();
         }
     }
     
@@ -141,68 +137,87 @@ public class Animation {
             }
         });
     }
-    
-    public String saveAsTable(Simulation s){
-        StringBuilder sb = new StringBuilder();
-        final List<Transducer> trans = s.getTransducers();
-        final List<AnimKeyFrame> keys = getKeyFrames().getElements();
+
+    public AnimKeyFrame lastKeyFrame() {
+        final ArrayList<AnimKeyFrame> keys = keyFrames.getElements();
         
-        final int nT = trans.size();
-        final int nK = keys.size();
+        if (keys.isEmpty()){
+            return null;
+        }
+        return keys.get( keys.size() - 1);
+    }
+   
+    public byte[] exportRaw(final Simulation s) throws IOException{
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final DataOutputStream dos =  new DataOutputStream( bos );
         
-        for(int ik = 0; ik < nK; ++ik){
-            final AnimKeyFrame ak = keys.get(ik);
-            for(int it = 0; it < nT; ++it){
-                final Transducer t = trans.get(it);
-                final TransState ts = ak.getTransStates().get( t );
-                float amp = 0.0f;
-                float phase = 0.0f;
-                if (ts != null){
-                    amp = (float)ts.getAmplitude();
-                    phase = (float)ts.getPhase();
+        final ArrayList<Transducer> trans = s.getTransducers();
+        final ArrayList<MeshEntity> points = s.getControlPoints();
+        
+        final ArrayList<AnimKeyFrame> keys = keyFrames.getElements();
+        if (keys.isEmpty() || keys.get(0).getTransAmplitudes().isEmpty()){
+            return null;
+        }
+        
+        final int nKeys = keys.size();
+        final int nTrans = keys.get(0).getTransAmplitudes().size();
+        final int nPoints = keys.get(0).getPointsPositions().size();
+        
+        dos.writeInt( nKeys );
+        dos.writeInt( nTrans );
+        dos.writeInt( nPoints );
+        
+        for(AnimKeyFrame key : keys ){
+            for(Transducer t : trans){
+                dos.writeFloat( key.getTransAmplitudes().get(t) );
+                dos.writeFloat( key.getTransPhases().get(t) );
+            }
+            for(Entity cp : points){
+                final Vector3f pos = key.getPointsPositions().get(cp);
+                if(pos == null){
+                    dos.writeFloat(0); dos.writeFloat(0); dos.writeFloat(0);
+                }else{
+                    dos.writeFloat(pos.x); dos.writeFloat(pos.y); dos.writeFloat(pos.z);
                 }
-                sb.append(amp).append(":").append(phase).append("\t");
             }
-            sb.append("\n");
         }
         
-        return sb.toString();
+        return bos.toByteArray();
     }
     
     
-    
-    public void loadTable(String content, Simulation s) {
-        String[] lines = content.split("\\n");
-        String[] lineS = lines[0].split("\\t");
-        int nPatterns = lines.length;
-        int nTransducers = lineS.length;
+    public void importRaw(final byte[] data, final Simulation s) throws IOException{
+        final DataInputStream dis =  new DataInputStream(new ByteArrayInputStream(data));
        
-        int ip = 0;
-        for (String l : lines) {
-            AnimKeyFrame keyFrame = new AnimKeyFrame();
-            keyFrame.setNumber(ip);
-            keyFrame.setDuration(1.0f);
-            keyFrames.add(keyFrame);
+        final ArrayList<Transducer> trans = s.getTransducers();
+        final ArrayList<MeshEntity> points = s.getControlPoints();
+       
+        final int nKeys = dis.readInt();
+        final int nTrans = dis.readInt();
+        final int nPoints = dis.readInt();
 
-            lineS = l.trim().split("\\t");
-            final int nTrans = lineS.length;
-            for (int it = 0; it < nTrans; ++it) {
-                String[] ampAndPhase = lineS[it].trim().split(":");
-                 
-                final float amp = Float.parseFloat(ampAndPhase[0]);
-                final float phase = Float.parseFloat(ampAndPhase[1]);
-                TransState ts = new TransState();
-                ts.setAmplitude(amp);
-                ts.setPhase(phase);
-                ts.setTransducer(s.getTransducers().get(it));
-                keyFrame.transStates.put(ts.getTransducer(), ts);
+        int index = 0;
+        for(int i = 0; i < nKeys; ++i){
+            final AnimKeyFrame key = new AnimKeyFrame();
+            key.setDuration(1);
+            key.setNumber(index++);
+            for(int j = 0; j < nTrans; ++j){
+                final Transducer t = trans.get(j);
+                final float amp = dis.readFloat();
+                final float phase = dis.readFloat();
+                key.getTransAmplitudes().put(t, amp);
+                key.getTransPhases().put(t, phase);
             }
-            ip++;
-        }
-
+            
+            for(int j = 0; j < nPoints; ++j){
+                final Entity cp = points.get(j);
+                final float x = dis.readFloat();
+                final float y = dis.readFloat();
+                final float z = dis.readFloat();
+                key.getPointsPositions().put(cp, new Vector3f(x, y, z));
+            }
+            keyFrames.add(key);
+        }       
     }
-
-  
-
     
 }

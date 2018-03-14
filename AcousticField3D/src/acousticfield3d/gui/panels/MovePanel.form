@@ -117,9 +117,7 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="startButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="goButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="interpButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="stepSizeText" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -189,13 +187,12 @@
                   <Component id="moveAllCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="useAlgCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace pref="7" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="startButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="goButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="interpButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="stepSizeText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -380,20 +377,12 @@
         <Property name="text" type="java.lang.String" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="startButton">
+    <Component class="javax.swing.JButton" name="interpButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="I"/>
+        <Property name="text" type="java.lang.String" value="Interp"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="goButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Go"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="interpButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="stepSizeText">

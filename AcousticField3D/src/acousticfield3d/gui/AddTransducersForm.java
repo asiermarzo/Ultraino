@@ -590,8 +590,6 @@ public class AddTransducersForm extends javax.swing.JFrame {
     }
     
     
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup arrangementGroup;
     private javax.swing.JRadioButton circleCheck;
@@ -630,6 +628,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                 final Simulation sim2 = (Simulation) FileUtils.readCompressedObject(new File(target));
                 //get the last current transducer.
                 int currentLast = -1;
+                mf.simulation.sortTransducers();
                 final ArrayList<Transducer> currentTrans = mf.simulation.transducers;
                 if (! currentTrans.isEmpty() ){
                     currentLast = currentTrans.get( currentTrans.size() - 1).getOrderNumber();
@@ -643,7 +642,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                     t.selected = true;
                     mf.selection.add(t);
                 }
-                
+                mf.simulation.sortTransducers();
                 mf.needUpdate();
             } catch (IOException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);

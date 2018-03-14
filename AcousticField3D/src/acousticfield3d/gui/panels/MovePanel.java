@@ -12,9 +12,10 @@ import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Scene;
-import acousticfield3d.simulation.Animation;
+import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JButton;
 
 /**
@@ -23,17 +24,11 @@ import javax.swing.JButton;
  */
 public class MovePanel extends javax.swing.JPanel {
     final MainForm mf;
-  
-    Vector3f startPosition;
     final ArrayList<Vector3f> snapBeadPositions = new ArrayList<>();
-    Entity particleToMove = null;
-    final Vector3f initialPos = new Vector3f();
-    
-    
+    final HashMap<Integer, ArrayList<Entity>> selections = new HashMap<>();
     
     public MovePanel(MainForm mf) {
         this.mf = mf;
-        startPosition = new Vector3f();
         initComponents();
     }
 
@@ -73,8 +68,7 @@ public class MovePanel extends javax.swing.JPanel {
         rXNButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         angleText = new javax.swing.JTextField();
-        startButton = new javax.swing.JButton();
-        goButton = new javax.swing.JButton();
+        interpButton = new javax.swing.JButton();
         stepSizeText = new javax.swing.JTextField();
         gatherButton = new javax.swing.JButton();
         expandButton = new javax.swing.JButton();
@@ -208,17 +202,10 @@ public class MovePanel extends javax.swing.JPanel {
 
         angleText.setText("1");
 
-        startButton.setText("I");
-        startButton.addActionListener(new java.awt.event.ActionListener() {
+        interpButton.setText("Interp");
+        interpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startButtonActionPerformed(evt);
-            }
-        });
-
-        goButton.setText("Go");
-        goButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goButtonActionPerformed(evt);
+                interpButtonActionPerformed(evt);
             }
         });
 
@@ -317,9 +304,7 @@ public class MovePanel extends javax.swing.JPanel {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(angleText)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(startButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(goButton)
+                                .addComponent(interpButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -374,15 +359,28 @@ public class MovePanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(moveAllCheck)
                     .addComponent(useAlgCheck))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startButton)
-                    .addComponent(goButton)
+                    .addComponent(interpButton)
                     .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public ArrayList<Entity> getSelection(final int n){
+        return selections.get(n);
+    }
+            
+    public void snapSelection(final int n){
+        final ArrayList<Entity> sel = new ArrayList<>( mf.selection );
+        selections.put(n, sel);
+    }
+    
+    public void applySelection(final int n){
+        final ArrayList<Entity> sel = selections.get(n);
+        mf.setSelection( sel );
+        mf.needUpdate();
+    }
     
     public void doAutoCalcAndSend(){
         final boolean autoCalc = autoCalcCheck.isSelected();
@@ -403,20 +401,7 @@ public class MovePanel extends javax.swing.JPanel {
         
         if( autoAddKeyFrame ){
             // add the key frame
-            mf.animPanel.pressAddKeyFrame();
-            
-            //add the bead to the new keyframe
-            final Entity bead = getBeadEntity();
-            if(bead != null){
-                final Vector3f pos = bead.getTransform().getTranslation();
-                final Animation anim = mf.animPanel.getCurrentAnimation();
-                if (anim != null){
-                    final int lastFrame = anim.getKeyFrames().getSize() - 1;
-                    MeshEntity newBead = mf.cpPanel.createControlPoint(pos.x, pos.y, pos.z, lastFrame, 0, true);
-                    mf.animPanel.getCurrentAnimation().getControlPoints().add( newBead );
-                    newBead.getTransform().set( bead.getTransform() );
-                }
-            }
+            mf.animPanel.addKeyFrame();
         }
         
         if (autoSend) {
@@ -552,7 +537,7 @@ public class MovePanel extends javax.swing.JPanel {
     }
     
     public void selectFirstBead() {
-        Entity e = mf.scene.getFirstWithTag( Entity.TAG_BEAD | Entity.TAG_CONTROL_POINT );
+        Entity e = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT );
         if (e == null){ return;}
         mf.clearSelection();
         mf.getSelection().add( e );
@@ -593,45 +578,44 @@ public class MovePanel extends javax.swing.JPanel {
 
     
     
-    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        particleToMove = getBeadEntity();
-        if (particleToMove != null){
-            initialPos.set( particleToMove.getTransform().getTranslation() ); 
-        }
-    }//GEN-LAST:event_startButtonActionPerformed
-
-    private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+    private void interpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpButtonActionPerformed
         final float stepSize = Parse.toFloat( stepSizeText.getText() );
-        final Entity particle = getBeadEntity();
-        if (particle == null || particle != particleToMove){ return; }
-        
-        final Vector3f currentPos = particle.getTransform().getTranslation();
-        final Vector3f targetPos = currentPos.clone();
-        final Vector3f diffPos = new Vector3f();
-        
-        currentPos.set(initialPos);
-        mf.algForm.runBFGS(false, false, true);
-        mf.transControlPanel.sendPattern();
-            
-        while ( currentPos.distance(targetPos) > M.FLT_EPSILON){
-            diffPos.set( targetPos ).subtractLocal( currentPos );
-            
-            //first adjust the transversal position
-            if (diffPos.y != 0.0f){
-                diffPos.x = diffPos.z = 0.0f;
+        final AnimKeyFrame lastKey = mf.animPanel.currentAnimation.lastKeyFrame();
+        final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
+                
+        final HashMap<Entity, Vector3f> targetPositions = new HashMap<>( points.size() );
+        for (Entity e : points){
+            final Vector3f pos = e.getTransform().getTranslation();
+            targetPositions.put(e, pos.clone() );
+            final Vector3f sPos = lastKey.getPointsPositions().get( e );
+            if (sPos != null){
+                pos.set(sPos);
             }
-            
-            final float dist = diffPos.length();
-            //resize the vector
-            diffPos.multLocal( M.min(dist, stepSize) ).divideLocal( dist );
-            
-            currentPos.addLocal( diffPos );
-            
-            mf.algForm.runBFGS(false, false, true);
-            mf.transControlPanel.sendPattern();
         }
-        
-    }//GEN-LAST:event_goButtonActionPerformed
+            
+        //while all the particles have not reached their destination
+        boolean allParticlesReached = false;
+        final Vector3f diffPos = new Vector3f();
+        while( ! allParticlesReached ){
+            allParticlesReached = true;
+            for ( Entity e : points){
+                final Vector3f cPos = e.getTransform().getTranslation();
+                final Vector3f tPos = targetPositions.get(e);
+                if (tPos != null){
+                    diffPos.set(tPos).subtractLocal(cPos);
+                    final float distance = diffPos.length();
+                    if (distance > M.FLT_EPSILON){
+                        allParticlesReached = false;
+                        diffPos.multLocal( M.min(distance, stepSize) ).divideLocal( distance );
+                        cPos.addLocal( diffPos );
+                    }
+                }
+            }
+            mf.algForm.runBFGS(false, false, true);
+            mf.animPanel.addKeyFrame();
+        }
+ 
+    }//GEN-LAST:event_interpButtonActionPerformed
 
     private void gatherButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gatherButtonActionPerformed
         applyScale( 1 );
@@ -666,6 +650,13 @@ public class MovePanel extends javax.swing.JPanel {
         return downButton;
     }
     
+    public void setGenerateKeyFrame(final boolean enabled){
+        autoAddCheck.setSelected(enabled);
+    }
+    
+    public void setCalculate(final boolean enabled){
+        autoCalcCheck.setSelected(enabled);
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -679,7 +670,7 @@ public class MovePanel extends javax.swing.JPanel {
     private javax.swing.JButton expandButton;
     private javax.swing.JButton forwardButton;
     private javax.swing.JButton gatherButton;
-    private javax.swing.JButton goButton;
+    private javax.swing.JButton interpButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -697,7 +688,6 @@ public class MovePanel extends javax.swing.JPanel {
     private javax.swing.JButton rightButton;
     private javax.swing.JButton snapButton;
     private javax.swing.JTextField speedText;
-    private javax.swing.JButton startButton;
     private javax.swing.JTextField stepSizeText;
     private javax.swing.JButton upButton;
     private javax.swing.JCheckBox useAlgCheck;

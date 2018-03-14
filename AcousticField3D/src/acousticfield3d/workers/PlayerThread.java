@@ -41,27 +41,30 @@ public class PlayerThread extends Thread{
         goingDown = false;
     }
     
-    public void prev() {
-        currentTime -= 1.0f;
+    public void stepTime( final float diff ){
+        currentTime += diff;
         float duration = form.currentAnimation.getDuration();
-        apply(true, form.currentAnimation);
-        updateTimeIndicator(duration);
-    }
-
-    public void next() {
-        currentTime += 1.0f;
-        apply(true, form.currentAnimation);
-        float duration = form.currentAnimation.getDuration();
+        apply(form.currentAnimation);
         updateTimeIndicator(duration);
     }
     
+    public void prev() {
+        stepTime( -1.0f );
+    }
+
+    public void next() {
+        stepTime( 1.0f );
+    }
+    
+    /*
     public void applyAtPercetange(float p){
         Animation anim = form.currentAnimation;
         if(anim != null){
             float duration = anim.getDuration();
-            anim.applyAtTime(duration * p, form.mf.simulation);
+            anim.applyAtTime(duration * p);
         }
     }
+    */
     
     public void applyFrame(int frame) {
         Animation anim = form.currentAnimation;
@@ -81,14 +84,10 @@ public class PlayerThread extends Thread{
         return Math.round( currentTime );
     }
     
-    private void apply(final boolean isStepAnim, Animation anim) {
+    private void apply(Animation anim) {
         //apply
         synchronized(form.mf){
-            if( isStepAnim ){
-                applyFrame(Math.round( currentTime ) );
-            }else{
-                anim.applyAtTime(currentTime, form.mf.simulation);
-            }
+            applyFrame(Math.round( currentTime ) );
             form.mf.transControlPanel.animFrame( Math.round( currentTime )  );
         }
         form.mf.needUpdate();
@@ -102,18 +101,15 @@ public class PlayerThread extends Thread{
                 
                 final Animation anim = form.currentAnimation;
                 final float duration = anim.getDuration();
-                final boolean isStepAnim = form.isStepAnim();
-                if(isStepAnim){
-                    currentTime = Math.round( currentTime );
-                }
-                
+                currentTime = Math.round( currentTime );
+ 
                 updateTimeIndicator(duration);
                 
-                apply(isStepAnim, anim);
+                apply(anim);
                 
               
                 //advance
-                final float speed = form.getStepSpeed();
+                final float speed = 1;
                 if(form.isWrapPingPong()){
                     if (goingDown){
                         currentTime -= speed;
@@ -145,11 +141,7 @@ public class PlayerThread extends Thread{
                 //wait time
                 try {
                     float sleepTime;
-                    if(form.isStepAnim()){
-                        sleepTime = form.getWaitTime();
-                    }else{
-                        sleepTime = form.getWaitTime();
-                    }
+                    sleepTime = form.getWaitTime();
                     final long endMillis = System.currentTimeMillis();
                     final long sleepMillis = ((long)sleepTime) - (endMillis - beginMillis);
                     if(sleepMillis > 0){

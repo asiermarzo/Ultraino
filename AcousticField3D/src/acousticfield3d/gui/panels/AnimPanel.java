@@ -7,13 +7,16 @@
 package acousticfield3d.gui.panels;
 
 import acousticfield3d.gui.MainForm;
-import acousticfield3d.scene.Entity;
-import acousticfield3d.scene.Scene;
 import acousticfield3d.workers.PlayerThread;
 import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.simulation.Animation;
 import acousticfield3d.utils.DialogUtils;
+import acousticfield3d.utils.FileUtils;
 import acousticfield3d.utils.Parse;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,7 +36,6 @@ public class AnimPanel extends javax.swing.JPanel {
         currentAnimation = emptyAnimation;
         
         initComponents();
-        stepAnimCheckActionPerformed(null);
         
         currentAnimation = emptyAnimation;
         statusList.setModel( currentAnimation.keyFrames );
@@ -88,13 +90,10 @@ public class AnimPanel extends javax.swing.JPanel {
         stopButton = new javax.swing.JButton();
         playToggle = new javax.swing.JToggleButton();
         playSlider = new javax.swing.JSlider();
-        stepsSpeedText = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         durationText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         waitText = new javax.swing.JTextField();
-        stepAnimCheck = new javax.swing.JCheckBox();
         prevButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         currentFrameText = new javax.swing.JLabel();
@@ -188,11 +187,7 @@ public class AnimPanel extends javax.swing.JPanel {
             }
         });
 
-        stepsSpeedText.setText("1");
-
-        jLabel12.setText("Speed:");
-
-        jLabel13.setText("Duration:");
+        jLabel13.setText("Periods:");
 
         durationText.setText("1");
         durationText.addActionListener(new java.awt.event.ActionListener() {
@@ -204,14 +199,6 @@ public class AnimPanel extends javax.swing.JPanel {
         jLabel1.setText("Wait:");
 
         waitText.setText("200");
-
-        stepAnimCheck.setSelected(true);
-        stepAnimCheck.setText("StepAnim");
-        stepAnimCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stepAnimCheckActionPerformed(evt);
-            }
-        });
 
         prevButton.setText("Prev");
         prevButton.addActionListener(new java.awt.event.ActionListener() {
@@ -266,18 +253,8 @@ public class AnimPanel extends javax.swing.JPanel {
                                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(stepsSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(waitText))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(playToggle)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(stepAnimCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(stopButton)))
                         .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
@@ -291,7 +268,12 @@ public class AnimPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(waitText)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,15 +309,12 @@ public class AnimPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stopButton)
-                    .addComponent(playToggle)
-                    .addComponent(stepAnimCheck))
+                    .addComponent(playToggle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(stepsSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(waitText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -360,9 +339,6 @@ public class AnimPanel extends javax.swing.JPanel {
         playToggle.setSelected( playing );
     }
     
-    public float getStepSpeed(){
-        return Parse.toFloat( stepsSpeedText.getText() );
-    }
     
     public boolean isWrapStop(){
         return stopWrap.isSelected();
@@ -373,9 +349,7 @@ public class AnimPanel extends javax.swing.JPanel {
     public boolean isWrapPingPong(){
         return pingpongWrap.isSelected();
     }
-    public boolean isStepAnim(){
-        return stepAnimCheck.isSelected();
-    }
+
     public float getWaitTime(){
         return Parse.toFloat( waitText.getText() );
     }
@@ -414,24 +388,17 @@ public class AnimPanel extends javax.swing.JPanel {
         }else{
             currentAnimation = emptyAnimation;
         }
-        statusList.setModel( currentAnimation.getKeyFrames() );
-        
-        //delete old beads
-        Scene.removeWithTag(mf.scene.getEntities(), Entity.TAG_BEAD);
-        
-        //add new beads
-        mf.scene.getEntities().addAll( currentAnimation.controlPoints );
-        
+        statusList.setModel( currentAnimation.getKeyFrames() );  
     }//GEN-LAST:event_animationListValueChanged
 
-    public void pressAddKeyFrame(){
-        addStatusActionPerformed(null);
-    }
-    
-    private void addStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStatusActionPerformed
+    public void addKeyFrame(){
         if (currentAnimation != emptyAnimation){
             snapAndAddNewKeyFrame( currentAnimation );
         }
+    }
+    
+    private void addStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStatusActionPerformed
+        addKeyFrame();
     }//GEN-LAST:event_addStatusActionPerformed
 
     private AnimKeyFrame snapAndAddNewKeyFrame(final Animation anim){
@@ -488,7 +455,7 @@ public class AnimPanel extends javax.swing.JPanel {
             return;
         }
         int value = playSlider.getValue();
-        player.applyAtPercetange( value / 100.0f);
+        player.applyFrame( (int)(value / 100.0f * currentAnimation.getDuration()) ) ;
         mf.needUpdate();
     }//GEN-LAST:event_playSliderStateChanged
 
@@ -499,16 +466,6 @@ public class AnimPanel extends javax.swing.JPanel {
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         player.next();
     }//GEN-LAST:event_nextButtonActionPerformed
-
-    private void stepAnimCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepAnimCheckActionPerformed
-        if (stepAnimCheck.isSelected()){
-            stepsSpeedText.setText("1");
-            waitText.setText("200");
-        }else{
-            stepsSpeedText.setText("0.01");
-            waitText.setText("33");
-        }
-    }//GEN-LAST:event_stepAnimCheckActionPerformed
 
     private void durationTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationTextActionPerformed
         final float duration = Parse.toFloat( durationText.getText());
@@ -530,6 +487,34 @@ public class AnimPanel extends javax.swing.JPanel {
         player.applyFrame(command);
     }
    
+    public void exportRawAnimation() {
+        final String file = FileUtils.selectNonExistingFile(this, ".ani");
+        if (file != null){
+            try {
+                final byte[] data = currentAnimation.exportRaw(mf.simulation);
+                FileUtils.writeBytesInFile(new File(file), data);
+            } catch (IOException ex) {
+                Logger.getLogger(AnimPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void importRawAnimation() {
+        final String file = FileUtils.selectFile(this, "import", ".ani", null);
+        if (file != null){
+            try {
+                final File ffile = new File(file);
+                final byte[] data = FileUtils.getBytesFromFile(ffile);
+                final Animation anim = createNewAnimation( FileUtils.getFileName(ffile) );
+                mf.simulation.animations.add(anim);
+                anim.importRaw(data, mf.simulation);
+            } catch (IOException ex) {
+                Logger.getLogger(AnimPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAnim;
@@ -540,7 +525,6 @@ public class AnimPanel extends javax.swing.JPanel {
     private javax.swing.JButton delStatus;
     private javax.swing.JTextField durationText;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -552,13 +536,13 @@ public class AnimPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton repeatWrap;
     private javax.swing.JButton snapStatus;
     private javax.swing.JList statusList;
-    private javax.swing.JCheckBox stepAnimCheck;
-    private javax.swing.JTextField stepsSpeedText;
     private javax.swing.JButton stopButton;
     private javax.swing.JRadioButton stopWrap;
     private javax.swing.JTextField waitText;
     private javax.swing.ButtonGroup wraperGroup;
     // End of variables declaration//GEN-END:variables
+
+    
 
     
 

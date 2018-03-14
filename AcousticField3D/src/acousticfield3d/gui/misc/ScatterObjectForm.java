@@ -196,7 +196,7 @@ public class ScatterObjectForm extends javax.swing.JFrame {
             for(String l : lines){
                 final String[] pl = l.trim().split(" ");
                 MeshEntity me = new MeshEntity(Resources.MESH_CUSTOM, null, Resources.SHADER_SOLID_SPEC);
-                me.setTag( Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD | Entity.TAG_OBJ);
+                me.setTag( Entity.TAG_CONTROL_POINT | Entity.TAG_OBJ);
                 me.customMesh = m;
                 mf.scene.getEntities().add( me );
                

@@ -7,6 +7,7 @@
 package acousticfield3d.gui.panels;
 
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
@@ -61,6 +62,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
         gridWText = new javax.swing.JTextField();
         gridHText = new javax.swing.JTextField();
         gridAddButton = new javax.swing.JButton();
+        circleButton = new javax.swing.JButton();
 
         jButton3.setText("jButton3");
 
@@ -164,6 +166,13 @@ public class ControlPointPanel extends javax.swing.JPanel {
             }
         });
 
+        circleButton.setText("Circle");
+        circleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                circleButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -195,23 +204,27 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         .addComponent(gridHText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gridAddButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(allVisibleButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(onlyVisibleButton))
-                            .addComponent(placeBeadAtSliceCheck)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(selectAllButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(cpAddButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpDelButton))
-                            .addComponent(mirrorAddButton))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(mirrorAddButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(circleButton))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(allVisibleButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(onlyVisibleButton))
+                                .addComponent(placeBeadAtSliceCheck)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(selectAllButton)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cpAddButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cpDelButton)))
+                            .addGap(0, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -247,7 +260,9 @@ public class ControlPointPanel extends javax.swing.JPanel {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
-                .addComponent(mirrorAddButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mirrorAddButton)
+                    .addComponent(circleButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(gridWText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -257,10 +272,10 @@ public class ControlPointPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public MeshEntity createControlPoint(float x, float y, float z, int frame, int number, boolean isBead){
+    public MeshEntity createControlPoint(float x, float y, float z, int frame, int number){
         MeshEntity me = new ControlPoint(Resources.MESH_SPHERE, null, Resources.SHADER_SOLID_SPEC);
         
-        me.setTag( isBead ? (Entity.TAG_BEAD | Entity.TAG_CONTROL_POINT) : Entity.TAG_CONTROL_POINT);
+        me.setTag( Entity.TAG_CONTROL_POINT );
         me.setFrame( frame );
         
         me.setColor( Color.parse( getControlPointColor() ) );
@@ -273,22 +288,17 @@ public class ControlPointPanel extends javax.swing.JPanel {
         return me;
     }
     
-    public MeshEntity addControlPoint(final Vector3f pos, int frame, int number, boolean isBead){
-        return addControlPoint(pos.x, pos.y, pos.z, frame, number, isBead);
+    public MeshEntity addControlPoint(final Vector3f pos, int frame, int number){
+        return addControlPoint(pos.x, pos.y, pos.z, frame, number);
     }
             
-    public MeshEntity addControlPoint(float x, float y, float z, int frame, int number, boolean isBead){
-        MeshEntity me = createControlPoint(x, y, z, frame, number, isBead);
+    public MeshEntity addControlPoint(float x, float y, float z, int frame, int number){
+        MeshEntity me = createControlPoint(x, y, z, frame, number);
         mf.scene.getEntities().add( me );
-        if(isBead){
-            final ArrayList<MeshEntity> controlPoints = mf.animPanel.currentAnimation.getControlPoints();
-            if (number == -1){
-                me.setNumber( controlPoints.size() );
-            }
-            controlPoints.add( me );
-        }else{
-            mf.simulation.getControlPoints().add(me);
-        }
+        
+        
+        mf.simulation.getControlPoints().add(me);
+       
         return me;
     }
     
@@ -321,7 +331,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
 
     private void cpAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpAddButtonActionPerformed
         Vector3f sCenter = mf.simulation.getSimulationCenter();
-        addControlPoint (sCenter.x, sCenter.y, sCenter.z, getNumber(), 0, false);
+        addControlPoint (sCenter.x, sCenter.y, sCenter.z, getNumber(), 0);
         mf.needUpdate();
     }//GEN-LAST:event_cpAddButtonActionPerformed
 
@@ -407,9 +417,9 @@ public class ControlPointPanel extends javax.swing.JPanel {
         final float pz = sCenter.z + dz;
         final float nz = sCenter.z - dz;
         
-        addControlPoint (px, pos.y, nz, getNumber(), 0, false);
-        addControlPoint (nx, pos.y, pz, getNumber(), 0, false);
-        addControlPoint (nx, pos.y, nz, getNumber(), 0, false);
+        addControlPoint (px, pos.y, nz, getNumber(), 0);
+        addControlPoint (nx, pos.y, pz, getNumber(), 0);
+        addControlPoint (nx, pos.y, nz, getNumber(), 0);
         
         mf.needUpdate();
     }//GEN-LAST:event_mirrorAddButtonActionPerformed
@@ -428,11 +438,30 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         sCenter.x + simSize.x * x / w, 
                         sCenter.y, 
                         sCenter.z + simSize.z * y / h, 
-                        getNumber(), 0, false);
+                        getNumber(), 0);
             }
         }
-       
+       mf.needUpdate();
     }//GEN-LAST:event_gridAddButtonActionPerformed
+
+    private void circleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_circleButtonActionPerformed
+        final List<Entity> particles = mf.selection;
+        
+        //get the center
+        final Vector3f center = Scene.calcCenter( particles );
+        //get average distance
+        final float avgDist = Scene.averageDistance(center, particles);
+        //arrange the particles in a circle
+        int index = 0;
+        final int n = particles.size();
+        for (Entity e : particles){
+            final Vector3f pos = e.getTransform().getTranslation();
+            pos.x = center.x + M.cos( index * M.TWO_PI / n ) * avgDist;
+            pos.z = center.z + M.sin( index * M.TWO_PI / n ) * avgDist;
+            index++;
+        }
+        mf.needUpdate();
+    }//GEN-LAST:event_circleButtonActionPerformed
 
 
     
@@ -480,6 +509,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton allVisibleButton;
+    private javax.swing.JButton circleButton;
     private javax.swing.JButton cpAddButton;
     private javax.swing.JTextField cpColorText;
     private javax.swing.JButton cpDelButton;
@@ -502,19 +532,6 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JButton selectAllButton;
     // End of variables declaration//GEN-END:variables
 
-
-
-    public void addSelAsBead() {
-        //get selected control point
-        final Entity selCP = mf.movePanel.getBeadEntity();
-        if (selCP == null) { return; }
-        
-        //add bead clone to the current animation
-        final Vector3f pos = selCP.getTransform().getTranslation();
-        addControlPoint(pos.x, pos.y, pos.z, 0, -1, true);
-    }
-
-    
 
     
 }

@@ -18,6 +18,7 @@ import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.MetaSurfaces;
 import acousticfield3d.gui.misc.ParticleControllerFrame;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
+import acousticfield3d.gui.misc.RotateMultipleTimes;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SweepTinyLevParameters;
@@ -39,7 +40,6 @@ import acousticfield3d.gui.panels.TrapsPanel;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Quaternion;
 import acousticfield3d.math.Transform;
-import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.protocols.ArduinoMEGA64;
 import acousticfield3d.protocols.ArduinoMEGA64_Anim;
@@ -113,7 +113,6 @@ public final class MainForm extends javax.swing.JFrame {
     public final AddTransducersForm addTransducersForm;
     public final SimulationConfigForm simForm;
     public final AlgorithmsForm algForm;
-    
     
     public final ParticleControllerFrame particleController;
     
@@ -304,9 +303,12 @@ public final class MainForm extends javax.swing.JFrame {
         simEditParamMenu = new javax.swing.JMenuItem();
         recToSelMenu = new javax.swing.JMenuItem();
         selToBagMenu = new javax.swing.JMenuItem();
-        addSelAsBeadMenu = new javax.swing.JMenuItem();
         normSimPosMenu = new javax.swing.JMenuItem();
         simTransformMenu = new javax.swing.JMenuItem();
+        assignSel2Menu = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        sel1Menu = new javax.swing.JMenuItem();
+        sel2Menu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         camViewMenu = new javax.swing.JMenuItem();
         camProjMenu = new javax.swing.JMenuItem();
@@ -336,6 +338,8 @@ public final class MainForm extends javax.swing.JFrame {
         exportToArduinoMenu = new javax.swing.JMenuItem();
         exportNano8Menu = new javax.swing.JMenuItem();
         exportMatlabMenu = new javax.swing.JMenuItem();
+        animExportRawMenu = new javax.swing.JMenuItem();
+        animImportRawMenu = new javax.swing.JMenuItem();
         addTransMenu = new javax.swing.JMenu();
         arrayAddMenu = new javax.swing.JMenuItem();
         arrayFromObjMenu = new javax.swing.JMenuItem();
@@ -363,6 +367,7 @@ public final class MainForm extends javax.swing.JFrame {
         randPointsExpMenu = new javax.swing.JMenuItem();
         sendSwitchbufMenu = new javax.swing.JMenuItem();
         particleControllerMenu = new javax.swing.JMenuItem();
+        rotateMultipleMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -742,15 +747,6 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu5.add(selToBagMenu);
 
-        addSelAsBeadMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-        addSelAsBeadMenu.setText("Add bead in selection");
-        addSelAsBeadMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addSelAsBeadMenuActionPerformed(evt);
-            }
-        });
-        jMenu5.add(addSelAsBeadMenu);
-
         normSimPosMenu.setText("Normalize Sim Pos");
         normSimPosMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -766,6 +762,38 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu5.add(simTransformMenu);
+
+        assignSel2Menu.setText("assign sel 1");
+        assignSel2Menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assignSel2MenuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(assignSel2Menu);
+
+        jMenuItem2.setText("assign sel 2");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem2);
+
+        sel1Menu.setText("sel 1");
+        sel1Menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sel1MenuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(sel1Menu);
+
+        sel2Menu.setText("sel 2");
+        sel2Menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sel2MenuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(sel2Menu);
 
         jMenuBar1.add(jMenu5);
 
@@ -991,6 +1019,22 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu6.add(exportMatlabMenu);
 
+        animExportRawMenu.setText("Export raw");
+        animExportRawMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                animExportRawMenuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(animExportRawMenu);
+
+        animImportRawMenu.setText("Import raw");
+        animImportRawMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                animImportRawMenuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(animImportRawMenu);
+
         jMenuBar1.add(jMenu6);
 
         addTransMenu.setText("Arrays");
@@ -1197,6 +1241,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(particleControllerMenu);
 
+        rotateMultipleMenu.setText("RotateMultiple");
+        rotateMultipleMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rotateMultipleMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(rotateMultipleMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -1333,6 +1385,11 @@ public final class MainForm extends javax.swing.JFrame {
     
     public void setSelection(Entity e){
         clearSelection();
+        e.selected = true;
+        selection.add(e);
+    }
+    
+    public void addToSelection(Entity e){
         e.selected = true;
         selection.add(e);
     }
@@ -1508,7 +1565,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     
     private void addKeyFrameMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addKeyFrameMenuActionPerformed
-        animPanel.pressAddKeyFrame();
+        animPanel.addKeyFrame();
     }//GEN-LAST:event_addKeyFrameMenuActionPerformed
 
     private void transSetPhase0MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transSetPhase0MenuActionPerformed
@@ -1571,10 +1628,6 @@ public final class MainForm extends javax.swing.JFrame {
         SceneObjExport soe = new SceneObjExport(this);
         soe.export( true );
     }//GEN-LAST:event_exportObjWithMtlMenuActionPerformed
-
-    private void addSelAsBeadMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSelAsBeadMenuActionPerformed
-        cpPanel.addSelAsBead();
-    }//GEN-LAST:event_addSelAsBeadMenuActionPerformed
 
     private void recToSelMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recToSelMenuActionPerformed
          if (selection.size() != 1){
@@ -1744,6 +1797,34 @@ public final class MainForm extends javax.swing.JFrame {
     private void particleControllerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_particleControllerMenuActionPerformed
         showNewFrame( particleController );
     }//GEN-LAST:event_particleControllerMenuActionPerformed
+
+    private void rotateMultipleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateMultipleMenuActionPerformed
+        showNewFrame( new RotateMultipleTimes(this)); 
+    }//GEN-LAST:event_rotateMultipleMenuActionPerformed
+
+    private void assignSel2MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignSel2MenuActionPerformed
+        movePanel.snapSelection(1);
+    }//GEN-LAST:event_assignSel2MenuActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        movePanel.snapSelection(2);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void sel1MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sel1MenuActionPerformed
+        movePanel.applySelection(1);
+    }//GEN-LAST:event_sel1MenuActionPerformed
+
+    private void sel2MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sel2MenuActionPerformed
+        movePanel.applySelection(2);
+    }//GEN-LAST:event_sel2MenuActionPerformed
+
+    private void animExportRawMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animExportRawMenuActionPerformed
+        animPanel.exportRawAnimation();
+    }//GEN-LAST:event_animExportRawMenuActionPerformed
+
+    private void animImportRawMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animImportRawMenuActionPerformed
+        animPanel.importRawAnimation();
+    }//GEN-LAST:event_animImportRawMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1753,11 +1834,13 @@ public final class MainForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ImportAmpPhasesMenu;
     private javax.swing.JMenuItem addKeyFrameMenu;
-    private javax.swing.JMenuItem addSelAsBeadMenu;
     private javax.swing.JMenu addTransMenu;
+    private javax.swing.JMenuItem animExportRawMenu;
+    private javax.swing.JMenuItem animImportRawMenu;
     private javax.swing.JMenuItem arrayAddMenu;
     private javax.swing.JMenuItem arrayExportMenu;
     private javax.swing.JMenuItem arrayFromObjMenu;
+    private javax.swing.JMenuItem assignSel2Menu;
     private javax.swing.JMenuItem auxKeyMenu;
     private javax.swing.JMenuItem bowlArrayMenu;
     private javax.swing.JMenuItem camCoverSelMenu;
@@ -1796,6 +1879,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JMenuItem loadSimMenu;
@@ -1819,11 +1903,14 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem randPointsExpMenu;
     private javax.swing.JMenuItem recToSelMenu;
     private javax.swing.JMenuItem resetCamMenu;
+    private javax.swing.JMenuItem rotateMultipleMenu;
     private javax.swing.JTextField rxText;
     private javax.swing.JTextField ryText;
     private javax.swing.JTextField rzText;
     private javax.swing.JMenuItem saveSimMenu;
     private javax.swing.JMenuItem scatterObjectMenu;
+    private javax.swing.JMenuItem sel1Menu;
+    private javax.swing.JMenuItem sel2Menu;
     private javax.swing.JMenuItem selToBagMenu;
     private javax.swing.JMenuItem selectTransTopMenu;
     private javax.swing.JMenuItem selectTransTopMenu1;
@@ -1888,12 +1975,12 @@ public final class MainForm extends javax.swing.JFrame {
                 MeshEntity e = getEntityWithClick(x, y);
                 if (e != null) {
                     final Vector3f col = getClickOnObject(e, x, y);
-                    cpPanel.addControlPoint(col.x, col.y, col.z, 0, -1, false);
+                    cpPanel.addControlPoint(col.x, col.y, col.z, 0, -1);
                     needUpdate();
                 }
                 return;
             }
-            tags |= Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD;
+            tags |= Entity.TAG_CONTROL_POINT;
         }else if (comp == trapsPanel){
             MeshEntity e = getEntityWithClick(x, y);
             if (e != null) {
@@ -1901,7 +1988,7 @@ public final class MainForm extends javax.swing.JFrame {
                 trapsPanel.clickAt(worldPos);
             }                           
         }else if (comp == movePanel){
-            tags |= Entity.TAG_CONTROL_POINT | Entity.TAG_BEAD;
+            tags |= Entity.TAG_CONTROL_POINT;
         }
         
         Entity e = scene.pickObject(
@@ -1964,6 +2051,14 @@ public final class MainForm extends javax.swing.JFrame {
             transPanel.getPinText().setText(t.getDriverPinNumber() + "");
         }
 
+    }
+
+    public void setSelection(ArrayList<Entity> sel) {
+        clearSelection();
+        for(Entity e : sel){
+            e.selected = true;
+            selection.add(e);
+        }
     }
 
     public enum FieldsToChange{

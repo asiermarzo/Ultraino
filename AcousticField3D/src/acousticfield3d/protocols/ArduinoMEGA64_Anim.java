@@ -42,9 +42,9 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
     }
     
     
-    public byte[] calcDataBytes(final HashMap<Transducer, TransState> transStates) {
+    public byte[] calcDataBytes(final AnimKeyFrame key) {
         //TODO refactor this shameful repetition of code
-        final int nTrans = Transducer.getMaxPin(transStates.keySet()) + 1;
+        final int nTrans = Transducer.getMaxPin(key.getTransAmplitudes().keySet()) + 1;
         final int signalsPerBoard = getSignalsPerBoard();
         final int nBoards = (nTrans - 1) / signalsPerBoard + 1;
         assert (nBoards < 15);
@@ -54,11 +54,13 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
 
         final int bytesPerBoard = nDivs * nPorts;
         byte[] data = new byte[nBoards * bytesPerBoard];
-        for (Transducer t : transStates.keySet()) {
+        for (Transducer t : key.getTransAmplitudes().keySet()) {
             final int n = t.getDriverPinNumber();
             if (n >= 0) {
-                final TransState state = transStates.get(t);
-
+               final float fphase = key.getTransPhases().get(t);
+               final float famp = key.getTransAmplitudes().get(t);
+               
+               
                 final int board = n / signalsPerBoard;
                 final int softwarePin = n % signalsPerBoard;
 
@@ -67,10 +69,10 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
 
                 final int targetByte = hardwarePin / 8;
                 final byte value = (byte) ((1 << (hardwarePin % 8)) & 0xFF);
-                final int phase = Transducer.calcDiscPhase(state.getPhase() + t.getPhaseCorrection(), nDivs);
+                final int phase = Transducer.calcDiscPhase(fphase + t.getPhaseCorrection(), nDivs);
 
                 //TODO the divs to amplitude is not going to be linear but it will do for the moment
-                final int ampDivs = M.iclamp(Math.round(state.getAmplitude() * nDivs / 2), 0, nDivs);
+                final int ampDivs = M.iclamp(Math.round(famp * nDivs / 2), 0, nDivs);
 
                 for (int i = 0; i < ampDivs; ++i) {
                     final int d = (i + phase + phaseCompensation) % nDivs;
@@ -98,9 +100,8 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
             durations.add((int) duration);
 
             final AnimKeyFrame akf = k;
-            final HashMap<Transducer, TransState> transStates = akf.getTransStates();
-
-            final int nTrans = Transducer.getMaxPin(transStates.keySet()) + 1;
+          
+            final int nTrans = Transducer.getMaxPin(akf.getTransAmplitudes().keySet()) + 1;
             final int signalsPerBoard = getSignalsPerBoard();
             final int nBoards = (nTrans - 1) / signalsPerBoard + 1;
             assert (nBoards < 15);
@@ -110,7 +111,7 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
 
             final int bytesPerBoard = nDivs * nPorts;
 
-            byte[] data = calcDataBytes(transStates);
+            byte[] data = calcDataBytes(akf);
 
             for (int i = 0; i < nBoards; ++i) {
                 for (int j = 0; j < bytesPerBoard; ++j) {
@@ -207,7 +208,7 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
         final int nKeys = frames.size();
         int ik = 0;
         for (AnimKeyFrame k : frames) {
-            final byte[] data = ins.calcDataBytes(k.getTransStates());
+            final byte[] data = ins.calcDataBytes( k );
             final int l = data.length;
             for (int in = 0; in < l; ++in) {
                 sb.append("0x" + Integer.toHexString(data[in] & 0xFF));
@@ -238,9 +239,8 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
 
         //send patterns
         for (AnimKeyFrame k : frames) {
-            final AnimKeyFrame akf = k;
-            final HashMap<Transducer, TransState> transStates = akf.getTransStates();
-            final int nTrans = Transducer.getMaxPin(transStates.keySet()) + 1;
+          
+            final int nTrans = Transducer.getMaxPin( k.getTransAmplitudes().keySet()) + 1;
             final int signalsPerBoard = ins.getSignalsPerBoard();
             final int nBoards = (nTrans - 1) / signalsPerBoard + 1;
             assert (nBoards < 15);
@@ -248,7 +248,7 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
             final int nPorts = ins.getNPorts();
             final int bytesPerBoard = nDivs * nPorts;
 
-            byte[] data = ins.calcDataBytes(transStates);
+            byte[] data = ins.calcDataBytes(k);
 
             for (int i = 0; i < nBoards; ++i) {
                 for (int j = 0; j < bytesPerBoard; ++j) {

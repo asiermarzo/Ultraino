@@ -25,7 +25,6 @@ public class Entity {
     public static final int TAG_SIMULATION_BOUNDINGS = 1<<4;
     public static final int TAG_CUBE_HELPER = 1<<5;
     public static final int TAG_MASK = 1<<9;
-    public static final int TAG_BEAD = 1<<10;
     public static final int TAG_OBJ = 1<<11;
 
     Material material;
