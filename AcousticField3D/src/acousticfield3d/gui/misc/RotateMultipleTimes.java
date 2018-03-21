@@ -427,10 +427,10 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         final Animation anim = mf.animPanel.getCurrentAnimation();
         final int nKeys = anim.getKeyFrames().getSize();
         for (int i = 0; i<nKeys-1; i+=2){
-            mf.animPanel.setAnimationFrame(i+1);
-            mf.transControlPanel.sendPattern();
             mf.animPanel.setAnimationFrame(i);
             mf.transControlPanel.sendPattern();
+            mf.animPanel.setAnimationFrame(i+1);
+            mf.transControlPanel.sendPattern(false);
             mf.transControlPanel.sendToogleCommand();
             try {
                 Thread.sleep( msWait );

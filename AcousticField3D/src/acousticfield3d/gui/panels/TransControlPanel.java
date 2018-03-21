@@ -369,19 +369,27 @@ public class TransControlPanel extends javax.swing.JPanel {
     }
     
     public void sendPattern(){
+        sendPattern(true);
+    }
+    
+    public void sendPattern(final boolean swapBuffers){
         if (device != null){
             if( ! extraDevices.isEmpty() ){
                 device.sendPattern( mf.simulation.getTransducers() );
                 for(DeviceConnection dc : extraDevices){
                     dc.sendPattern( mf.simulation.getTransducers() );
                 }
-                device.switchBuffers();
-                for(DeviceConnection dc : extraDevices){
-                    dc.switchBuffers();
+                if (swapBuffers){
+                    device.switchBuffers();
+                    for(DeviceConnection dc : extraDevices){
+                        dc.switchBuffers();
+                    }
                 }
             }else{
                 device.sendPattern( mf.simulation.getTransducers() );
-                device.switchBuffers();
+                if (swapBuffers){
+                    device.switchBuffers();
+                }
             }
         }
     }
