@@ -13,9 +13,9 @@ import java.util.List;
  * @author am14010
  */
 public class SimpleFPGA extends DeviceConnection{
-    final static byte PHASE_OFF = (byte) (0xFF & 32);
     final static byte START_PHASES = (byte) (0xFF & 255);
     final static byte SWAP = (byte) (0xFF & 254);
+    final static byte MULTIPLEX_MODE = (byte) (0xFF & 253);
     final static int N_TRANS = 256;
             
     @Override
@@ -47,6 +47,8 @@ public class SimpleFPGA extends DeviceConnection{
        //Arrays.fill(data, PHASE_OFF);
        final int divs = getDivs();
       
+       final byte PHASE_OFF = (byte) (0xFF & getDivs());
+       
         data[0] = START_PHASES; 
         for (Transducer t : transducers) {
             final int n = t.getOrderNumber() - number;
@@ -62,6 +64,12 @@ public class SimpleFPGA extends DeviceConnection{
             }
         }
        serial.write(data);
+       serial.flush();
+    }
+    
+    @Override
+    public void sendToogleQuickMultiplexMode(){
+       serial.writeByte(MULTIPLEX_MODE);
        serial.flush();
     }
 }

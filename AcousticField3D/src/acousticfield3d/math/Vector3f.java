@@ -1258,6 +1258,13 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         return this;
     }
     
+    public Vector3f setRandom(){
+        x = M.random();
+        y = M.random();
+        z = M.random();
+        return this;
+    }
+    
     public Vector3f setRandomGaus(final Vector3f avgs, final Vector3f stds){
         x = M.randomGaussian(avgs.x, stds.x);
         y = M.randomGaussian(avgs.y, stds.y);
@@ -1284,6 +1291,13 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         x += (target.x-x)*stepSize/dist;
         y += (target.y-y)*stepSize/dist;
         z += (target.z-z)*stepSize/dist;
+        return this;
+    }
+
+    public Vector3f abs() {
+        x = M.abs(x);
+        y = M.abs(y);
+        z = M.abs(z);
         return this;
     }
 }

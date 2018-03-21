@@ -441,7 +441,7 @@ public class MovePanel extends javax.swing.JPanel {
         mf.needUpdate();
     }
 
-    public void applyRotationOrScale(float rx,  float ry,  float rz){
+    public void applyRotation(float rx,  float ry,  float rz){
         final Entity e = getBeadEntity();
         if (e == null || mf.selection.isEmpty() ){ return;}
         
@@ -553,27 +553,27 @@ public class MovePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_neutralButtonActionPerformed
 
     private void rYNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rYNButtonActionPerformed
-        applyRotationOrScale(0, -1, 0);
+        applyRotation(0, -1, 0);
     }//GEN-LAST:event_rYNButtonActionPerformed
 
     private void rXPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rXPButtonActionPerformed
-        applyRotationOrScale(1, 0, 0);
+        applyRotation(1, 0, 0);
     }//GEN-LAST:event_rXPButtonActionPerformed
 
     private void rXNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rXNButtonActionPerformed
-        applyRotationOrScale(-1, 0, 0);
+        applyRotation(-1, 0, 0);
     }//GEN-LAST:event_rXNButtonActionPerformed
 
     private void rYPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rYPButtonActionPerformed
-        applyRotationOrScale(0, 1, 0);
+        applyRotation(0, 1, 0);
     }//GEN-LAST:event_rYPButtonActionPerformed
 
     private void rZPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rZPButtonActionPerformed
-        applyRotationOrScale(0, 0, 1);
+        applyRotation(0, 0, 1);
     }//GEN-LAST:event_rZPButtonActionPerformed
 
     private void rZNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rZNButtonActionPerformed
-        applyRotationOrScale(0, 0, -1);
+        applyRotation(0, 0, -1);
     }//GEN-LAST:event_rZNButtonActionPerformed
 
     

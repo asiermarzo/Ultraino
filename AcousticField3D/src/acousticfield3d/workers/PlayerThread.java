@@ -88,7 +88,7 @@ public class PlayerThread extends Thread{
         //apply
         synchronized(form.mf){
             applyFrame(Math.round( currentTime ) );
-            form.mf.transControlPanel.animFrame( Math.round( currentTime )  );
+            form.mf.transControlPanel.sendAnimFrame( Math.round( currentTime )  );
         }
         form.mf.needUpdate();
     }
@@ -107,7 +107,6 @@ public class PlayerThread extends Thread{
                 
                 apply(anim);
                 
-              
                 //advance
                 final float speed = 1;
                 if(form.isWrapPingPong()){

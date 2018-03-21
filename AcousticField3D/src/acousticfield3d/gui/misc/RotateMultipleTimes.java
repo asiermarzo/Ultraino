@@ -6,10 +6,17 @@
 package acousticfield3d.gui.misc;
 
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.Vector3f;
+import acousticfield3d.protocols.DeviceConnection;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
+import acousticfield3d.scene.Scene;
+import acousticfield3d.simulation.Animation;
+import acousticfield3d.utils.Color;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,6 +39,7 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         rxText = new javax.swing.JTextField();
         ryText = new javax.swing.JTextField();
@@ -45,6 +53,22 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         rotateSelectionsText = new javax.swing.JTextField();
         rotateSelectionsButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        bounceAndRotateStepsText = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        boundariesText = new javax.swing.JTextField();
+        bounceAndRotateButton = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        twinTrapsText = new javax.swing.JTextField();
+        twinButton = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        quickSwapText = new javax.swing.JTextField();
+        quickSwapButton = new javax.swing.JButton();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Rotate multiple times");
@@ -90,6 +114,49 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("bounce and rotate randomly:");
+
+        jLabel7.setText("steps");
+
+        bounceAndRotateStepsText.setText("500");
+
+        jLabel8.setText("boundaries:");
+
+        boundariesText.setText("0.02 0.02 0.02");
+
+        bounceAndRotateButton.setText("Ok");
+        bounceAndRotateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bounceAndRotateButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Twin-traps:");
+
+        jLabel10.setText("speed:");
+
+        twinTrapsText.setText("4");
+
+        twinButton.setText("Ok");
+        twinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                twinButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Play animation as quick Swaps");
+
+        jLabel12.setText("wait time(ms):");
+
+        quickSwapText.setText("200");
+
+        quickSwapButton.setText("Play");
+        quickSwapButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quickSwapButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,32 +165,60 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rxText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bounceAndRotateStepsText, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
+                        .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ryText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boundariesText, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rzText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(okButton))
+                        .addComponent(bounceAndRotateButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rotatePairsText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rotatePairsButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rotateSelectionsText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rotateSelectionsButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rxText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ryText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rzText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(okButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rotatePairsText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rotatePairsButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rotateSelectionsText, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rotateSelectionsButton))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel9)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(twinTrapsText, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(twinButton))
+                            .addComponent(jLabel11)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(quickSwapButton)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +242,30 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(rotateSelectionsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rotateSelectionsButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(bounceAndRotateStepsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(boundariesText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bounceAndRotateButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(twinTrapsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(twinButton))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(quickSwapButton))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -158,18 +276,23 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         int ry = Parse.toInt( ryText.getText() );
         int rz = Parse.toInt( rzText.getText() );
         while (rx > 0 || ry > 0 || rz > 0){
+            disableCalc();
+            
             if (rx>0){
                 --rx;
-                mf.movePanel.applyRotationOrScale(1, 0, 0);
+                mf.movePanel.applyRotation(1, 0, 0);
             }
             if (ry>0){
                 --ry;
-                mf.movePanel.applyRotationOrScale(0, 1, 0);
+                mf.movePanel.applyRotation(0, 1, 0);
             }
             if (rz>0){
                 --rz;
-                mf.movePanel.applyRotationOrScale(0, 0, 1);
+                mf.movePanel.applyRotation(0, 0, 1);
             }
+            
+            enableAndCalc();
+            
             System.out.println("calc rot " + rx + " " + ry + " " + rz);
         }
     }//GEN-LAST:event_okButtonActionPerformed
@@ -177,22 +300,21 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     private void rotatePairsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotatePairsButtonActionPerformed
         final int steps = Parse.toInt( rotatePairsText.getText());
         
-        final ArrayList<Entity> points = mf.selection;
+        final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
         final int n = points.size();
         
         for(int i = 0; i < steps; ++i){
-           mf.movePanel.setGenerateKeyFrame(false);
-           mf.movePanel.setCalculate(false); //leave in auto for slower but smoother calcs??
+           disableCalc();
+           
            for(int j = 0; j < n/2; ++j){
                final Entity pA = points.get(j*2+0);
                final Entity pB = points.get(j*2+1);
                mf.setSelection(pA);
                mf.addToSelection(pB);
-               mf.movePanel.applyRotationOrScale(0, (j%2==0) ? -1 : 1, 0);
+               mf.movePanel.applyRotation(0, (j%2==0) ? -1 : 1, 0);
            }
-           mf.movePanel.setGenerateKeyFrame(true);
-           mf.movePanel.setCalculate(true);
-           mf.movePanel.applyVector(0, 0, 0);
+           
+           enableAndCalc();
         }
         
         
@@ -208,32 +330,148 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
        
        
         for(int i = 0; i < steps; ++i){
-           mf.movePanel.setGenerateKeyFrame(false);
-           mf.movePanel.setCalculate(false); //leave in auto for slower but smoother calcs??
+           disableCalc();
            
             mf.setSelection(sel1);
-            mf.movePanel.applyRotationOrScale(0, -1, 0);
+            mf.movePanel.applyRotation(0, -1, 0);
             mf.setSelection(sel2);
-            mf.movePanel.applyRotationOrScale(0,  1, 0);
+            mf.movePanel.applyRotation(0,  1, 0);
 
-           mf.movePanel.setGenerateKeyFrame(true);
-           mf.movePanel.setCalculate(true);
-           mf.movePanel.applyVector(0, 0, 0);
+           enableAndCalc();
         }
         
         mf.movePanel.setGenerateKeyFrame(true);
         mf.movePanel.setCalculate(true);
     }//GEN-LAST:event_rotateSelectionsButtonActionPerformed
 
+    private void bounceAndRotateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bounceAndRotateButtonActionPerformed
+        final int steps = Parse.toInt( bounceAndRotateStepsText.getText() );
+        final Vector3f boundaries = new Vector3f( boundariesText.getText() );
+        final float speed = mf.movePanel.getSpeed();
+        
+        final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
+        
+        final Vector3f rotVec = new Vector3f().setRandom();
+        final Vector3f direction = new Vector3f().setRandom();
+        final Vector3f center = Scene.calcCenter(points);
+        final Vector3f cPos = center.clone();
+        final Vector3f diff = new Vector3f();
+        final Vector3f absDiff = new Vector3f();
+        
+        
+        for(int i = 0; i < steps; ++i){
+           disableCalc();
+
+           center.subtract(cPos, diff);
+           absDiff.set(diff).abs();
+           
+           if (absDiff.x > boundaries.x || absDiff.y > boundaries.y || absDiff.z > boundaries.z){
+               rotVec.setRandom();
+               if (absDiff.x > boundaries.x){
+                   direction.x = -direction.x;
+               }else if (absDiff.y > boundaries.y){
+                   direction.y = -direction.y;
+               }else if (absDiff.z > boundaries.z){
+                   direction.z = -direction.z;
+               }
+           }
+           
+           cPos.addLocalInc(direction, speed);
+           mf.movePanel.applyVector(direction.x, direction.y, direction.z);
+           mf.movePanel.applyRotation(rotVec.x, rotVec.y, rotVec.z);
+
+           enableAndCalc();
+        }
+        mf.movePanel.setGenerateKeyFrame(true);
+        mf.movePanel.setCalculate(true);
+    }//GEN-LAST:event_bounceAndRotateButtonActionPerformed
+
+    private void twinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twinButtonActionPerformed
+        final int speed = Parse.toInt( twinTrapsText.getText() );
+        final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
+        final ArrayList<Entity> selected = mf.selection;
+        final int nPoints = points.size();
+        final ArrayList<Integer> colors =  new ArrayList<>( nPoints );
+        for(MeshEntity e : points){
+            colors.add( e.getColor() );
+        }
+        
+        final int steps = 256 / speed;
+        
+        for(int i = 0; i < 256; i+=speed){
+            disableCalc();
+
+            //calc as focal points, they are white
+            for (MeshEntity e : points) {
+                e.setColor(Color.WHITE);
+            }
+            enableAndCalc();
+
+           //calc the twin traps, restore colors
+            for(int j = 0;j < nPoints; ++j){
+                points.get(j).setColor( colors.get(j) );
+            }
+            for(Entity e : selected){
+                e.setColor(Color.create(0, i, 0, 255));
+            }
+            enableAndCalc();
+            
+        }
+        
+        mf.movePanel.setGenerateKeyFrame(true);
+        mf.movePanel.setCalculate(true);
+    }//GEN-LAST:event_twinButtonActionPerformed
+
+    private void quickSwapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickSwapButtonActionPerformed
+        final int msWait = Parse.toInt( quickSwapText.getText() );
+        final Animation anim = mf.animPanel.getCurrentAnimation();
+        final int nKeys = anim.getKeyFrames().getSize();
+        for (int i = 0; i<nKeys-1; i+=2){
+            mf.animPanel.setAnimationFrame(i+1);
+            mf.transControlPanel.sendPattern();
+            mf.animPanel.setAnimationFrame(i);
+            mf.transControlPanel.sendPattern();
+            mf.transControlPanel.sendToogleCommand();
+            try {
+                Thread.sleep( msWait );
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RotateMultipleTimes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_quickSwapButtonActionPerformed
+
   
+    private void disableCalc() {
+        mf.movePanel.setGenerateKeyFrame(false);
+        mf.movePanel.setCalculate(false);
+    }
+
+    private void enableAndCalc() {
+        mf.movePanel.setGenerateKeyFrame(true);
+        mf.movePanel.setCalculate(true);
+        mf.movePanel.applyVector(0, 0, 0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bounceAndRotateButton;
+    private javax.swing.JTextField bounceAndRotateStepsText;
+    private javax.swing.JTextField boundariesText;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JButton okButton;
+    private javax.swing.JButton quickSwapButton;
+    private javax.swing.JTextField quickSwapText;
     private javax.swing.JButton rotatePairsButton;
     private javax.swing.JTextField rotatePairsText;
     private javax.swing.JButton rotateSelectionsButton;
@@ -241,5 +479,7 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     private javax.swing.JTextField rxText;
     private javax.swing.JTextField ryText;
     private javax.swing.JTextField rzText;
+    private javax.swing.JButton twinButton;
+    private javax.swing.JTextField twinTrapsText;
     // End of variables declaration//GEN-END:variables
 }

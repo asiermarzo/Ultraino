@@ -57,6 +57,8 @@ public class DeviceConnection implements SerialComms.Listener{
     
     public void sendAnim(final List<AnimKeyFrame> keyFrames){}
   
+    public void sendToogleQuickMultiplexMode(){}
+    
     public byte[] calcSignals01(final int nTrans, final List<Transducer> transducers){
         return calcSignals01(nTrans, transducers, getDivs());
     }

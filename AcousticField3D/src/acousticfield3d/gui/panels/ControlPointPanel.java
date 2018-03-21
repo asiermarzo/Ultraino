@@ -445,7 +445,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_gridAddButtonActionPerformed
 
     private void circleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_circleButtonActionPerformed
-        final List<Entity> particles = mf.selection;
+        final ArrayList<MeshEntity> particles = mf.simulation.controlPoints;
         
         //get the center
         final Vector3f center = Scene.calcCenter( particles );

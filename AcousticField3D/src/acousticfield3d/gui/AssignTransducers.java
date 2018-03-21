@@ -10,6 +10,7 @@ import acousticfield3d.math.Vector2f;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
+import acousticfield3d.utils.TextFrame;
 import acousticfield3d.utils.uartComm.SerialComms;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -85,6 +86,8 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
         setPhaseCorButton = new javax.swing.JButton();
         seePhaseCorButton = new javax.swing.JButton();
         checkButton1 = new javax.swing.JButton();
+        exportPhaseCorrButton = new javax.swing.JButton();
+        exportDivsText = new javax.swing.JTextField();
 
         jLabel2.setText("Trans number:");
 
@@ -212,6 +215,15 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
             }
         });
 
+        exportPhaseCorrButton.setText("export");
+        exportPhaseCorrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportPhaseCorrButtonActionPerformed(evt);
+            }
+        });
+
+        exportDivsText.setText("32");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -271,7 +283,10 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
                         .addComponent(prevButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nextButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(exportDivsText, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(exportPhaseCorrButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(checkButton)
                         .addGap(18, 18, 18)
@@ -318,7 +333,9 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
                     .addComponent(startButton)
                     .addComponent(finishButton)
                     .addComponent(prevButton)
-                    .addComponent(nextButton))
+                    .addComponent(nextButton)
+                    .addComponent(exportPhaseCorrButton)
+                    .addComponent(exportDivsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -330,15 +347,16 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
                     .addComponent(jLabel6)
                     .addComponent(phaseText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkButton)
-                    .addComponent(autoAssignCheck)
-                    .addComponent(minAmpCheck)
-                    .addComponent(minAmpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(maxAmpCheck)
                         .addComponent(maxAmpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(checkButton1)))
+                        .addComponent(checkButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkButton)
+                        .addComponent(autoAssignCheck)
+                        .addComponent(minAmpCheck)
+                        .addComponent(minAmpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -674,6 +692,21 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
         }
     }//GEN-LAST:event_checkButton1ActionPerformed
 
+    private void exportPhaseCorrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPhaseCorrButtonActionPerformed
+        final StringBuilder sb = new StringBuilder();
+        final int divs = Parse.toInt( exportDivsText.getText() );
+        
+        final ArrayList<Transducer> trans = mf.simulation.transducers;
+        for(Transducer t : trans){
+            final float phaseCor = t.getPhaseCorrection();
+            int iPhaseCor = Transducer.calcDiscPhase(phaseCor, divs);
+            sb.append( iPhaseCor + ",");
+        }
+        sb.deleteCharAt( sb.length() - 1);
+        
+        TextFrame.showText("Phase corrections", sb.toString(), this);
+    }//GEN-LAST:event_exportPhaseCorrButtonActionPerformed
+
     @Override
     public void rxMsg(byte[] data, int len) {
         buffer.write(data, 0, len);
@@ -691,6 +724,8 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
     private javax.swing.JButton connectButton;
     private javax.swing.JButton disconnectButton;
     private javax.swing.JButton erasePhaseCorrectionButton;
+    private javax.swing.JTextField exportDivsText;
+    private javax.swing.JButton exportPhaseCorrButton;
     private javax.swing.JButton finishButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

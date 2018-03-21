@@ -64,6 +64,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         durationsButton = new javax.swing.JButton();
         connectExtraButton = new javax.swing.JButton();
         extraNumberText = new javax.swing.JTextField();
+        multiplexButton = new javax.swing.JButton();
 
         sendButton.setText("Send");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +158,13 @@ public class TransControlPanel extends javax.swing.JPanel {
 
         extraNumberText.setText("256");
 
+        multiplexButton.setText("Mult");
+        multiplexButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                multiplexButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,7 +172,6 @@ public class TransControlPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(durationsText)
                     .addComponent(deviceCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(initSerialButton)
@@ -183,17 +190,23 @@ public class TransControlPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(phaseDownButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(sendButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(switchButton))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(sendAnimButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(durationsButton))
+                        .addComponent(multiplexButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(connectExtraButton)
                         .addGap(18, 18, 18)
-                        .addComponent(extraNumberText)))
+                        .addComponent(extraNumberText))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sendButton)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(durationsText))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(switchButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(durationsButton, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,11 +217,13 @@ public class TransControlPanel extends javax.swing.JPanel {
                     .addComponent(sendButton)
                     .addComponent(switchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sendAnimButton)
-                    .addComponent(durationsButton))
+                    .addComponent(multiplexButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(durationsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(durationsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(durationsButton))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -219,7 +234,7 @@ public class TransControlPanel extends javax.swing.JPanel {
                     .addComponent(onButton)
                     .addComponent(offButton)
                     .addComponent(phaseDownButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectExtraButton)
                     .addComponent(extraNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -299,6 +314,12 @@ public class TransControlPanel extends javax.swing.JPanel {
         extraDevices.add(dc);
     }//GEN-LAST:event_connectExtraButtonActionPerformed
 
+    private void multiplexButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multiplexButtonActionPerformed
+        if (device != null){
+            device.sendToogleQuickMultiplexMode();
+        }
+    }//GEN-LAST:event_multiplexButtonActionPerformed
+
 
     private DeviceConnection getDeviceConnection(int port){
         final int index = deviceCombo.getSelectedIndex();
@@ -365,7 +386,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         }
     }
     
-    public void animFrame(int frame) {
+    public void sendAnimFrame(int frame) {
         if (device != null){
             if (device instanceof ArduinoMEGA64_Anim){
                 device.sendDurations( new int[]{frame} );
@@ -429,6 +450,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     private javax.swing.JTextField extraNumberText;
     private javax.swing.JButton initSerialButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton multiplexButton;
     private javax.swing.JButton offButton;
     private javax.swing.JButton onButton;
     private javax.swing.JButton phaseDownButton;
@@ -478,6 +500,10 @@ public class TransControlPanel extends javax.swing.JPanel {
         return (device != null) ? device.getDivs() : DEFAULT_DIVS_PER_PERIOD;
     }
 
-   
+    public void sendToogleCommand(){
+        if (device != null){
+            device.sendToogleQuickMultiplexMode();
+        }
+    }
     
 }
