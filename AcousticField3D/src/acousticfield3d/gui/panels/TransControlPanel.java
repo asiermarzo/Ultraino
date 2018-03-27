@@ -102,6 +102,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         deviceCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MEGA", "SimpleFPGA", "Nano8", "MEGA_Anim", "Nano16", "SimpleFPGA 128" }));
+        deviceCombo.setSelectedIndex(1);
 
         jLabel1.setText("Phase");
 

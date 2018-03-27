@@ -588,12 +588,22 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     }
     
     void setAlgorithm(int i) {
-        if(i == 3){
-            maxGLaplacian.setSelected(false);
+        pressureCheck.setSelected(false);
+        multiLapCheck.setSelected(false);
+        gorkovCheck.setSelected(false);
+        maxGLaplacian.setSelected(false);
+        holoPressureCheck.setSelected(false);
+        
+        if(i == 0){
+            pressureCheck.setSelected(true);
+        }else if(i == 1){
+            multiLapCheck.setSelected(true);
+        }else if(i == 2){
             gorkovCheck.setSelected(true);
-        }else if(i == 4){
+        }else if(i == 3){
             maxGLaplacian.setSelected(true);
-            gorkovCheck.setSelected(false);
+        }else if(i == 4){
+            holoPressureCheck.setSelected(true);
         }
     }
   

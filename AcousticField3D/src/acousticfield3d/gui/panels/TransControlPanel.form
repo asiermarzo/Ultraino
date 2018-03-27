@@ -168,6 +168,7 @@
             <StringItem index="5" value="SimpleFPGA 128"/>
           </StringArray>
         </Property>
+        <Property name="selectedIndex" type="int" value="1"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">

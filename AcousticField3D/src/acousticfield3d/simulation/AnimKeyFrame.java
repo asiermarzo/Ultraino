@@ -6,9 +6,9 @@
 
 package acousticfield3d.simulation;
 
+import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
-import acousticfield3d.scene.MeshEntity;
 import java.util.HashMap;
 import java.util.List;
 
@@ -134,6 +134,45 @@ public class AnimKeyFrame {
 */
     
 
+    public AnimKeyFrame createCopy(){
+        final AnimKeyFrame copy = new AnimKeyFrame();
+        copy.setNumber( getNumber() );
+        for( Transducer t : transAmplitudes.keySet()){
+            copy.transAmplitudes.put(t, transAmplitudes.get(t));
+        }
+        for( Transducer t : transPhases.keySet()){
+            copy.transPhases.put(t, transPhases.get(t));
+        }
+        for( Entity e : pointsPositions.keySet()){
+            copy.pointsPositions.put(e, pointsPositions.get(e).clone());
+        }
+        return copy;
+    }
+
+    void interpolate(final AnimKeyFrame next,final float p) {
+        
+        for( Transducer tA : transAmplitudes.keySet()){
+            final Float vA = transAmplitudes.get(tA);
+            final Float vB = next.transAmplitudes.get(tA);
+            if(vB != null){
+                transAmplitudes.put(tA, M.lerp(vA, vB, p));
+            }
+        }
+        for( Transducer tA : transPhases.keySet()){
+            final Float vA = transPhases.get(tA);
+            final Float vB = next.transPhases.get(tA);
+            if(vB != null){
+                transPhases.put(tA, M.lerp(vA, vB, p));
+            }
+        }
+        for( Entity eA : pointsPositions.keySet()){
+            final Vector3f vA = pointsPositions.get(eA);
+            final Vector3f vB = next.pointsPositions.get(eA);
+            if(vB != null){
+                vA.interpolateLocal(vB, p);
+            }
+        }
+    }
   
     
 }

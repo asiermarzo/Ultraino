@@ -914,14 +914,14 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
     /**
      * Sets this vector to the interpolation by changeAmnt from this to the finalVec
      * this=(1-changeAmnt)*this + changeAmnt * finalVec
-     * @param finalVec The final vector to interpolate towards
-     * @param changeAmnt An amount between 0.0 - 1.0 representing a precentage
+     * @param b The final vector to interpolate towards
+     * @param p An amount between 0.0 - 1.0 representing a percentage
      *  change from this towards finalVec
      */
-    public Vector3f interpolateLocal(Vector3f finalVec, float changeAmnt) {
-        this.x=(1-changeAmnt)*this.x + changeAmnt*finalVec.x;
-        this.y=(1-changeAmnt)*this.y + changeAmnt*finalVec.y;
-        this.z=(1-changeAmnt)*this.z + changeAmnt*finalVec.z;
+    public Vector3f interpolateLocal(Vector3f b, float p) {
+        this.x=(1-p)*this.x + p*b.x;
+        this.y=(1-p)*this.y + p*b.y;
+        this.z=(1-p)*this.z + p*b.z;
         return this;
     }
 
@@ -1028,11 +1028,7 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
 
     @Override
     public Vector3f clone() {
-        try {
-            return (Vector3f) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // can not happen
-        }
+        return new Vector3f(x, y, z);
     }
 
     /**

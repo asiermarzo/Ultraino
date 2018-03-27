@@ -219,5 +219,34 @@ public class Animation {
             keyFrames.add(key);
         }       
     }
+
+    public Animation createCopy() {
+        final Animation copy = new Animation();
+        copy.setName( getName() );
+        for (AnimKeyFrame key : keyFrames.getElements()){
+            copy.keyFrames.add( key.createCopy() );
+        }
+        return copy;
+    }
+
+    public void interpolate() {
+        final ArrayList<AnimKeyFrame> keys = keyFrames.getElements();
+        final int n = keys.size();
+        if (n <= 1) { return; }
+        
+        final ArrayList<AnimKeyFrame> keysCopy = new ArrayList<>( keys );
+        keys.clear();
+        
+        for (int i = 0; i < n-1; ++i){
+            final AnimKeyFrame current = keysCopy.get(i);
+            final AnimKeyFrame next = keysCopy.get(i+1);
+            keys.add( current );
+            final AnimKeyFrame interp = current.createCopy();
+            interp.interpolate(next, 0.5f);
+            keys.add(interp);
+        }
+        keys.add( keysCopy.get(n-1) );
+        keyFrames.updateAll();
+    }
     
 }

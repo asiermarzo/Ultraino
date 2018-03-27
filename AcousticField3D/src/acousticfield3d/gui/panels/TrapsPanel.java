@@ -62,7 +62,6 @@ public class TrapsPanel extends javax.swing.JPanel {
         focusCheck.setText("focus");
 
         buttonGroup1.add(twinRadio);
-        twinRadio.setSelected(true);
         twinRadio.setText("twin");
 
         angleText.setText("90");
@@ -73,6 +72,7 @@ public class TrapsPanel extends javax.swing.JPanel {
         mText.setText("1");
 
         buttonGroup1.add(noneRadio);
+        noneRadio.setSelected(true);
         noneRadio.setText("none");
 
         calcButton.setText("Calc");

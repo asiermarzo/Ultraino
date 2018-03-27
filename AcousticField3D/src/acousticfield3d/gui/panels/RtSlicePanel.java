@@ -111,6 +111,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         });
 
         buttonGroup1.add(amplitudeCheck);
+        amplitudeCheck.setSelected(true);
         amplitudeCheck.setText("Amplitude");
         amplitudeCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -12,8 +12,13 @@ import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.Scene;
+import acousticfield3d.utils.FileUtils;
 import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.TextFrame;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -193,7 +198,6 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
             sb.append( (pos.y) + " \t");
             sb.append( (pos.z) + " \t");
             sb.append(pressure + "\n");
-          
         }
         
         TextFrame.showText("Pressures", sb.toString(), this);

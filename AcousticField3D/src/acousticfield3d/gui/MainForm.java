@@ -240,6 +240,8 @@ public final class MainForm extends javax.swing.JFrame {
         
         adjustGUIGainAndCameras();
         
+        movePanel.snapBeadPositions();
+        
         needUpdate();
     }
 
@@ -340,6 +342,8 @@ public final class MainForm extends javax.swing.JFrame {
         exportMatlabMenu = new javax.swing.JMenuItem();
         animExportRawMenu = new javax.swing.JMenuItem();
         animImportRawMenu = new javax.swing.JMenuItem();
+        cloneSelectedMenu = new javax.swing.JMenuItem();
+        interpolateAnimMenu = new javax.swing.JMenuItem();
         addTransMenu = new javax.swing.JMenu();
         arrayAddMenu = new javax.swing.JMenuItem();
         arrayFromObjMenu = new javax.swing.JMenuItem();
@@ -368,6 +372,7 @@ public final class MainForm extends javax.swing.JFrame {
         sendSwitchbufMenu = new javax.swing.JMenuItem();
         particleControllerMenu = new javax.swing.JMenuItem();
         rotateMultipleMenu = new javax.swing.JMenuItem();
+        exportPhasesMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1035,6 +1040,22 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu6.add(animImportRawMenu);
 
+        cloneSelectedMenu.setText("Clone selected");
+        cloneSelectedMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cloneSelectedMenuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(cloneSelectedMenu);
+
+        interpolateAnimMenu.setText("Interpolate");
+        interpolateAnimMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                interpolateAnimMenuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(interpolateAnimMenu);
+
         jMenuBar1.add(jMenu6);
 
         addTransMenu.setText("Arrays");
@@ -1249,6 +1270,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(rotateMultipleMenu);
 
+        exportPhasesMenu.setText("ExportPhases");
+        exportPhasesMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportPhasesMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(exportPhasesMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -1368,7 +1397,7 @@ public final class MainForm extends javax.swing.JFrame {
             initSimulation();
             clearSelection();
             
-            movePanel.snapBeadPositions();
+            
   
             needUpdate();
         } catch (IOException ex) {
@@ -1825,6 +1854,18 @@ public final class MainForm extends javax.swing.JFrame {
     private void animImportRawMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animImportRawMenuActionPerformed
         animPanel.importRawAnimation();
     }//GEN-LAST:event_animImportRawMenuActionPerformed
+
+    private void interpolateAnimMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpolateAnimMenuActionPerformed
+        animPanel.interpolateCurrentAnimation();
+    }//GEN-LAST:event_interpolateAnimMenuActionPerformed
+
+    private void cloneSelectedMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cloneSelectedMenuActionPerformed
+        animPanel.cloneCurrentAnimation();
+    }//GEN-LAST:event_cloneSelectedMenuActionPerformed
+
+    private void exportPhasesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPhasesMenuActionPerformed
+        animPanel.exportPhasesOfCurrentAnimation();
+    }//GEN-LAST:event_exportPhasesMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1849,18 +1890,21 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem camViewMenu;
     private javax.swing.JMenuItem cameraMovMenu;
     private javax.swing.JMenuItem centerCamMenu;
+    private javax.swing.JMenuItem cloneSelectedMenu;
     private javax.swing.JPanel containerPanel;
     private javax.swing.JMenuItem delTransMenu;
     private javax.swing.JMenuItem exportMatlabMenu;
     private javax.swing.JMenuItem exportNano8Menu;
     private javax.swing.JMenuItem exportObjMenu;
     private javax.swing.JMenuItem exportObjWithMtlMenu;
+    private javax.swing.JMenuItem exportPhasesMenu;
     private javax.swing.JMenuItem exportToArduinoMenu;
     private javax.swing.JMenuItem forcePlotsMenu;
     private javax.swing.JMenuItem forceStudyMenu;
     private javax.swing.JMenuItem hybridSingleBeamMenu;
     private javax.swing.JMenuItem importArrayMenu;
     private javax.swing.JMenuItem importTransMenu;
+    private javax.swing.JMenuItem interpolateAnimMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;

@@ -6,15 +6,23 @@
 
 package acousticfield3d.gui.panels;
 
+import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
+import acousticfield3d.math.Vector2f;
+import acousticfield3d.scene.Entity;
 import acousticfield3d.workers.PlayerThread;
 import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.simulation.Animation;
+import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.DialogUtils;
 import acousticfield3d.utils.FileUtils;
 import acousticfield3d.utils.Parse;
+import acousticfield3d.utils.TextFrame;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -515,7 +523,61 @@ public class AnimPanel extends javax.swing.JPanel {
         }
     }
     
-
+    public void cloneCurrentAnimation(){
+        final Animation anim = currentAnimation;
+        final Animation clone = anim.createCopy();
+        clone.setName( anim.getName() + "clone");
+        mf.simulation.animations.add(clone);
+    }
+    
+    public void interpolateCurrentAnimation(){
+        currentAnimation.interpolate();
+    }
+    
+    public void exportPhasesOfCurrentAnimation() {
+        final StringBuilder sb = new StringBuilder();
+        final Animation anim = currentAnimation;
+        
+        final ArrayList<AnimKeyFrame> keys = anim.getKeyFrames().getElements();
+        final int nFrames = keys.size();
+        if (nFrames <= 0) { return; }
+        final ArrayList<Entity> points =  new ArrayList<>( keys.get(0).getPointsPositions().keySet() );
+        final ArrayList<Transducer> trans =  new ArrayList<>( keys.get(0).getTransAmplitudes().keySet() );
+        final int nPoints = points.size();
+        final int nTrans = trans.size();
+        
+        for (int i = 0; i < nFrames; ++i){
+            final AnimKeyFrame key = keys.get(i);
+            key.apply();
+            for (int j = 0; j < nPoints; ++j){
+                final Entity e = points.get(j);
+                final Vector2f field = CalcField.calcFieldAt(e.getTransform().getTranslation(), mf);
+                float phase = field.getAngle();
+                while (phase < 0) { phase+=M.PI; }
+                sb.append(phase + "\t");
+            }
+            sb.append("\n");
+        }
+        TextFrame.showText("Phases", sb.toString(), this);
+        
+        sb.setLength(0);
+        
+        for (int i = 0; i < nFrames; ++i){
+            final AnimKeyFrame key = keys.get(i);
+            key.apply();
+            for (int j = 0; j < nTrans; ++j){
+                final Transducer t = trans.get(j);
+                float phase = t.getPhase() * M.PI;
+                while (phase < 0) { phase+=M.PI; }
+                sb.append(phase + "\t");
+            }
+            sb.append("\n");
+        }
+        
+        TextFrame.showText("Trans Phases", sb.toString(), this);
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAnim;
     private javax.swing.JButton addStatus;
@@ -541,6 +603,8 @@ public class AnimPanel extends javax.swing.JPanel {
     private javax.swing.JTextField waitText;
     private javax.swing.ButtonGroup wraperGroup;
     // End of variables declaration//GEN-END:variables
+
+
 
     
 
