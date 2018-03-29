@@ -18,6 +18,8 @@ import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 
 /**
  *
@@ -117,6 +119,8 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     private void calcAlgorithm(boolean autoSelectAllParticles){
         final Simulation sim = mf.simulation; 
         final boolean reusePre = resurePreCheck.isSelected();
+        final int iters = getSteps();
+        final int kickstartIters = Parse.toInt( itersMultiFocalKickText.getText() );
         
           //gather the control points
         bfgs.controlPoints.clear();
@@ -135,7 +139,6 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         }
             
         if (holoPressureCheck.isSelected()){
-            final int iters = getSteps();
             SimpleMultiPressure smp = SimpleMultiPressure.create(mf, bfgs.controlPoints);
             for (int i = 0; i<iters; ++i){
                 smp.iterate();
@@ -147,39 +150,37 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
             if (kickstartCheck.isSelected()) {
                 //optimize pressure
                 if (focalKickCheck.isSelected()) {
-                    //only one particle --> simple focal
-                    if (bfgs.controlPoints.size() == 1) {
-                        SimplePhaseAlgorithms.focus(mf.simulation.transducers,
-                                bfgs.controlPoints.get(0).getTransform().getTranslation(),
-                                mf.simulation.getMediumSpeed());
-                    } else { //more particles -> use BFGS with pressure
-                        if (reusePre){ //apply the precalc phases
-                            applyPhases(); 
+                    if (kickstartBFGSorHoloCheck.isSelected()){
+                        //only one particle --> simple focal
+                        if (bfgs.controlPoints.size() == 1) {
+                            SimplePhaseAlgorithms.focus(mf.simulation.transducers,
+                                    bfgs.controlPoints.get(0).getTransform().getTranslation(),
+                                    mf.simulation.getMediumSpeed());
+                        } else { //more particles -> use BFGS with pressure
+                            if (reusePre){ //apply the precalc phases
+                                applyPhases(); 
+                            }
+                            
+                            mf.renderer.updateTransducersBuffers(sim);
+                            bfgs.calcMultiPressure(mf, kickstartIters);
+                            if (reusePre){ //get the results
+                               gatherPhases(); 
+                            }
                         }
-                        final int itersMultiPressure = Parse.toInt( itersMultiFocalKickText.getText() );
-                        mf.renderer.updateTransducersBuffers(sim);
-                        bfgs.calcMultiPressure(mf, itersMultiPressure);
-                        if (reusePre){ //get the results
-                           gatherPhases(); 
+                    }else{
+                        SimpleMultiPressure smp = SimpleMultiPressure.create(mf, bfgs.controlPoints);
+                        for (int i = 0; i<kickstartIters; ++i){
+                            smp.iterate();
                         }
+                       smp.applySolution(mf.simulation);
                     }
                 }
 
                 //add PI into the top array
                 if (piStartTop.isSelected()) {
-                    final float midY = sim.calcTransducersMidY();
-                    for(Transducer t : sim.transducers){
-                        if (t.getTransform().getTranslation().y > midY){
-                            t.phase += 1;
-                        }
-                    }
+                    mf.simulation.addPiToTopTransducers();
                 }else if(piStartHalfCheck.isSelected()){
-                    final float midX = sim.calcTransducersMidX();
-                    for(Transducer t : sim.transducers){
-                        if (t.getTransform().getTranslation().x > midX){
-                            t.phase += 1;
-                        }
-                    }
+                    mf.simulation.addPiToHalfRightTransducers();
                 }
             }
 
@@ -268,6 +269,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         resurePreCheck = new javax.swing.JCheckBox();
         piStartHalfCheck = new javax.swing.JCheckBox();
         holoPressureCheck = new javax.swing.JRadioButton();
+        kickstartBFGSorHoloCheck = new javax.swing.JCheckBox();
 
         jButton1.setText("jButton1");
 
@@ -389,6 +391,9 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         varToOptimizeGroup.add(holoPressureCheck);
         holoPressureCheck.setText("HoloPressure");
 
+        kickstartBFGSorHoloCheck.setSelected(true);
+        kickstartBFGSorHoloCheck.setText("BFGS or HOLO");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -449,23 +454,27 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lowPressureKText))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(equalizerCheck)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(equalizerWeightText)
-                                .addGap(33, 33, 33)
-                                .addComponent(resurePreCheck))
+                                .addGap(122, 122, 122))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(kickstartCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(focalKickCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(itersMultiFocalKickText)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(piStartTop)
-                            .addComponent(piStartHalfCheck))))
+                                .addComponent(resurePreCheck)
+                                .addGap(10, 10, 10)
+                                .addComponent(kickstartBFGSorHoloCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(piStartTop)
+                        .addGap(2, 2, 2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(kickstartCheck)
+                        .addGap(14, 14, 14)
+                        .addComponent(focalKickCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(itersMultiFocalKickText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(piStartHalfCheck)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -509,17 +518,20 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(equalizerCheck)
-                    .addComponent(equalizerWeightText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resurePreCheck)
-                    .addComponent(piStartHalfCheck))
+                    .addComponent(equalizerWeightText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(piStartHalfCheck)
                     .addComponent(kickstartCheck)
                     .addComponent(focalKickCheck)
-                    .addComponent(piStartTop)
                     .addComponent(itersMultiFocalKickText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(piStartTop)
+                    .addComponent(resurePreCheck)
+                    .addComponent(kickstartBFGSorHoloCheck))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
@@ -634,7 +646,25 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         }
         
     }
+
+    public JCheckBox getKickstartCheck() {
+        return kickstartCheck;
+    }
+
+    public JTextField getItersMultiFocalKickText() {
+        return itersMultiFocalKickText;
+    }
+
+    public JCheckBox getResurePreCheck() {
+        return resurePreCheck;
+    }
+
+    public JCheckBox getKickstartBFGSorHoloCheck() {
+        return kickstartBFGSorHoloCheck;
+    }
        
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField alphaText;
     private javax.swing.JTextArea area;
@@ -666,6 +696,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JCheckBox kickstartBFGSorHoloCheck;
     private javax.swing.JCheckBox kickstartCheck;
     private javax.swing.JTextField laplacianConstantsText;
     private javax.swing.JTextField lowPressureKText;

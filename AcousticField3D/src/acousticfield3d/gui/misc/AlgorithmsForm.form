@@ -161,27 +161,31 @@
                       <Component id="lowPressureKText" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="equalizerCheck" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="equalizerWeightText" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="resurePreCheck" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="kickstartCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="focalKickCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="itersMultiFocalKickText" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="kickstartBFGSorHoloCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="piStartTop" min="-2" max="-2" attributes="0"/>
-                          <Component id="piStartHalfCheck" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="piStartTop" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="kickstartCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="focalKickCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="itersMultiFocalKickText" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="piStartHalfCheck" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -237,18 +241,22 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="equalizerCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="equalizerWeightText" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="resurePreCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="piStartHalfCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="piStartHalfCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="kickstartCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="focalKickCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="piStartTop" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="itersMultiFocalKickText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="76" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="piStartTop" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="resurePreCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="kickstartBFGSorHoloCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="59" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -459,6 +467,12 @@
           <ComponentRef name="varToOptimizeGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="HoloPressure"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="kickstartBFGSorHoloCheck">
+      <Properties>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="BFGS or HOLO"/>
       </Properties>
     </Component>
   </SubComponents>

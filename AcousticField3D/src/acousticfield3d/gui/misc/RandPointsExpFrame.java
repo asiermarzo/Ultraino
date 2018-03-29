@@ -9,7 +9,6 @@ import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Transform;
-import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.simulation.ControlPoint;
 import acousticfield3d.simulation.Transducer;
@@ -17,8 +16,8 @@ import acousticfield3d.utils.FileUtils;
 import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.TimerUtil;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +61,10 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         selectButton = new javax.swing.JButton();
         fileText = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        simpleForcesButton = new javax.swing.JButton();
+        generateTestPointsButton = new javax.swing.JButton();
+        simpleForcesToCSVButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Random points experiments");
@@ -126,6 +129,34 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("BFGS vs HOLO Forces");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        simpleForcesButton.setText("Simple Forces");
+        simpleForcesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpleForcesButtonActionPerformed(evt);
+            }
+        });
+
+        generateTestPointsButton.setText("GenerateTestPoints");
+        generateTestPointsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateTestPointsButtonActionPerformed(evt);
+            }
+        });
+
+        simpleForcesToCSVButton.setText("SimpleForcesToCSV");
+        simpleForcesToCSVButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpleForcesToCSVButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,7 +198,15 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(goButton)
-                            .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addComponent(simpleForcesButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(generateTestPointsButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(simpleForcesToCSVButton)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -200,8 +239,16 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addComponent(fileText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(simpleForcesButton)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generateTestPointsButton)
+                    .addComponent(simpleForcesToCSVButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -265,9 +312,24 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_auxButtonActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+        calcExperiments(null, true);
+    }//GEN-LAST:event_goButtonActionPerformed
+
+    private void calcExperiments(final String fileName, final boolean reportText){
         final boolean needToGeneratePoints = (pointsToUse == null);
         if (needToGeneratePoints){
             pointsToUse = generatePoints();
+        }
+        
+        FileWriter fw = null;
+        if (fileName != null){
+            try {
+                fw = new FileWriter(new File(fileName));
+            } catch (IOException ex) {
+                fw = null;
+                Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
         
         final int repetitions = pointsToUse.length;
@@ -292,57 +354,79 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             cPoints[i] = cp;
             mf.selection.add(cp);
         }
+        
+        try {
+            TimerUtil.get().tick("Seconds");
+            for (int i = 0; i < repetitions; ++i) {
+                final float[][] pointSet = pointsToUse[i];
 
-        TimerUtil.get().tick("Seconds");
-        for(int i = 0; i < repetitions; ++i){
-            final float[][] pointSet = pointsToUse[i];
-            
-            //place the control points
-            for(int j = 0; j < nPoints; ++j){
-                final float[] point = pointSet[j];
-                cPoints[j].getTransform().getTranslation().set(point[0],point[1],point[2]);
-            }
-            
-            //clear the phases
-            resetTransducers();
+                //place the control points
+                for (int j = 0; j < nPoints; ++j) {
+                    final float[] point = pointSet[j];
+                    cPoints[j].getTransform().getTranslation().set(point[0], point[1], point[2]);
+                }
 
-            //run algorithm
-             mf.algForm.runBFGS(false, false, false);
-            
-            //take measurements
-            pressureDiffTmp.set(0,0,-Float.MAX_VALUE);
-            for(int j = 0; j < nPoints; ++j){
-                final Vector3f p = cPoints[j].getTransform().getTranslation();
-                final float press = CalcField.calcFieldAt(p, mf).length();
-                //final Vector3f forceG = CalcField.calcForceGradients(p.x, p.y, p.z, particleR, mf);
-                //System.out.println("Pressure " + press + " trapY " + forceG.y + " pos " + p);
-                aggregate(pressure, press);
-                //aggregate(trapX, forceG.x);
-                //aggregate(trapY, forceG.y);
-               // aggregate(trapZ, forceG.z);
-                aggregate(pressureDiffTmp, press);
+                //clear the phases
+                resetTransducers();
+
+                //run algorithm
+                mf.algForm.runBFGS(false, false, false);
+
+                //take measurements
+                pressureDiffTmp.set(0, 0, -Float.MAX_VALUE);
+                for (int j = 0; j < nPoints; ++j) {
+                    final Vector3f p = cPoints[j].getTransform().getTranslation();
+                    final float press = CalcField.calcFieldAt(p, mf).length();
+                    final Vector3f forceG = CalcField.calcForceGradients(p.x, p.y, p.z, particleR, mf);
+
+                    aggregate(pressure, press);
+                    aggregate(trapX, forceG.x);
+                    aggregate(trapY, forceG.y);
+                    aggregate(trapZ, forceG.z);
+                    aggregate(pressureDiffTmp, press);
+
+                    if (fw != null) {
+                        //repetition nPoint x y z fx fy fz
+                        fw.write(i + "\t" + j + "\t" + "\t" + p.toStringSimple("\t") + "\t" + forceG.toStringSimple("\t") + "\n");
+                    }
+                }
+                final double pressStdBetweenPoints = getStd(pressureDiffTmp, nPoints);
+                aggregate(pressureDiff, (float) pressStdBetweenPoints);
             }
-            final double pressStdBetweenPoints = getStd(pressureDiffTmp, nPoints);
-            aggregate(pressureDiff, (float)pressStdBetweenPoints);
+
+        } catch (IOException ex) {
+            Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         TimerUtil.get().tack("Seconds", false);
         
         mf.clearSelection();
 
+        
         //report the variables
-        final int n = repetitions * nPoints;
-        reportAvgAndStd("Pressure", pressure, n);
-        reportAvgAndStd("PressDev", pressureDiffTmp, repetitions);
-        reportAvgAndStd("trapX", trapX, n);
-        reportAvgAndStd("trapY", trapY, n);
-        reportAvgAndStd("trapZ", trapZ, n);
-        System.out.println();
+        if (reportText){
+            final int n = repetitions * nPoints;
+            reportAvgAndStd("Pressure", pressure, n);
+            reportAvgAndStd("PressDev", pressureDiffTmp, repetitions);
+            reportAvgAndStd("trapX", trapX, n);
+            reportAvgAndStd("trapY", trapY, n);
+            reportAvgAndStd("trapZ", trapZ, n);
+            System.out.println();
+        }
+        
+        if (fw != null) {
+            try {
+                fw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         if(needToGeneratePoints){
             pointsToUse = null;
         }
-    }//GEN-LAST:event_goButtonActionPerformed
-
+    }
+    
     private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
         final String file = FileUtils.selectFile(this, "Select", ".xml", null);
         if(file != null){
@@ -366,18 +450,90 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                 for (int alg : algs) {
                     mf.algForm.setAlgorithm(alg);
                     System.out.print("nPoints " + nPoints + " iters " + iter + " alg " + alg + "\t");
-                    goButtonActionPerformed(null);
+                    calcExperiments(null, true);
                 }
             }
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        final int MAX_POINTS = 30;
+        final int REPETITIONS = 1000;
+        final int[] algs = {0,4}; //BFGS, HOLOGRAPHIC
+        final boolean[] useBFGSGorkov = {false, true};
+        
+        repetitionsText.setText(REPETITIONS + "");
+        final String iters = mf.algForm.getItersMultiFocalKickText().getText();
+        
+        for (int nPoints = 1; nPoints <= MAX_POINTS; ++nPoints) {
+            numPointsText.setText( nPoints + "");
+            pointsToUse = generatePoints();
+            
+            for (boolean useGorkov : useBFGSGorkov) {
+                for (int alg : algs) {
+                    mf.algForm.getKickstartBFGSorHoloCheck().setSelected( (alg==0) );
+                    mf.algForm.getItersMultiFocalKickText().setText( useGorkov ? iters : "0");
+                    
+                    System.out.print("nPoints " + nPoints + " alg " + alg + " 5Gorkov " + useGorkov + "\t");
+                    calcExperiments(null, true);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void simpleForcesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpleForcesButtonActionPerformed
+        final int MAX_POINTS = 30;
+        final int REPETITIONS = 1000;
+
+        repetitionsText.setText(REPETITIONS + "");
+
+        for (int nPoints = 1; nPoints <= MAX_POINTS; ++nPoints) {
+            numPointsText.setText(nPoints + "");
+            pointsToUse = generatePoints();
+
+            System.out.print("nPoints " + nPoints + "\t");
+            calcExperiments(null, true);
+        }
+
+    }//GEN-LAST:event_simpleForcesButtonActionPerformed
+
+    private void generateTestPointsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTestPointsButtonActionPerformed
+        final int nPoints = Parse.toInt( numPointsText.getText() );
+        
+        for (int i = 1; i <= nPoints; ++i){
+            numPointsText.setText( i + "");
+            final float[][][] pointSet = generatePoints();
+            
+            try {
+                FileUtils.writeObject(new File("points" + i + ".xml"), pointSet);
+            } catch (IOException ex) {
+                Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+       numPointsText.setText( nPoints + "");
+        
+        
+    }//GEN-LAST:event_generateTestPointsButtonActionPerformed
+
+    private void simpleForcesToCSVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpleForcesToCSVButtonActionPerformed
+        final int nPoints = Parse.toInt( numPointsText.getText() );
+        
+        for (int i = 1; i <= nPoints; ++i){
+            try {
+                pointsToUse = (float[][][]) FileUtils.readObject( new File("points" + i + ".xml"));
+                calcExperiments(fileText + "_" + i + ".csv", false);
+            } catch (IOException ex) {
+                Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_simpleForcesToCSVButtonActionPerformed
 
     private void runExperiment(final int steps, final int alg){
         System.out.println("----- " + (alg==3?"gorkov":"laplacian") + " steps " + steps);
         mf.algForm.setAlgorithm(alg);
         mf.algForm.setSteps(steps);
-        goButtonActionPerformed(null);
+        calcExperiments(null, true);
     }
     
     private static void aggregate(Vector3f v, final float val){
@@ -404,8 +560,10 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     private javax.swing.JButton copyCubeButton;
     private javax.swing.JTextField fileText;
     private javax.swing.JButton generatePointsButton;
+    private javax.swing.JButton generateTestPointsButton;
     private javax.swing.JButton goButton;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -416,6 +574,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     private javax.swing.JTextField numPointsText;
     private javax.swing.JTextField repetitionsText;
     private javax.swing.JButton selectButton;
+    private javax.swing.JButton simpleForcesButton;
+    private javax.swing.JButton simpleForcesToCSVButton;
     // End of variables declaration//GEN-END:variables
 
     private void selectPoints(final float[][] points, final float minDist, final float minDistZ) {

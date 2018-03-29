@@ -330,4 +330,24 @@ public class Simulation {
         }
         return midX / transducers.size();
     }
+
+    public void addPiToTopTransducers() {
+        final float midY = calcTransducersMidY();
+        for (Transducer t : transducers) {
+            if (t.getTransform().getTranslation().y > midY) {
+                t.phase += 1;
+            }
+        }
+    }
+
+    public void addPiToHalfRightTransducers() {
+        final float midX = calcTransducersMidX();
+        for (Transducer t : transducers) {
+            if (t.getTransform().getTranslation().x > midX) {
+                t.phase += 1;
+            }
+        }
+    }
+    
+    
 }
