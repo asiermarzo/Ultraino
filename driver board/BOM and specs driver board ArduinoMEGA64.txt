@@ -1,4 +1,4 @@
-50.8mm by 67.31mm 
+62mm by 115mm 
 4 layers
 
 32x TC4427A SMD
