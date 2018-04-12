@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * @author Asier
  */
 public class AnimPanel extends javax.swing.JPanel {
-    public MainForm mf;
+    public final MainForm mf;
     
     public Animation currentAnimation;
     Animation emptyAnimation;

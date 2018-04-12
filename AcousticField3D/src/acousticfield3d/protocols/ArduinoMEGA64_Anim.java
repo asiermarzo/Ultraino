@@ -41,16 +41,19 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
         return 64;
     }
     
-    
-    public byte[] calcDataBytes(final AnimKeyFrame key) {
+    public byte[] calcDataBytes(final AnimKeyFrame key){
+        return calcDataBytes(key, getSignalsPerBoard(), getDivs(), getNPorts());
+    }
+            
+    public static byte[] calcDataBytes(final AnimKeyFrame key, final int signalsPerBoard, final int divs, final int ports) {
         //TODO refactor this shameful repetition of code
         final int nTrans = Transducer.getMaxPin(key.getTransAmplitudes().keySet()) + 1;
-        final int signalsPerBoard = getSignalsPerBoard();
-        final int nBoards = (nTrans - 1) / signalsPerBoard + 1;
+        final int nSignalsPerBoard = signalsPerBoard;
+        final int nBoards = (nTrans - 1) / nSignalsPerBoard + 1;
         assert (nBoards < 15);
 
-        final int nDivs = getDivs();
-        final int nPorts = getNPorts();
+        final int nDivs = divs;
+        final int nPorts = ports;
 
         final int bytesPerBoard = nDivs * nPorts;
         byte[] data = new byte[nBoards * bytesPerBoard];
@@ -60,9 +63,8 @@ public class ArduinoMEGA64_Anim extends ArduinoNano{
                final float fphase = key.getTransPhases().get(t);
                final float famp = key.getTransAmplitudes().get(t);
                
-               
-                final int board = n / signalsPerBoard;
-                final int softwarePin = n % signalsPerBoard;
+                final int board = n / nSignalsPerBoard;
+                final int softwarePin = n % nSignalsPerBoard;
 
                 final int hardwarePin = PORT_MAPPING[softwarePin];
                 final int phaseCompensation = PHASE_COMPENSATION[softwarePin];

@@ -10,7 +10,6 @@ import acousticfield3d.math.M;
 import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.simulation.Transducer;
-import java.nio.FloatBuffer;
 
 /**
  *

@@ -44,6 +44,7 @@ import acousticfield3d.math.Vector3f;
 import acousticfield3d.protocols.ArduinoMEGA64;
 import acousticfield3d.protocols.ArduinoMEGA64_Anim;
 import acousticfield3d.protocols.ArduinoNano;
+import acousticfield3d.protocols.SimpleFPGA_128;
 import acousticfield3d.renderer.Renderer;
 import acousticfield3d.scene.BehavioursThread;
 import acousticfield3d.scene.Entity;
@@ -1747,7 +1748,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_exportToArduinoMenuActionPerformed
 
     private void exportMatlabMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMatlabMenuActionPerformed
-        ArduinoMEGA64_Anim.exportAnimationMatlab( this );
+        SimpleFPGA_128.exportAnimationMatlab( this );
     }//GEN-LAST:event_exportMatlabMenuActionPerformed
 
     private void forcePlotsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forcePlotsMenuActionPerformed
