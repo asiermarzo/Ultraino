@@ -1262,7 +1262,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(particleControllerMenu);
 
-        rotateMultipleMenu.setText("RotateMultiple");
+        rotateMultipleMenu.setText("Gen Anims");
         rotateMultipleMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rotateMultipleMenuActionPerformed(evt);

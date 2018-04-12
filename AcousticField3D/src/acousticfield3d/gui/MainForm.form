@@ -644,7 +644,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="rotateMultipleMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="RotateMultiple"/>
+                <Property name="text" type="java.lang.String" value="Gen Anims"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rotateMultipleMenuActionPerformed"/>

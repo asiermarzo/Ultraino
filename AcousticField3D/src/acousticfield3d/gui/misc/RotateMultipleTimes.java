@@ -6,6 +6,7 @@
 package acousticfield3d.gui.misc;
 
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.protocols.DeviceConnection;
 import acousticfield3d.scene.Entity;
@@ -67,6 +68,22 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         quickSwapText = new javax.swing.JTextField();
         quickSwapButton = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        lengthText = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        stepSizeText = new javax.swing.JTextField();
+        lineXButton = new javax.swing.JButton();
+        lineYButton = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        circleWidthText = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        circleHeightText = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        circleStepSizeText = new javax.swing.JTextField();
+        circleXZButton = new javax.swing.JButton();
+        circleXYButton = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -157,6 +174,58 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("Lines");
+
+        jLabel14.setText("Length:");
+
+        lengthText.setText("0.02");
+
+        jLabel15.setText("Step size:");
+
+        stepSizeText.setText("0.001");
+
+        lineXButton.setText("LineX");
+        lineXButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lineXButtonActionPerformed(evt);
+            }
+        });
+
+        lineYButton.setText("LineY");
+        lineYButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lineYButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Circle");
+
+        jLabel17.setText("Width:");
+
+        circleWidthText.setText("0.02");
+
+        jLabel18.setText("height:");
+
+        circleHeightText.setText("0.01");
+
+        jLabel19.setText("stepSize:");
+
+        circleStepSizeText.setText("0.0005");
+
+        circleXZButton.setText("XZ");
+        circleXZButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                circleXZButtonActionPerformed(evt);
+            }
+        });
+
+        circleXYButton.setText("XY");
+        circleXYButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                circleXYButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,9 +240,22 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(boundariesText, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                        .addComponent(boundariesText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bounceAndRotateButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lengthText, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(53, 53, 53))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -216,8 +298,29 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(quickSwapButton)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(quickSwapButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lineXButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(lineYButton))
+                            .addComponent(jLabel16)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(circleWidthText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(circleHeightText, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(circleStepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(circleXZButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(circleXYButton)))
+                        .addGap(0, 1, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -232,17 +335,17 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(rzText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(okButton))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(rotatePairsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rotatePairsButton))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(rotateSelectionsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rotateSelectionsButton))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -258,14 +361,40 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(twinTrapsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(twinButton))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(quickSwapButton))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(lengthText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15)
+                    .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lineYButton)
+                    .addComponent(lineXButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(circleWidthText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(circleHeightText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19)
+                    .addComponent(circleStepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(circleXZButton)
+                    .addComponent(circleXYButton))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -440,6 +569,95 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_quickSwapButtonActionPerformed
 
+    private void lineXButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lineXButtonActionPerformed
+        final float length = Parse.toFloat( lengthText.getText() );
+        final float stepSize = Parse.toFloat( stepSizeText.getText() );
+
+        final Vector3f pos = mf.movePanel.getBeadEntity().getTransform().getTranslation();
+        final Vector3f oPos = pos.clone();
+        final float initX = pos.x;
+        
+        final int nSteps = (int)M.ceil(length / stepSize);
+        for(int i = 0; i < nSteps; ++i){
+            final float x = initX - (length/2) + i*stepSize;
+            pos.x = x;
+            enableAndCalc();
+        }
+        pos.set( oPos );
+        mf.needUpdate();
+    }//GEN-LAST:event_lineXButtonActionPerformed
+
+    private void lineYButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lineYButtonActionPerformed
+        final float length = Parse.toFloat(lengthText.getText());
+        final float stepSize = Parse.toFloat(stepSizeText.getText());
+
+        final Vector3f pos = mf.movePanel.getBeadEntity().getTransform().getTranslation();
+        final float initY = pos.y;
+        final Vector3f oPos = pos.clone();
+        final int nSteps = (int)M.ceil(length / stepSize);
+        for (int i = 0; i < nSteps; ++i) {
+            final float y = initY - (length / 2) + i * stepSize;
+            pos.y = y;
+            enableAndCalc();
+        }
+        pos.set( oPos );
+        mf.needUpdate();
+    }//GEN-LAST:event_lineYButtonActionPerformed
+
+    private void circleXZButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_circleXZButtonActionPerformed
+      //first step, parse the variables from text into floats
+      final float height = Parse.toFloat(circleHeightText.getText());
+      final float width = Parse.toFloat(circleWidthText.getText());
+      final float stepSize = Parse.toFloat(stepSizeText.getText());
+      
+      //calculating the circunference        
+      final float p=M.TWO_PI*M.sqrt((width*width+height*height)/2);
+      
+      //how many steps do we need
+      final int nSteps = (int)M.floor( p/stepSize );
+      final Vector3f pos = mf.movePanel.getBeadEntity().getTransform().getTranslation();
+      final Vector3f iPos = pos.clone();
+      
+      //for, iterate from i=0 to nSteps
+      for(int i = 0; i < nSteps; ++i){
+          final float angle = i*M.TWO_PI/nSteps;
+          //set the position of pos to the target one
+           pos.x = iPos.x + M.cos(angle)*(width/2);
+           pos.y = iPos.y + M.sin(angle)*(height/2);
+                    
+        enableAndCalc();
+      }
+                
+      mf.needUpdate();
+    }//GEN-LAST:event_circleXZButtonActionPerformed
+
+    private void circleXYButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_circleXYButtonActionPerformed
+      //first step, parse the variables from text into floats
+      final float height = Parse.toFloat(circleHeightText.getText());
+      final float width = Parse.toFloat(circleWidthText.getText());
+      final float stepSize = Parse.toFloat(stepSizeText.getText());
+      
+      //calculating the circunference        
+      final float p=M.TWO_PI*M.sqrt((width*width+height*height)/2);
+      
+      //how many steps do we need
+      final int nSteps = (int)M.floor( p/stepSize );
+      final Vector3f pos = mf.movePanel.getBeadEntity().getTransform().getTranslation();
+      final Vector3f iPos = pos.clone();
+      
+      //for, iterate from i=0 to nSteps
+      for(int i = 0; i < nSteps; ++i){
+          final float angle = i*M.TWO_PI/nSteps;
+          //set the position of pos to the target one
+           pos.x = iPos.x + M.cos(angle)*(width/2);
+           pos.z = iPos.z + M.sin(angle)*(height/2);
+                    
+        enableAndCalc();
+      }
+                
+      mf.needUpdate();
+    }//GEN-LAST:event_circleXYButtonActionPerformed
+
   
     private void disableCalc() {
         mf.movePanel.setGenerateKeyFrame(false);
@@ -456,11 +674,23 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     private javax.swing.JButton bounceAndRotateButton;
     private javax.swing.JTextField bounceAndRotateStepsText;
     private javax.swing.JTextField boundariesText;
+    private javax.swing.JTextField circleHeightText;
+    private javax.swing.JTextField circleStepSizeText;
+    private javax.swing.JTextField circleWidthText;
+    private javax.swing.JButton circleXYButton;
+    private javax.swing.JButton circleXZButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -469,6 +699,9 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField lengthText;
+    private javax.swing.JButton lineXButton;
+    private javax.swing.JButton lineYButton;
     private javax.swing.JButton okButton;
     private javax.swing.JButton quickSwapButton;
     private javax.swing.JTextField quickSwapText;
@@ -479,6 +712,7 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     private javax.swing.JTextField rxText;
     private javax.swing.JTextField ryText;
     private javax.swing.JTextField rzText;
+    private javax.swing.JTextField stepSizeText;
     private javax.swing.JButton twinButton;
     private javax.swing.JTextField twinTrapsText;
     // End of variables declaration//GEN-END:variables

@@ -13,11 +13,23 @@ import java.util.List;
  * @author am14010
  */
 public class SimpleFPGA extends DeviceConnection{
-    final static byte START_PHASES = (byte) (0xFF & 255);
-    final static byte SWAP = (byte) (0xFF & 254);
-    final static byte MULTIPLEX_MODE = (byte) (0xFF & 253);
-    final static int N_TRANS = 256;
-            
+          
+    public byte getStartPhasesCommand(){
+        return (byte) (0xFF & 255);
+    }
+    
+    public byte getSwapCommand(){
+        return (byte) (0xFF & 254);
+    }
+    
+    public byte getMultiplexCommand(){
+        return (byte) (0xFF & 253);
+    }
+    
+    public int getnTransducers(){
+        return 256;
+    }
+    
     @Override
     public int getDivs() {
         return 32;
@@ -30,7 +42,7 @@ public class SimpleFPGA extends DeviceConnection{
 
     @Override
     public void switchBuffers() {
-       serial.writeByte(SWAP);
+       serial.writeByte( getSwapCommand() );
        serial.flush();
     }
     
@@ -41,7 +53,7 @@ public class SimpleFPGA extends DeviceConnection{
             return;
         }
        
-       final int nTrans = N_TRANS;
+       final int nTrans = getnTransducers();
        //final int nTrans = M.nearestPowerOfTwo( transducers.size() );
        final byte[] data = new byte[nTrans + 1];
        //Arrays.fill(data, PHASE_OFF);
@@ -49,7 +61,7 @@ public class SimpleFPGA extends DeviceConnection{
       
        final byte PHASE_OFF = (byte) (0xFF & getDivs());
        
-        data[0] = START_PHASES; 
+        data[0] = getStartPhasesCommand(); 
         for (Transducer t : transducers) {
             final int n = t.getOrderNumber() - number;
             //final int n = t.getDriverPinNumber();
@@ -69,7 +81,7 @@ public class SimpleFPGA extends DeviceConnection{
     
     @Override
     public void sendToogleQuickMultiplexMode(){
-       serial.writeByte(MULTIPLEX_MODE);
+       serial.writeByte(getMultiplexCommand());
        serial.flush();
     }
 }

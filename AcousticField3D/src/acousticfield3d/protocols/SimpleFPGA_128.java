@@ -12,6 +12,22 @@ package acousticfield3d.protocols;
 public class SimpleFPGA_128 extends SimpleFPGA{
 
     @Override
+    public byte getStartPhasesCommand(){
+        return (byte) (0xFF & 255);
+    }
+    
+    @Override
+    public byte getSwapCommand(){
+        return (byte) (0xFF & 254);
+    }
+    
+    
+    @Override
+    public int getnTransducers(){
+        return 64;
+    }
+    
+    @Override
     public int getDivs() {
         return 128;
     }

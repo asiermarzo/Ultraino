@@ -204,27 +204,26 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         .addComponent(gridHText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gridAddButton))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(mirrorAddButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(circleButton))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(allVisibleButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(onlyVisibleButton))
-                                .addComponent(placeBeadAtSliceCheck)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(selectAllButton)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cpAddButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cpDelButton)))
-                            .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(mirrorAddButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(circleButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(allVisibleButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(onlyVisibleButton))
+                            .addComponent(placeBeadAtSliceCheck)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(selectAllButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(cpAddButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cpDelButton)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -251,8 +250,8 @@ public class ControlPointPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectAllButton)
-                    .addComponent(cpAddButton)
-                    .addComponent(cpDelButton))
+                    .addComponent(cpDelButton)
+                    .addComponent(cpAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(placeBeadAtSliceCheck)
                 .addGap(18, 18, 18)
@@ -287,6 +286,10 @@ public class ControlPointPanel extends javax.swing.JPanel {
         me.setNumber( number );
         return me;
     }
+    
+     public MeshEntity addControlPoint(float x, float y, float z){
+         return addControlPoint(x,y,z,getNumber(),0);
+     }
     
     public MeshEntity addControlPoint(final Vector3f pos, int frame, int number){
         return addControlPoint(pos.x, pos.y, pos.z, frame, number);
