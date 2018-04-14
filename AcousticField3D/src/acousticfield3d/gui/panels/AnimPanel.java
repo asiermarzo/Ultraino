@@ -11,6 +11,7 @@ import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector2f;
 import acousticfield3d.scene.Entity;
+import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.workers.PlayerThread;
 import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.simulation.Animation;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.TextFormatter;
 
 /**
  *
@@ -578,6 +580,22 @@ public class AnimPanel extends javax.swing.JPanel {
         
     }
     
+    public void exportTransPhasePoints() {
+        final StringBuilder sb = new StringBuilder();
+        
+        for (Transducer t : mf.simulation.transducers){
+            sb.append("transducer " + t.getTransform().getTranslation().toStringSimple(" ") + " ");
+            sb.append(t.getTransform().getRotation().toAngles(null).toStringSimple(" ") + " ");
+            sb.append(t.getAmplitude() + " ");
+            sb.append(t.getPhase()+ "\n");
+        }
+        for( Entity e : mf.simulation.controlPoints){
+            sb.append("point " + e.getTransform().getTranslation().toStringSimple(" ") + "\n");
+        }
+        
+        TextFrame.showText("Export Trans and points", sb.toString(), this);
+    }
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAnim;
     private javax.swing.JButton addStatus;
@@ -604,11 +622,6 @@ public class AnimPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup wraperGroup;
     // End of variables declaration//GEN-END:variables
 
+   
 
-
-    
-
-    
-
- 
 }

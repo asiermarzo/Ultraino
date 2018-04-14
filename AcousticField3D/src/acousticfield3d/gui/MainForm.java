@@ -374,6 +374,7 @@ public final class MainForm extends javax.swing.JFrame {
         particleControllerMenu = new javax.swing.JMenuItem();
         rotateMultipleMenu = new javax.swing.JMenuItem();
         exportPhasesMenu = new javax.swing.JMenuItem();
+        exportTransPhasePointsMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1279,6 +1280,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(exportPhasesMenu);
 
+        exportTransPhasePointsMenu.setText("Export TransPhasePoints");
+        exportTransPhasePointsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportTransPhasePointsMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(exportTransPhasePointsMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -1867,6 +1876,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void exportPhasesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPhasesMenuActionPerformed
         animPanel.exportPhasesOfCurrentAnimation();
     }//GEN-LAST:event_exportPhasesMenuActionPerformed
+
+    private void exportTransPhasePointsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTransPhasePointsMenuActionPerformed
+        animPanel.exportTransPhasePoints();
+    }//GEN-LAST:event_exportTransPhasePointsMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1900,6 +1913,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportObjWithMtlMenu;
     private javax.swing.JMenuItem exportPhasesMenu;
     private javax.swing.JMenuItem exportToArduinoMenu;
+    private javax.swing.JMenuItem exportTransPhasePointsMenu;
     private javax.swing.JMenuItem forcePlotsMenu;
     private javax.swing.JMenuItem forceStudyMenu;
     private javax.swing.JMenuItem hybridSingleBeamMenu;
