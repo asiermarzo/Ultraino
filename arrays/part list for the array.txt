@@ -1,7 +1,7 @@
 *** ribbon wire
 	http://uk.farnell.com/3m/3302-20/ribbon-cable-20core-28awg-per/dp/1207420
 *** 3-way pcb connector
-	uk rs-components 506-7010
+	uk rs-components 506-7014
 *** female molex connector
 	uk rs-components 323-7873
 *** 40khz 1cm diameter transducers
