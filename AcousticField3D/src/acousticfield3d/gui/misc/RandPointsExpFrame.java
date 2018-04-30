@@ -67,6 +67,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         generateTestPointsButton = new javax.swing.JButton();
         simpleForcesToCSVButton = new javax.swing.JButton();
         spatialResVsFocusButton = new javax.swing.JButton();
+        simpleForcesGenPoints = new javax.swing.JCheckBox();
+        simpleForcesToCSVButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Random points experiments");
@@ -166,6 +168,15 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             }
         });
 
+        simpleForcesGenPoints.setText("genPoints");
+
+        simpleForcesToCSVButton1.setText("SimpleForcesToCSV___");
+        simpleForcesToCSVButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpleForcesToCSVButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -215,9 +226,14 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(generateTestPointsButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(simpleForcesToCSVButton))
-                            .addComponent(spatialResVsFocusButton))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(simpleForcesToCSVButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(simpleForcesGenPoints)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(spatialResVsFocusButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(simpleForcesToCSVButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -257,9 +273,12 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generateTestPointsButton)
-                    .addComponent(simpleForcesToCSVButton))
+                    .addComponent(simpleForcesToCSVButton)
+                    .addComponent(simpleForcesGenPoints))
                 .addGap(18, 18, 18)
-                .addComponent(spatialResVsFocusButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spatialResVsFocusButton)
+                    .addComponent(simpleForcesToCSVButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -399,7 +418,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
 
                     if (fw != null) {
                         //repetition nPoint x y z fx fy fz
-                        fw.write(i + "\t" + j + "\t" + "\t" + p.toStringSimple("\t") + "\t" + forceG.toStringSimple("\t") + "\n");
+                        fw.write(i + "," + j + "," + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
                     }
                 }
                 final double pressStdBetweenPoints = getStd(pressureDiffTmp, nPoints);
@@ -533,7 +552,13 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         
         for (int i = 1; i <= nPoints; ++i){
             try {
-                pointsToUse = (float[][][]) FileUtils.readObject( new File("points" + i + ".xml"));
+                if ( simpleForcesGenPoints.isSelected() ){
+                    numPointsText.setText( i + "");
+                    pointsToUse = generatePoints();
+                }else{
+                    pointsToUse = (float[][][]) FileUtils.readObject( new File("points" + i + ".xml"));
+                }
+                
                 calcExperiments(fileText + "_" + i + ".csv", false);
             } catch (IOException ex) {
                 Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -593,6 +618,33 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_spatialResVsFocusButtonActionPerformed
 
+    private void simpleForcesToCSVButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpleForcesToCSVButton1ActionPerformed
+        final int nPoints = Parse.toInt( numPointsText.getText() );
+        
+        final float lambda = 0.0086f;
+        
+        for (int sep = 0; sep < 10; ++sep){
+            for (int i = 1; i <= nPoints; ++i){
+                numPointsText.setText( i + "");
+                minDistText.setText( (sep*lambda) + "");
+                minDistZText.setText( (5*lambda) + "");
+                pointsToUse = generatePoints();
+
+                calcExperiments(fileText + "_x" + sep + "_" + i + ".csv", false);
+            }
+        }
+        for (int sep = 0; sep < 10; ++sep){
+            for (int i = 1; i <= nPoints; ++i){
+                numPointsText.setText( i + "");
+                minDistText.setText( (5*lambda) + "");
+                minDistZText.setText( (sep*lambda) + "");
+                pointsToUse = generatePoints();
+
+                calcExperiments(fileText + "_z" + sep + "_" + i + ".csv", false);
+            }
+        }
+    }//GEN-LAST:event_simpleForcesToCSVButton1ActionPerformed
+
     private void runExperiment(final int steps, final int alg){
         System.out.println("----- " + (alg==3?"gorkov":"laplacian") + " steps " + steps);
         mf.algForm.setAlgorithm(alg);
@@ -639,7 +691,9 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     private javax.swing.JTextField repetitionsText;
     private javax.swing.JButton selectButton;
     private javax.swing.JButton simpleForcesButton;
+    private javax.swing.JCheckBox simpleForcesGenPoints;
     private javax.swing.JButton simpleForcesToCSVButton;
+    private javax.swing.JButton simpleForcesToCSVButton1;
     private javax.swing.JButton spatialResVsFocusButton;
     // End of variables declaration//GEN-END:variables
 

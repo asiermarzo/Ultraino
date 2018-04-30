@@ -78,10 +78,16 @@
                               <Component id="generateTestPointsButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="simpleForcesToCSVButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="simpleForcesGenPoints" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="spatialResVsFocusButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="spatialResVsFocusButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="simpleForcesToCSVButton1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -133,9 +139,13 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="generateTestPointsButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="simpleForcesToCSVButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="simpleForcesGenPoints" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="spatialResVsFocusButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="spatialResVsFocusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="simpleForcesToCSVButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -275,6 +285,19 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spatialResVsFocusButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="simpleForcesGenPoints">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="genPoints"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="simpleForcesToCSVButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="SimpleForcesToCSV___"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="simpleForcesToCSVButton1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
