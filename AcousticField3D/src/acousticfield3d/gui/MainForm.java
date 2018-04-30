@@ -15,17 +15,13 @@ import acousticfield3d.gui.misc.ForcePlotsFrame;
 import acousticfield3d.gui.misc.HybridSingleBeamForm;
 import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
-import acousticfield3d.gui.misc.MetaSurfaces;
 import acousticfield3d.gui.misc.ParticleControllerFrame;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.RotateMultipleTimes;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.SliderPanel;
-import acousticfield3d.gui.misc.SweepTinyLevParameters;
 import acousticfield3d.gui.misc.SwitchTimer;
-import acousticfield3d.gui.misc.TubeGen;
-import acousticfield3d.gui.misc.WormholesGenerateMesh;
-import acousticfield3d.gui.misc.WormholesGenerateTubes;
+import acousticfield3d.gui.misc.UDPRemoteControl;
 import acousticfield3d.utils.DialogUtils;
 import acousticfield3d.utils.FileUtils;
 import acousticfield3d.gui.panels.AnimPanel;
@@ -350,7 +346,6 @@ public final class MainForm extends javax.swing.JFrame {
         arrayFromObjMenu = new javax.swing.JMenuItem();
         importArrayMenu = new javax.swing.JMenuItem();
         arrayExportMenu = new javax.swing.JMenuItem();
-        forceStudyMenu = new javax.swing.JMenuItem();
         optimizerMenu = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         phasePatternMenu = new javax.swing.JMenuItem();
@@ -361,11 +356,8 @@ public final class MainForm extends javax.swing.JFrame {
         ImportAmpPhasesMenu = new javax.swing.JMenuItem();
         auxKeyMenu = new javax.swing.JMenuItem();
         matlabPhasesMenu = new javax.swing.JMenuItem();
+        udpControlMenu = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
-        wormGenMenu = new javax.swing.JMenuItem();
-        wormMesh = new javax.swing.JMenuItem();
-        tubeGenMenu = new javax.swing.JMenuItem();
-        metamaterialsMenu = new javax.swing.JMenuItem();
         hybridSingleBeamMenu = new javax.swing.JMenuItem();
         scatterObjectMenu = new javax.swing.JMenuItem();
         bowlArrayMenu = new javax.swing.JMenuItem();
@@ -1094,14 +1086,6 @@ public final class MainForm extends javax.swing.JFrame {
         });
         addTransMenu.add(arrayExportMenu);
 
-        forceStudyMenu.setText("force study");
-        forceStudyMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forceStudyMenuActionPerformed(evt);
-            }
-        });
-        addTransMenu.add(forceStudyMenu);
-
         optimizerMenu.setText("Optimizers");
         optimizerMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1180,41 +1164,17 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu9.add(matlabPhasesMenu);
 
+        udpControlMenu.setText("UDP control");
+        udpControlMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                udpControlMenuActionPerformed(evt);
+            }
+        });
+        jMenu9.add(udpControlMenu);
+
         jMenuBar1.add(jMenu9);
 
         jMenu7.setText("VARIOUS");
-
-        wormGenMenu.setText("worm gen");
-        wormGenMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wormGenMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(wormGenMenu);
-
-        wormMesh.setText("worm mesh");
-        wormMesh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wormMeshActionPerformed(evt);
-            }
-        });
-        jMenu7.add(wormMesh);
-
-        tubeGenMenu.setText("TubeGen");
-        tubeGenMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tubeGenMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(tubeGenMenu);
-
-        metamaterialsMenu.setText("Metamaterials");
-        metamaterialsMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                metamaterialsMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(metamaterialsMenu);
 
         hybridSingleBeamMenu.setText("HybridSingleBeams");
         hybridSingleBeamMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -1455,15 +1415,9 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_saveSimMenuActionPerformed
 
     private void delTransMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delTransMenuActionPerformed
-        ArrayList<Transducer> trans = new ArrayList<>();
-        for( Entity e : selection){
-            if ( e instanceof Transducer) { trans.add( (Transducer) e ); }
-        }
-        
-        transPanel.deleteTransducers( trans );
-        
-        clearSelection();
-        needUpdate();
+
+        transPanel.deleteSelectedTransducers();
+
     }//GEN-LAST:event_delTransMenuActionPerformed
 
     private void arrayAddMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrayAddMenuActionPerformed
@@ -1732,17 +1686,9 @@ public final class MainForm extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_onExit
 
-    private void tubeGenMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tubeGenMenuActionPerformed
-        showNewFrame( new TubeGen(this) );
-    }//GEN-LAST:event_tubeGenMenuActionPerformed
-
     private void sendToDevicesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToDevicesMenuActionPerformed
         transControlPanel.sendPattern();
     }//GEN-LAST:event_sendToDevicesMenuActionPerformed
-
-    private void metamaterialsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metamaterialsMenuActionPerformed
-        showNewFrame( new MetaSurfaces(this) );
-    }//GEN-LAST:event_metamaterialsMenuActionPerformed
 
     private void polarPlotsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_polarPlotsMenuActionPerformed
        showNewFrame( new ExportPlotsForm(this) );
@@ -1777,21 +1723,9 @@ public final class MainForm extends javax.swing.JFrame {
         showNewFrame( new HybridSingleBeamForm(this));
     }//GEN-LAST:event_hybridSingleBeamMenuActionPerformed
 
-    private void forceStudyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forceStudyMenuActionPerformed
-        showNewFrame( new SweepTinyLevParameters(this));
-    }//GEN-LAST:event_forceStudyMenuActionPerformed
-
     private void auxKeyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auxKeyMenuActionPerformed
-        
+        trapsPanel.reportGorkovs();
     }//GEN-LAST:event_auxKeyMenuActionPerformed
-
-    private void wormGenMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wormGenMenuActionPerformed
-        showNewFrame( new WormholesGenerateTubes(this) );
-    }//GEN-LAST:event_wormGenMenuActionPerformed
-
-    private void wormMeshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wormMeshActionPerformed
-        showNewFrame( new WormholesGenerateMesh(this) );
-    }//GEN-LAST:event_wormMeshActionPerformed
 
     private void exportNano8MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportNano8MenuActionPerformed
         ArduinoNano.exportAnimation( this );
@@ -1880,6 +1814,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void exportTransPhasePointsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTransPhasePointsMenuActionPerformed
         animPanel.exportTransPhasePoints();
     }//GEN-LAST:event_exportTransPhasePointsMenuActionPerformed
+
+    private void udpControlMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpControlMenuActionPerformed
+        showNewFrame( new UDPRemoteControl(this));
+    }//GEN-LAST:event_udpControlMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1915,7 +1853,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportToArduinoMenu;
     private javax.swing.JMenuItem exportTransPhasePointsMenu;
     private javax.swing.JMenuItem forcePlotsMenu;
-    private javax.swing.JMenuItem forceStudyMenu;
     private javax.swing.JMenuItem hybridSingleBeamMenu;
     private javax.swing.JMenuItem importArrayMenu;
     private javax.swing.JMenuItem importTransMenu;
@@ -1946,7 +1883,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.ButtonGroup maskObjectsGroup;
     private javax.swing.JMenuItem matlabFieldMenu;
     private javax.swing.JMenuItem matlabPhasesMenu;
-    private javax.swing.JMenuItem metamaterialsMenu;
     private javax.swing.JMenuItem normSimPosMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
     private javax.swing.JMenuItem optimizerMenu;
@@ -1988,10 +1924,8 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem transSetAmp1Menu;
     private javax.swing.JMenuItem transSetPhase0Menu;
     private javax.swing.JMenuItem transSetPhasePiMenu;
-    private javax.swing.JMenuItem tubeGenMenu;
+    private javax.swing.JMenuItem udpControlMenu;
     private javax.swing.JMenuItem unlockCameraMenu;
-    private javax.swing.JMenuItem wormGenMenu;
-    private javax.swing.JMenuItem wormMesh;
     private javax.swing.ButtonGroup wrapPlayButtonGroup;
     private javax.swing.JTextField xText;
     private javax.swing.JTextField yText;

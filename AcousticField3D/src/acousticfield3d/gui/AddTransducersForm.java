@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 
 /**
  *
@@ -65,7 +67,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
         sizeText = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         wText = new javax.swing.JTextField();
-        pText = new javax.swing.JTextField();
+        powerText = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         freqText = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -119,7 +121,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
         wText.setText("0.009");
 
-        pText.setText("2.4");
+        powerText.setText("2.4");
 
         jLabel9.setText("Freq:");
 
@@ -166,7 +168,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pText))
+                        .addComponent(powerText))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -233,7 +235,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(freqText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addComponent(pText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(powerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -421,7 +423,9 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
     }
     
-    
+    public void pressOkButton(){
+        okButtonActionPerformed(null);
+    }
     
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         final boolean wasEmpty = mf.simulation.getTransducers().isEmpty();
@@ -568,7 +572,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
     public Transducer createTransducer() {
         final float freq = Float.parseFloat(freqText.getText());
         final float apperture = Float.parseFloat(wText.getText());
-        final float power = Float.parseFloat(pText.getText());
+        final float power = Float.parseFloat(powerText.getText());
         final float phase = Float.parseFloat(phaseText.getText());
         
         final Vector3f size = new Vector3f().parse( sizeText.getText() );
@@ -608,9 +612,9 @@ public class AddTransducersForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton okButton;
-    private javax.swing.JTextField pText;
     private javax.swing.JTextField phaseText;
     private javax.swing.JTextField posText;
+    private javax.swing.JTextField powerText;
     private javax.swing.JRadioButton radialCheck;
     private javax.swing.JTextField rotText;
     private javax.swing.JSpinner rowSpinner;
@@ -650,5 +654,30 @@ public class AddTransducersForm extends javax.swing.JFrame {
         }
     }
 
+    public JTextField getSizeText() {
+        return sizeText;
+    }
+
+    public JTextField getSpaceText() {
+        return spaceText;
+    }
+
+    public JSpinner getColSpinner() {
+        return colSpinner;
+    }
+
+    public JSpinner getRowSpinner() {
+        return rowSpinner;
+    }
+
+    public JTextField getpText() {
+        return powerText;
+    }
+
+    public JTextField getwText() {
+        return wText;
+    }
+
+    
     
 }

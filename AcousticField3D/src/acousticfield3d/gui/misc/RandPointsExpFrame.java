@@ -6,6 +6,7 @@
 package acousticfield3d.gui.misc;
 
 import acousticfield3d.algorithms.CalcField;
+import acousticfield3d.algorithms.SimplePhaseAlgorithms;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Transform;
@@ -65,6 +66,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         simpleForcesButton = new javax.swing.JButton();
         generateTestPointsButton = new javax.swing.JButton();
         simpleForcesToCSVButton = new javax.swing.JButton();
+        spatialResVsFocusButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Random points experiments");
@@ -157,6 +159,13 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             }
         });
 
+        spatialResVsFocusButton.setText("Spatial res vs focus");
+        spatialResVsFocusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spatialResVsFocusButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,7 +215,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(generateTestPointsButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(simpleForcesToCSVButton)))
+                                .addComponent(simpleForcesToCSVButton))
+                            .addComponent(spatialResVsFocusButton))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -244,10 +254,12 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(simpleForcesButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generateTestPointsButton)
                     .addComponent(simpleForcesToCSVButton))
+                .addGap(18, 18, 18)
+                .addComponent(spatialResVsFocusButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -529,6 +541,58 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_simpleForcesToCSVButtonActionPerformed
 
+    private void spatialResVsFocusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spatialResVsFocusButtonActionPerformed
+        //load the 1-n points
+        final int nPoints = 1;
+        final float width = 0.16f;
+        
+        try {
+            pointsToUse = (float[][][]) FileUtils.readObject( new File("points" + nPoints + ".xml"));
+        } catch (IOException ex) {
+            Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        final int repetitions = pointsToUse.length;
+        assert ( pointsToUse[0].length == nPoints);
+        
+        for (int nTrans = 1; nTrans < 256; ++ nTrans){
+            final Vector3f pressAgg = new Vector3f();
+            
+            //delete all the previous transducers
+            mf.transPanel.selectAll();
+            mf.transPanel.deleteSelectedTransducers();
+            
+            //create the array of transducers
+            final float transWidth = width / nTrans;
+            final float transPower = 2.5f * 16 * 16 / nTrans / nTrans;
+            final float transApperture = 0.009f * 16 / nTrans;
+            mf.addTransducersForm.getColSpinner().setValue( nTrans );
+            mf.addTransducersForm.getRowSpinner().setValue( nTrans );
+            mf.addTransducersForm.getSizeText().setText( transWidth + " 0.003 " + transWidth);
+            mf.addTransducersForm.getSpaceText().setText(transWidth + "");
+            mf.addTransducersForm.getpText().setText( transPower + "");
+            mf.addTransducersForm.getwText().setText( transApperture + "");
+            mf.addTransducersForm.pressOkButton();
+            
+            //for each point
+            for(int i = 0; i < repetitions; ++i){
+                //focus at the point
+                final float[] p = pointsToUse[i][0];
+                final Vector3f point = new Vector3f(p[0], p[1], p[2]);
+                SimplePhaseAlgorithms.focus(mf.simulation.transducers, point, mf.simulation.getMediumSpeed());
+                //get the amplitude
+                final float amplitude = CalcField.calcFieldAt(point, mf).length();
+                
+                //average
+                aggregate(pressAgg, amplitude);
+            }
+            
+            //show results
+            reportAvgAndStd("nTrans" + nTrans, pressAgg, repetitions);
+            System.out.println();
+        }
+    }//GEN-LAST:event_spatialResVsFocusButtonActionPerformed
+
     private void runExperiment(final int steps, final int alg){
         System.out.println("----- " + (alg==3?"gorkov":"laplacian") + " steps " + steps);
         mf.algForm.setAlgorithm(alg);
@@ -576,6 +640,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     private javax.swing.JButton selectButton;
     private javax.swing.JButton simpleForcesButton;
     private javax.swing.JButton simpleForcesToCSVButton;
+    private javax.swing.JButton spatialResVsFocusButton;
     // End of variables declaration//GEN-END:variables
 
     private void selectPoints(final float[][] points, final float minDist, final float minDistZ) {

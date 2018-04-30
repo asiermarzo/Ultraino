@@ -111,10 +111,12 @@
                   <Component id="onlyVisibleButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="selectAllButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cpDelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="cpAddButton" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="selectAllButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cpDelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="placeBeadAtSliceCheck" min="-2" max="-2" attributes="0"/>

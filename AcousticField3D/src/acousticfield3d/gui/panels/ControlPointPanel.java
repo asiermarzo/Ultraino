@@ -248,10 +248,11 @@ public class ControlPointPanel extends javax.swing.JPanel {
                     .addComponent(allVisibleButton)
                     .addComponent(onlyVisibleButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectAllButton)
-                    .addComponent(cpDelButton)
-                    .addComponent(cpAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cpAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(selectAllButton)
+                        .addComponent(cpDelButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(placeBeadAtSliceCheck)
                 .addGap(18, 18, 18)
@@ -298,8 +299,6 @@ public class ControlPointPanel extends javax.swing.JPanel {
     public MeshEntity addControlPoint(float x, float y, float z, int frame, int number){
         MeshEntity me = createControlPoint(x, y, z, frame, number);
         mf.scene.getEntities().add( me );
-        
-        
         mf.simulation.getControlPoints().add(me);
        
         return me;

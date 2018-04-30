@@ -314,6 +314,9 @@ public class TransducersPanel extends javax.swing.JPanel {
         mf.updateTransForField(FieldsToChange.phaseField, phaseText.getText());
     }//GEN-LAST:event_phaseTextActionPerformed
 
+    public void selectAll(){
+        selectAllTransButtonActionPerformed(null);
+    }
     
     private void selectAllTransButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllTransButtonActionPerformed
         mf.clearSelection();
@@ -412,6 +415,18 @@ public class TransducersPanel extends javax.swing.JPanel {
     public void setTransAmp(float f) {
         mf.updateTransForField(FieldsToChange.ampField, f + "");
         mf.transControlPanel.sendPattern();
+    }
+    
+    public void deleteSelectedTransducers(){
+        ArrayList<Transducer> trans = new ArrayList<>();
+        for( Entity e : mf.selection){
+            if ( e instanceof Transducer) { trans.add( (Transducer) e ); }
+        }
+        
+        deleteTransducers( trans );
+        
+        mf.clearSelection();
+        mf.needUpdate();
     }
     
     public void deleteTransducers(final ArrayList<Transducer> trans){

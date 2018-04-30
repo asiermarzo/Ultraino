@@ -19,10 +19,11 @@ import java.util.List;
  *
  * @author am14010
  */
-public class SimpleMultiPressure {
+public class Kinoforms {
     //white points -> focal points
     //red,blue points -> vortices
     //green -> twin-trap
+    //black -> standing-waves
 
     final int T; //n Transducers
     final int P; //n virtual points
@@ -35,7 +36,7 @@ public class SimpleMultiPressure {
     
     final float[] VORTEX_A, VORTEX_B;
     
-    public SimpleMultiPressure(final MainForm mf, 
+    public Kinoforms(final MainForm mf, 
             final List<? extends Transducer> transducers, 
             final List<? extends Entity> controlPoints){
         
@@ -83,6 +84,7 @@ public class SimpleMultiPressure {
         
         final float wavelength = mf.getSimulation().getWavelenght();
         final float twinSep = wavelength / 1.5f;
+        final float standingSep = wavelength / 2f;
         final float vortexSep = wavelength / 1.5f;
         index = 0;
         for (int i = 0; i<nPoints; ++i){
@@ -110,6 +112,12 @@ public class SimpleMultiPressure {
                 final Vector2f disp = new Vector2f().setAngle(angle).multLocal( twinSep );
                 addPropagator(mf, transducers, index+0, pos.x + disp.x, pos.y, pos.z + disp.y);
                 addPropagator(mf, transducers, index+1, pos.x - disp.x, pos.y, pos.z - disp.y);
+            }else if (trapType == 4){ //standing-wave
+                pointA[index+0] = 1; pointB[index+0] = 0;
+                pointA[index+1] = -1; pointB[index+1] = 0;
+                
+                addPropagator(mf, transducers, index+0, pos.x , pos.y + standingSep, pos.z );
+                addPropagator(mf, transducers, index+1, pos.x , pos.y - standingSep, pos.z );
             }
             
             index += N_POINTS[trapType];
@@ -164,7 +172,7 @@ public class SimpleMultiPressure {
                     
                     pointA[index+m] = vA*A - vB*B; pointB[index+m] = vA*B + vB*A;
                 }
-            }else if (trapType == 3){ //twin-traps
+            }else if (trapType == 3 || trapType == 4){ //twin-traps
                 pointA[index+0] = A; pointB[index+0] = B; //phase offset 0
                 pointA[index+1] = -A; pointB[index+1] = -B; //phase offset PI
             }
@@ -199,12 +207,12 @@ public class SimpleMultiPressure {
         }
     }
     
-    public static SimpleMultiPressure create(final MainForm mf, final List<? extends Entity> controlPoints){
-        final SimpleMultiPressure smp = new SimpleMultiPressure(mf, mf.simulation.transducers, controlPoints);
+    public static Kinoforms create(final MainForm mf, final List<? extends Entity> controlPoints){
+        final Kinoforms smp = new Kinoforms(mf, mf.simulation.transducers, controlPoints);
         return smp;
     }
     
-     //0 focal point, 1 vortexClockwise, 2 vortexCounter, 3 twin-trap
+     //0 focal point, 1 vortexClockwise, 2 vortexCounter, 3 twin-trap, 4 standing-wave
     public static int typeOfTrap(final int color){
         if ( Color.red(color) + Color.green(color) + Color.blue(color) == 255*3){
             return 0;
@@ -212,6 +220,8 @@ public class SimpleMultiPressure {
             return 1;
         }else if (Color.blue(color) == 255 && Color.green(color) + Color.red(color) == 0){
             return 2;
+        }else if ( Color.red(color) + Color.green(color) + Color.blue(color) == 0 ){
+            return 4;
         }else if (Color.blue(color) + Color.red(color) == 0){
             return 3;
         }
@@ -220,7 +230,7 @@ public class SimpleMultiPressure {
     }
     
     private final static int N_POINTS_VORTEX = 16;
-    private final static int[] N_POINTS = {1,N_POINTS_VORTEX,N_POINTS_VORTEX,2};
+    private final static int[] N_POINTS = {1,N_POINTS_VORTEX,N_POINTS_VORTEX,2,2};
     
     
     public static float getTwinTrapRotation(final int color){

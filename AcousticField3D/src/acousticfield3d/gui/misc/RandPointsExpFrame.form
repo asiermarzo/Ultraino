@@ -79,6 +79,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="simpleForcesToCSVButton" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="spatialResVsFocusButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -128,11 +129,13 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="simpleForcesButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="generateTestPointsButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="simpleForcesToCSVButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="spatialResVsFocusButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -264,6 +267,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="simpleForcesToCSVButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="spatialResVsFocusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Spatial res vs focus"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spatialResVsFocusButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

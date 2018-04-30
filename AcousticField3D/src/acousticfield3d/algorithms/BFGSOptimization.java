@@ -15,7 +15,6 @@ import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.renderer.Renderer;
 import acousticfield3d.scene.Entity;
-import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Color;
@@ -47,9 +46,9 @@ public class BFGSOptimization{
             function = new MaxGorkovLaplacianMinPressureAdaptor(
                     controlPoints.get(0).getTransform().getTranslation(), form.getLowPressureK(), form.getLaplacianConstants(),
                     mf );
-        }else if(form.isMultiLap()){
-            function = new MaxGorkovLaplacianMinPressureAdaptor(
-                    controlPoints.get(0).getTransform().getTranslation(), form.getLowPressureK(), form.getLaplacianConstants(),
+        }else if(form.isIterGorkPressure()){
+            function = new SingleGorkovAdaptor(
+                    controlPoints.get(0),
                     mf );
         }else{
             //Default
@@ -218,47 +217,35 @@ public class BFGSOptimization{
             }
         }
     }
-     /*
-    public class MultiGorkovAdaptor implements IFunction{
-        public final CachedPointFieldCalc center;
-        private final double kLowPressure;
-        private final double[] tempGX;
-
-        
-        public MultiGorkovAdaptor(final Vector3f p, MainForm mf){
-           final Renderer r = mf.renderer;
-           
-           this.kLowPressure = 1;
-           tempGX = new double[r.getnTransducers()];
-          
-           center = CachedPointFieldCalc.create(p, mf);
-           center.allocateAndInit(mf);
-        }
+    
+    public class SingleGorkovAdaptor implements IFunction{
+        public final CachedPointFieldCalc point;
        
-      
+        public SingleGorkovAdaptor(final Entity p, MainForm mf){
+            final Renderer r = mf.renderer;
+            
+            point = CachedPointFieldCalc.create(p.getTransform().getTranslation(), mf);
+            point.allocateAndInit(mf);
+        }
+        
         @Override
         public int getDimensions() {
-            return center.getNTrans();
+            return point.getNTrans();
         }
 
         @Override
         public double evaluate(double[] vars) {
-            center.updateGorkov(vars);
-            return center.evalPressure()*kLowPressure + center.evalGorkov();
+            point.updateGorkov(vars );
+            return point.evalGorkov();
         }
 
         @Override
         public void gradient(double[] vars, double[] g) {
-           center.updateGorkov(vars);
-           center.gradientGorkov(tempGX);
-           center.gradientPressure(g);
-           final int d = g.length;
-           for(int i = 0; i < d; ++i){
-                g[i] = kLowPressure*g[i] + tempGX[i];
-            }
+            point.updateGorkov( vars );
+            point.gradientGorkov( g ); 
         }
+        
     }
-    */
     
     public class MultiGorkovAdaptor implements IFunction{
         public final int nPoints;

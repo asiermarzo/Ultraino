@@ -52,7 +52,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="pText" max="32767" attributes="0"/>
+                      <Component id="powerText" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
@@ -134,7 +134,7 @@
                   <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="freqText" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="pText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="powerText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -243,7 +243,7 @@
         <Property name="text" type="java.lang.String" value="0.009"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="pText">
+    <Component class="javax.swing.JTextField" name="powerText">
       <Properties>
         <Property name="text" type="java.lang.String" value="2.4"/>
       </Properties>

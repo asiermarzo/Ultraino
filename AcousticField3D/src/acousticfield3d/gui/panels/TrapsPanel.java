@@ -302,7 +302,16 @@ public class TrapsPanel extends javax.swing.JPanel {
         
        
     }
-        
+    
+    public void reportGorkovs() {
+        for(Entity e : mf.simulation.controlPoints){
+            final Vector3f pos = e.getTransform().getTranslation();
+            final double g = CalcField.calcGorkovAt(pos.x, pos.y, pos.z, 0.0005f, mf);
+            System.out.println( g + "");
+        }
+    
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField angleText;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -325,6 +334,8 @@ public class TrapsPanel extends javax.swing.JPanel {
     private javax.swing.JTextField yForceText;
     private javax.swing.JTextField zForceText;
     // End of variables declaration//GEN-END:variables
+
+    
 
 
 }
