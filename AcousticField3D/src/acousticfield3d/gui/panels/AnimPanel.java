@@ -515,9 +515,13 @@ public class AnimPanel extends javax.swing.JPanel {
             try {
                 final File ffile = new File(file);
                 final byte[] data = FileUtils.getBytesFromFile(ffile);
+                
+                
+                
                 final Animation anim = createNewAnimation( FileUtils.getFileName(ffile) );
                 mf.simulation.animations.add(anim);
-                anim.importRaw(data, mf.simulation);
+                
+                anim.importRaw(data, mf);
             } catch (IOException ex) {
                 Logger.getLogger(AnimPanel.class.getName()).log(Level.SEVERE, null, ex);
             }

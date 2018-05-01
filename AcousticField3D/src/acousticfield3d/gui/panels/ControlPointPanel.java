@@ -534,6 +534,19 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JButton selectAllButton;
     // End of variables declaration//GEN-END:variables
 
+    public void createPoints(int n) {
+        final Vector3f sCenter = mf.simulation.getSimulationCenter();
+        for (int i = 0; i < n; ++i) {
+            addControlPoint(sCenter.x, sCenter.y, sCenter.z);
+        }
+    
+    }
+
+    public void deleteAllPoints() {
+        mf.scene.getEntities().removeAll(mf.simulation.controlPoints);
+        mf.simulation.controlPoints.clear();
+    }
+
 
     
 }

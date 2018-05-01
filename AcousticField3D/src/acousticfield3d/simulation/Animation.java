@@ -6,6 +6,7 @@
 
 package acousticfield3d.simulation;
 
+import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
@@ -186,7 +187,8 @@ public class Animation {
     }
     
     
-    public void importRaw(final byte[] data, final Simulation s) throws IOException{
+    public void importRaw(final byte[] data, final MainForm mf) throws IOException{
+        final Simulation s = mf.simulation;
         final DataInputStream dis =  new DataInputStream(new ByteArrayInputStream(data));
        
         final ArrayList<Transducer> trans = s.getTransducers();
@@ -196,6 +198,10 @@ public class Animation {
         final int nTrans = dis.readInt();
         final int nPoints = dis.readInt();
 
+        //ensure that the simulation has the same amount of points
+        mf.cpPanel.deleteAllPoints();
+        mf.cpPanel.createPoints(nPoints);
+        
         int index = 0;
         for(int i = 0; i < nKeys; ++i){
             final AnimKeyFrame key = new AnimKeyFrame();
