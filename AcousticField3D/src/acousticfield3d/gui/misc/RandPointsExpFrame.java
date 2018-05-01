@@ -429,7 +429,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
 
                     if (fw != null) {
                         //repetition nPoint x y z fx fy fz
-                        fw.write(i + "," + j + "," + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
+                        fw.write(i + "," + j + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
                     }
                 }
                 final double pressStdBetweenPoints = getStd(pressureDiffTmp, nPoints);

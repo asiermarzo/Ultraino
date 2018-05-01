@@ -139,6 +139,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         }
         
         
+        
         if (kinoformsCheck.isSelected()){
             Kinoforms smp = Kinoforms.create(mf, bfgs.controlPoints);
             for (int i = 0; i<iters; ++i){
@@ -148,9 +149,12 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
            
         }else{ //regular algorithms
             //kickstart?
+            
             if (kickstartCheck.isSelected()) {
+                
                 //optimize pressure
                 if (focalKickCheck.isSelected()) {
+                    
                     if (kickstartBFGSorHoloCheck.isSelected()){
                         //only one particle --> simple focal
                         if (bfgs.controlPoints.size() == 1) {
@@ -169,11 +173,19 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                             }
                         }
                     }else{
+                        if (reusePre) { //apply the precalc phases
+                            applyPhases();
+                        }
+
                         Kinoforms smp = Kinoforms.create(mf, bfgs.controlPoints);
-                        for (int i = 0; i<kickstartIters; ++i){
+                        for (int i = 0; i < kickstartIters; ++i) {
                             smp.iterate();
                         }
-                       smp.applySolution(mf.simulation);
+                        smp.applySolution(mf.simulation);
+
+                        if (reusePre) { //get the results
+                            gatherPhases();
+                        }
                     }
                 }
 
