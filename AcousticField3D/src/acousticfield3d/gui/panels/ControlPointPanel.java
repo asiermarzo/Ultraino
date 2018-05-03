@@ -272,8 +272,8 @@ public class ControlPointPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public MeshEntity createControlPoint(float x, float y, float z, int frame, int number){
-        MeshEntity me = new ControlPoint(Resources.MESH_SPHERE, null, Resources.SHADER_SOLID_SPEC);
+    public ControlPoint createControlPoint(float x, float y, float z, int frame, int number){
+        ControlPoint me = new ControlPoint(Resources.MESH_SPHERE, null, Resources.SHADER_SOLID_SPEC);
         
         me.setTag( Entity.TAG_CONTROL_POINT );
         me.setFrame( frame );
@@ -288,16 +288,16 @@ public class ControlPointPanel extends javax.swing.JPanel {
         return me;
     }
     
-     public MeshEntity addControlPoint(float x, float y, float z){
+     public ControlPoint addControlPoint(float x, float y, float z){
          return addControlPoint(x,y,z,getNumber(),0);
      }
     
-    public MeshEntity addControlPoint(final Vector3f pos, int frame, int number){
+    public ControlPoint addControlPoint(final Vector3f pos, int frame, int number){
         return addControlPoint(pos.x, pos.y, pos.z, frame, number);
     }
             
-    public MeshEntity addControlPoint(float x, float y, float z, int frame, int number){
-        MeshEntity me = createControlPoint(x, y, z, frame, number);
+    public ControlPoint addControlPoint(float x, float y, float z, int frame, int number){
+        ControlPoint me = createControlPoint(x, y, z, frame, number);
         mf.scene.getEntities().add( me );
         mf.simulation.getControlPoints().add(me);
        
@@ -545,6 +545,11 @@ public class ControlPointPanel extends javax.swing.JPanel {
     public void deleteAllPoints() {
         mf.scene.getEntities().removeAll(mf.simulation.controlPoints);
         mf.simulation.controlPoints.clear();
+    }
+
+    public void addPoints(ArrayList<ControlPoint> allPoints) {
+        mf.scene.getEntities().addAll( allPoints );
+        mf.simulation.controlPoints.addAll( allPoints );
     }
 
 

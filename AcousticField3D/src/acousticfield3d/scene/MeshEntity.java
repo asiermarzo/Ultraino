@@ -116,6 +116,8 @@ public class MeshEntity extends Entity{
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+
+ 
     
     
     

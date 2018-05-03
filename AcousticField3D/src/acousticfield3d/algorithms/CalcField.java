@@ -62,7 +62,7 @@ public class CalcField {
         return field;
     }
     
-    public static Vector2f calcFieldForTransAtNoPhase(final Transducer t, final float px, final float py, final float pz, final MainForm mf){
+    public static Vector2f calcFieldForTrans(final Transducer t, final float phase, final float px, final float py, final float pz, final MainForm mf){
         final Vector3f nor = new Vector3f();
         final Vector3f tPos = new Vector3f();
         final Vector3f diffVec = new Vector3f();
@@ -87,7 +87,7 @@ public class CalcField {
         float directivity = M.sinc(dum);
 
         float ampDirAtt = 1 * directivity / dist;
-        float kdPlusPhase = k * dist + 0;
+        float kdPlusPhase = k * dist + phase;
         field.x += ampDirAtt * M.cos(kdPlusPhase);
         field.y += ampDirAtt * M.sin(kdPlusPhase);
     

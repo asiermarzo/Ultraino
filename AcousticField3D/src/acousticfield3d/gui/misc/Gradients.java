@@ -36,6 +36,7 @@ public class Gradients {
     }
     
     public int getGradientAmp(float p){
+        p = M.clamp(p, 0, 1);
         int i = (int)(p * GRADIENT_RES_L1);
         return gradientFire[i];
     }

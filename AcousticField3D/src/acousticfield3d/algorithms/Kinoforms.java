@@ -130,7 +130,7 @@ public class Kinoforms {
             final int index, final float x, final float y, final float z){
         for (int i = 0; i<T; ++i){
             final Transducer t = transducers.get(i);
-                final Vector2f field = CalcField.calcFieldForTransAtNoPhase(t, x, y, z, mf);
+                final Vector2f field = CalcField.calcFieldForTrans(t, 0, x, y, z, mf);
                 tpA[i][index] = field.x;
                 tpB[i][index] = field.y;
         }

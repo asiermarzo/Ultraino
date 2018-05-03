@@ -360,4 +360,16 @@ public final class Transform implements Cloneable, java.io.Serializable {
         translation.addLocal( center );
     }
     
+    
+       public void connectTwoPoints(final Vector3f a,final Vector3f b,final float thickness) {
+            final float dist = a.distance(b);
+            
+            //place it in the middle of the two points
+            final Vector3f pos = getTranslation();
+            pos.set(a).addLocal(b).divideLocal(2.0f);
+            
+            lookAt( b );
+            
+            getScale().set(thickness, thickness, dist);
+        }
 }

@@ -21,7 +21,9 @@ import acousticfield3d.gui.misc.RotateMultipleTimes;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SwitchTimer;
+import acousticfield3d.gui.misc.TransContributionControl;
 import acousticfield3d.gui.misc.UDPRemoteControl;
+import acousticfield3d.gui.misc.VortexLoopCreator;
 import acousticfield3d.utils.DialogUtils;
 import acousticfield3d.utils.FileUtils;
 import acousticfield3d.gui.panels.AnimPanel;
@@ -110,6 +112,7 @@ public final class MainForm extends javax.swing.JFrame {
     public final AddTransducersForm addTransducersForm;
     public final SimulationConfigForm simForm;
     public final AlgorithmsForm algForm;
+    public final TransContributionControl contribControl;
     
     public final ParticleControllerFrame particleController;
     
@@ -142,6 +145,7 @@ public final class MainForm extends javax.swing.JFrame {
         simForm = new SimulationConfigForm(this);
         addTransducersForm = new AddTransducersForm(this, simulation, scene);
         algForm = new AlgorithmsForm(this);
+        contribControl = new TransContributionControl(this);
  
         particleController = new ParticleControllerFrame(this);
         
@@ -227,7 +231,6 @@ public final class MainForm extends javax.swing.JFrame {
         scene.getEntities().addAll( simulation.getMaskObjects() );
         //add all the slices
         scene.getEntities().addAll( simulation.getSlices() );
-        
         
         //load holomemory
         holoPatternsForm.setHoloMemory( simulation.getHoloMemory() );
@@ -367,6 +370,8 @@ public final class MainForm extends javax.swing.JFrame {
         rotateMultipleMenu = new javax.swing.JMenuItem();
         exportPhasesMenu = new javax.swing.JMenuItem();
         exportTransPhasePointsMenu = new javax.swing.JMenuItem();
+        knotCreatorMenu = new javax.swing.JMenuItem();
+        transPointsContributionMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1248,6 +1253,22 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(exportTransPhasePointsMenu);
 
+        knotCreatorMenu.setText("Knot creator");
+        knotCreatorMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                knotCreatorMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(knotCreatorMenu);
+
+        transPointsContributionMenu.setText("trans point contrib");
+        transPointsContributionMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transPointsContributionMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(transPointsContributionMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -1366,9 +1387,7 @@ public final class MainForm extends javax.swing.JFrame {
             
             initSimulation();
             clearSelection();
-            
-            
-  
+
             needUpdate();
         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -1818,6 +1837,14 @@ public final class MainForm extends javax.swing.JFrame {
     private void udpControlMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpControlMenuActionPerformed
         showNewFrame( new UDPRemoteControl(this));
     }//GEN-LAST:event_udpControlMenuActionPerformed
+
+    private void knotCreatorMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_knotCreatorMenuActionPerformed
+        showNewFrame( new VortexLoopCreator(this));
+    }//GEN-LAST:event_knotCreatorMenuActionPerformed
+
+    private void transPointsContributionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transPointsContributionMenuActionPerformed
+        showNewFrame( contribControl );
+    }//GEN-LAST:event_transPointsContributionMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1878,6 +1905,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JMenuItem knotCreatorMenu;
     private javax.swing.JMenuItem loadSimMenu;
     private javax.swing.JTabbedPane mainTabPanel;
     private javax.swing.ButtonGroup maskObjectsGroup;
@@ -1920,6 +1948,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField szText;
     private javax.swing.JMenuItem transAssignmentMenu;
     private javax.swing.JMenuItem transOffsetMenu;
+    private javax.swing.JMenuItem transPointsContributionMenu;
     private javax.swing.JMenuItem transSetAmp0Menu;
     private javax.swing.JMenuItem transSetAmp1Menu;
     private javax.swing.JMenuItem transSetPhase0Menu;
