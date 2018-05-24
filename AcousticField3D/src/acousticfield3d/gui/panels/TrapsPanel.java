@@ -220,6 +220,8 @@ public class TrapsPanel extends javax.swing.JPanel {
         mf.needUpdate();
     }//GEN-LAST:event_calcButtonActionPerformed
 
+    
+    
     private void calcDiscTmpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcDiscTmpButtonActionPerformed
         //get the selected particle
         final Entity e = mf.getSelection().get(0);

@@ -14,6 +14,7 @@ import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.simulation.Animation;
+import acousticfield3d.simulation.ControlPoint;
 import acousticfield3d.utils.Color;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ import java.util.logging.Logger;
  *
  * @author am14010
  */
-public class RotateMultipleTimes extends javax.swing.JFrame {
+public class GenerateComplexAnimations extends javax.swing.JFrame {
     final MainForm mf;
     
-    public RotateMultipleTimes(MainForm mf) {
+    public GenerateComplexAnimations(MainForm mf) {
         this.mf = mf;
         initComponents();
     }
@@ -91,6 +92,8 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         recalcAnimationButton = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        animWithCurrentPointsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Rotate multiple times");
@@ -443,16 +446,31 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
             }
         });
 
+        jLabel21.setText("Animation with current points");
+
+        animWithCurrentPointsButton.setText("OK");
+        animWithCurrentPointsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                animWithCurrentPointsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel20)
-                .addGap(18, 18, 18)
-                .addComponent(recalcAnimationButton)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel20)
+                        .addGap(18, 18, 18)
+                        .addComponent(recalcAnimationButton))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addGap(18, 18, 18)
+                        .addComponent(animWithCurrentPointsButton)))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,7 +479,11 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
                     .addComponent(recalcAnimationButton))
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(animWithCurrentPointsButton))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("recalc", jPanel4);
@@ -644,7 +666,7 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
             try {
                 Thread.sleep( msWait );
             } catch (InterruptedException ex) {
-                Logger.getLogger(RotateMultipleTimes.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GenerateComplexAnimations.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_quickSwapButtonActionPerformed
@@ -747,6 +769,15 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_recalcAnimationButtonActionPerformed
 
+    private void animWithCurrentPointsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animWithCurrentPointsButtonActionPerformed
+        final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
+        for(MeshEntity p : points){
+            mf.trapsPanel.applyOnTarget(p.getTransform().getTranslation());
+            //add the keyframe
+            mf.animPanel.addKeyFrame();
+        }
+    }//GEN-LAST:event_animWithCurrentPointsButtonActionPerformed
+
   
     private void disableCalc() {
         mf.movePanel.setGenerateKeyFrame(false);
@@ -760,6 +791,7 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton animWithCurrentPointsButton;
     private javax.swing.JButton bounceAndRotateButton;
     private javax.swing.JTextField bounceAndRotateStepsText;
     private javax.swing.JTextField boundariesText;
@@ -781,6 +813,7 @@ public class RotateMultipleTimes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class ControlPointPanel extends javax.swing.JPanel {
     public MainForm mf;
+    final ArrayList<MeshEntity> groundLines = new ArrayList<>();
     
     public ControlPointPanel(MainForm mf) {
         this.mf = mf;
@@ -63,6 +64,8 @@ public class ControlPointPanel extends javax.swing.JPanel {
         gridHText = new javax.swing.JTextField();
         gridAddButton = new javax.swing.JButton();
         circleButton = new javax.swing.JButton();
+        groundLineCheck = new javax.swing.JCheckBox();
+        lineThicknessText = new javax.swing.JTextField();
 
         jButton3.setText("jButton3");
 
@@ -75,7 +78,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
 
         jLabel41.setText("size:");
 
-        cpSizeText.setText("0.001");
+        cpSizeText.setText("0.0015");
         cpSizeText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cpSizeTextActionPerformed(evt);
@@ -173,6 +176,15 @@ public class ControlPointPanel extends javax.swing.JPanel {
             }
         });
 
+        groundLineCheck.setText("groundLine");
+        groundLineCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                groundLineCheckActionPerformed(evt);
+            }
+        });
+
+        lineThicknessText.setText("0.00025");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -208,22 +220,27 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         .addComponent(mirrorAddButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(circleButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(allVisibleButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(onlyVisibleButton))
-                            .addComponent(placeBeadAtSliceCheck)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(selectAllButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(cpAddButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpDelButton)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(groundLineCheck)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lineThicknessText))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(allVisibleButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(onlyVisibleButton))
+                                .addComponent(placeBeadAtSliceCheck)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(selectAllButton)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cpAddButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cpDelButton)))
+                            .addGap(0, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -268,7 +285,11 @@ public class ControlPointPanel extends javax.swing.JPanel {
                     .addComponent(gridWText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(gridHText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(gridAddButton))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(groundLineCheck)
+                    .addComponent(lineThicknessText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -431,15 +452,18 @@ public class ControlPointPanel extends javax.swing.JPanel {
         final int h = Parse.toInt( gridHText.getText() );
         final Vector3f sCenter = mf.simulation.getSimulationCenter();
         final Vector3f simSize = mf.simulation.getSimulationSize();
-        final Vector3f halfsize = simSize.divide(2.0f);
-        sCenter.x -= halfsize.x;
-        sCenter.z -= halfsize.z;
-        for( int x = 0; x < w; ++x){
-            for (int y = 0; y < h; ++y){
+       
+        final float sepW = simSize.x / (w+1);
+        final float sepH = simSize.z / (h+1);
+        
+        
+        for( int ix = 0; ix < w; ++ix){
+            for (int iy = 0; iy < h; ++iy){
+                
                 addControlPoint (
-                        sCenter.x + simSize.x * x / w, 
+                        sCenter.x - simSize.x/2 + sepW + sepW*ix, 
                         sCenter.y, 
-                        sCenter.z + simSize.z * y / h, 
+                        sCenter.z - simSize.z/2 + sepH + sepH*iy, 
                         getNumber(), 0);
             }
         }
@@ -465,7 +489,46 @@ public class ControlPointPanel extends javax.swing.JPanel {
         mf.needUpdate();
     }//GEN-LAST:event_circleButtonActionPerformed
 
+    private void groundLineCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_groundLineCheckActionPerformed
+        if (groundLineCheck.isSelected()){
+           final int nPoints = mf.simulation.controlPoints.size();
+           for (int i = 0; i < nPoints; ++i){
+               final MeshEntity line = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID_SPEC);
+               line.setTag( Entity.TAG_GROUND_LINE );
+               groundLines.add(line);
+               mf.scene.getEntities().add(line);
+            }
+            updateGroundLines();
+            mf.needUpdate();
+        }else{
+            groundLines.clear();
+            mf.scene.removeWithTag(Entity.TAG_GROUND_LINE );
+            mf.needUpdate();
+        }
+    }//GEN-LAST:event_groundLineCheckActionPerformed
 
+
+    public void updateGroundLines(){
+        final int nLines =  groundLines.size();
+        final int nPoints = mf.simulation.controlPoints.size();
+        final int n = M.min(nLines, nPoints);
+        final float thickness = Parse.toFloat( lineThicknessText.getText() );
+        final float minY = mf.simulation.getBoundaryMin().y;
+        
+        final Vector3f tmp = new Vector3f();
+        for (int i = 0; i < n; ++i){
+            final Vector3f pos = mf.simulation.controlPoints.get(i).getTransform().getTranslation();
+            final MeshEntity line = groundLines.get(i);
+            tmp.set(pos).y = minY;
+            
+            line.getTransform().connectTwoPoints(pos, tmp, thickness);
+        }
+        
+    }
+    
+    public boolean isGroundLineSelected(){
+        return groundLineCheck.isSelected();
+    }
     
     public void selectAll() {
         mf.clearSelection();
@@ -520,6 +583,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JButton gridAddButton;
     private javax.swing.JTextField gridHText;
     private javax.swing.JTextField gridWText;
+    private javax.swing.JCheckBox groundLineCheck;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -527,6 +591,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel43;
+    private javax.swing.JTextField lineThicknessText;
     private javax.swing.JButton mirrorAddButton;
     private javax.swing.JTextField numberText;
     private javax.swing.JButton onlyVisibleButton;

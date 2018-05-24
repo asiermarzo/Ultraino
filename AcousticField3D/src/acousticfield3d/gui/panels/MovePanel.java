@@ -700,9 +700,6 @@ public class MovePanel extends javax.swing.JPanel {
     }
     
     
-    public void phaseDiffWithPreviousStep(){
-        
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField angleText;

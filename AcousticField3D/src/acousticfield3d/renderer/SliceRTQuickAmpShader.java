@@ -9,13 +9,11 @@ package acousticfield3d.renderer;
 import acousticfield3d.math.Matrix4f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.MeshEntity;
-import acousticfield3d.scene.Resources;
 import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.FieldSource;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.utils.Color;
 import java.nio.FloatBuffer;
-import java.util.HashMap;
 
 import com.jogamp.opengl.GL2;
 
@@ -26,7 +24,8 @@ import com.jogamp.opengl.GL2;
 public class SliceRTQuickAmpShader extends SliceRTShader{   
     int uniK;
     int uniApperture;
-    
+    int amplitudeConst;
+            
     public SliceRTQuickAmpShader(String vProgram, String fProgram) {
         super(vProgram, fProgram, FieldSource.sourceAmp);
     }
@@ -37,6 +36,7 @@ public class SliceRTQuickAmpShader extends SliceRTShader{
  
         uniK = gl.glGetUniformLocation(shaderProgramID, "k");
         uniApperture = gl.glGetUniformLocation(shaderProgramID, "apperture");
+        amplitudeConst = gl.glGetUniformLocation(shaderProgramID, "amplitudeConstant");
     }
     
     @Override
@@ -66,8 +66,7 @@ public class SliceRTQuickAmpShader extends SliceRTShader{
         
        //Transducers Shader
         gl.glUniform3fv(transPosition, renderer.nTransducers, renderer.positions);
-        gl.glUniform1fv(transNormal, renderer.nTransducers, renderer.normalsY);
-        gl.glUniform2fv(transSpecs, renderer.nTransducers, renderer.phaseAndAmp);
+        gl.glUniform1fv(transSpecs, renderer.nTransducers, renderer.phase);
         
        //Slice RT   
        gl.glUniform1f(minPosColor, renderer.getForm().rtSlicePanel.getAmpColorMin());
@@ -81,6 +80,8 @@ public class SliceRTQuickAmpShader extends SliceRTShader{
        if (renderer.nTransducers > 0){
             gl.glUniform1f(uniK, renderer.specs.get(0) );
             gl.glUniform1f(uniApperture, renderer.specs.get(3));
+            gl.glUniform1f(amplitudeConst, renderer.specs.get(1));
+            
         }
     }
  

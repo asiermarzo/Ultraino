@@ -44,8 +44,7 @@ public class Renderer {
     FloatBuffer positions;
     FloatBuffer normals;
     FloatBuffer specs;
-    FloatBuffer normalsY;
-    FloatBuffer phaseAndAmp;
+    FloatBuffer phase;
     
     boolean needToReuploadTexture;
     private boolean needToReloadShaders;
@@ -120,6 +119,10 @@ public class Renderer {
             e.update( simulation );
         }
         
+        //update the ground lines
+        if (form.cpPanel.isGroundLineSelected()){
+            form.cpPanel.updateGroundLines();
+        }
     }
 
 
@@ -134,22 +137,19 @@ public class Renderer {
         if (normals != null && normals.capacity() < minCapacity3) { BufferUtils.destroyDirectBuffer(normals); normals = null;}
         if (specs != null && specs.capacity() < minCapacity4) { BufferUtils.destroyDirectBuffer(specs); specs = null;}
         
-        if (normalsY != null && normalsY.capacity() < minCapacity1) { BufferUtils.destroyDirectBuffer(normalsY); normalsY = null;}
-        if (phaseAndAmp != null && phaseAndAmp.capacity() < minCapacity2) { BufferUtils.destroyDirectBuffer(phaseAndAmp); phaseAndAmp = null;}
+        if (phase != null && phase.capacity() < minCapacity1) { BufferUtils.destroyDirectBuffer(phase); phase = null;}
         
         if (positions == null){ positions = BufferUtils.createFloatBuffer(minCapacity3); }
         if (normals == null){ normals = BufferUtils.createFloatBuffer( minCapacity3); }
         if (specs == null){ specs = BufferUtils.createFloatBuffer(minCapacity4); }
         
-        if (normalsY == null){ normalsY = BufferUtils.createFloatBuffer( minCapacity1); }
-        if (phaseAndAmp == null){ phaseAndAmp = BufferUtils.createFloatBuffer(minCapacity2); }
+        if (phase == null){ phase = BufferUtils.createFloatBuffer(minCapacity1); }
         
         
         positions.rewind();
         normals.rewind();
         specs.rewind();
-        normalsY.rewind();
-        phaseAndAmp.rewind();
+        phase.rewind();
         
         //calculate transducer uniform
         // x y z 1 -> positions
@@ -174,7 +174,6 @@ public class Renderer {
             normals.put( transNormal.x );
             normals.put( transNormal.y );
             normals.put( transNormal.z );
-            normalsY.put( transNormal.y );
             
             final float omega = M.TWO_PI * t.getFrequency();      // angular frequency
             final float k = omega / mSpeed;        // wavenumber
@@ -185,15 +184,13 @@ public class Renderer {
             specs.put( phase ); // phase
             specs.put( t.getApperture() ); // width
             
-            phaseAndAmp.put( phase );
-            phaseAndAmp.put( amp );
+            this.phase.put( phase );
         }
         
         positions.rewind();
         normals.rewind();
         specs.rewind();
-        normalsY.rewind();
-        phaseAndAmp.rewind();
+        phase.rewind();
     }
     
     private void postRender(GL2 gl){

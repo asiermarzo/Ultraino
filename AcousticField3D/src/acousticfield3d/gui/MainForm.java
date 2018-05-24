@@ -10,6 +10,7 @@ package acousticfield3d.gui;
 import acousticfield3d.Config;
 import acousticfield3d.gui.misc.AddRadialTransducersForm;
 import acousticfield3d.gui.misc.AlgorithmsForm;
+import acousticfield3d.gui.misc.ContribAndPhaseDiffForm;
 import acousticfield3d.gui.misc.ExportPlotsForm;
 import acousticfield3d.gui.misc.ForcePlotsFrame;
 import acousticfield3d.gui.misc.HybridSingleBeamForm;
@@ -17,11 +18,10 @@ import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.ParticleControllerFrame;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
-import acousticfield3d.gui.misc.RotateMultipleTimes;
+import acousticfield3d.gui.misc.GenerateComplexAnimations;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SwitchTimer;
-import acousticfield3d.gui.misc.TransContributionControl;
 import acousticfield3d.gui.misc.UDPRemoteControl;
 import acousticfield3d.gui.misc.VortexLoopCreator;
 import acousticfield3d.utils.DialogUtils;
@@ -112,7 +112,6 @@ public final class MainForm extends javax.swing.JFrame {
     public final AddTransducersForm addTransducersForm;
     public final SimulationConfigForm simForm;
     public final AlgorithmsForm algForm;
-    public final TransContributionControl contribControl;
     
     public final ParticleControllerFrame particleController;
     
@@ -145,8 +144,7 @@ public final class MainForm extends javax.swing.JFrame {
         simForm = new SimulationConfigForm(this);
         addTransducersForm = new AddTransducersForm(this, simulation, scene);
         algForm = new AlgorithmsForm(this);
-        contribControl = new TransContributionControl(this);
- 
+     
         particleController = new ParticleControllerFrame(this);
         
         GLProfile glprofile = GLProfile.getDefault();
@@ -371,7 +369,7 @@ public final class MainForm extends javax.swing.JFrame {
         exportPhasesMenu = new javax.swing.JMenuItem();
         exportTransPhasePointsMenu = new javax.swing.JMenuItem();
         knotCreatorMenu = new javax.swing.JMenuItem();
-        transPointsContributionMenu = new javax.swing.JMenuItem();
+        phaseDiscAnMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1261,13 +1259,13 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(knotCreatorMenu);
 
-        transPointsContributionMenu.setText("trans point contrib");
-        transPointsContributionMenu.addActionListener(new java.awt.event.ActionListener() {
+        phaseDiscAnMenu.setText("PhaseDiscAn");
+        phaseDiscAnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transPointsContributionMenuActionPerformed(evt);
+                phaseDiscAnMenuActionPerformed(evt);
             }
         });
-        jMenu7.add(transPointsContributionMenu);
+        jMenu7.add(phaseDiscAnMenu);
 
         jMenuBar1.add(jMenu7);
 
@@ -1791,7 +1789,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_particleControllerMenuActionPerformed
 
     private void rotateMultipleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateMultipleMenuActionPerformed
-        showNewFrame( new RotateMultipleTimes(this)); 
+        showNewFrame(new GenerateComplexAnimations(this)); 
     }//GEN-LAST:event_rotateMultipleMenuActionPerformed
 
     private void assignSel2MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignSel2MenuActionPerformed
@@ -1842,9 +1840,9 @@ public final class MainForm extends javax.swing.JFrame {
         showNewFrame( new VortexLoopCreator(this));
     }//GEN-LAST:event_knotCreatorMenuActionPerformed
 
-    private void transPointsContributionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transPointsContributionMenuActionPerformed
-        showNewFrame( contribControl );
-    }//GEN-LAST:event_transPointsContributionMenuActionPerformed
+    private void phaseDiscAnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDiscAnMenuActionPerformed
+        showNewFrame( new ContribAndPhaseDiffForm(this));
+    }//GEN-LAST:event_phaseDiscAnMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1919,6 +1917,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelSlider;
     private javax.swing.JMenuItem particleControllerMenu;
+    private javax.swing.JMenuItem phaseDiscAnMenu;
     private javax.swing.JMenuItem phasePatternMenu;
     private javax.swing.JMenuItem pointToTargetMenu;
     private javax.swing.JMenuItem polarPlotsMenu;
@@ -1948,7 +1947,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField szText;
     private javax.swing.JMenuItem transAssignmentMenu;
     private javax.swing.JMenuItem transOffsetMenu;
-    private javax.swing.JMenuItem transPointsContributionMenu;
     private javax.swing.JMenuItem transSetAmp0Menu;
     private javax.swing.JMenuItem transSetAmp1Menu;
     private javax.swing.JMenuItem transSetPhase0Menu;

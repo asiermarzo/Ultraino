@@ -8,12 +8,13 @@ uniform float maxNegColor;
 uniform float minPosColor;
 uniform float maxPosColor;
 
+uniform float amplitudeConstant;
+
 uniform float k;
 uniform float apperture;
 
 uniform vec3 tPos[N_TRANS]; //x y z
-uniform float tNorm[N_TRANS]; //ny
-uniform vec2 tSpecs[N_TRANS]; //phase, amp
+uniform float tSpecs[N_TRANS]; //phase
 
 uniform vec4 colorMod;
 
@@ -24,7 +25,7 @@ vec2 fieldAt(vec3 point){
 
     for(int i = 0; i < N_TRANS; ++i){ //try loop unroll
         vec3 diffVec = point - tPos[i];
-        vec3 tNormI = vec3(0.0, tNorm[i], 0.0);
+        vec3 tNormI = vec3(0.0, 1.0, 0.0);
 
         float dist = length(diffVec);
 
@@ -38,7 +39,7 @@ vec2 fieldAt(vec3 point){
             directivity = sin(dum) / dum;
         }
         
-        float ampDirAtt = tSpecs[i].y * directivity / dist;
+        float ampDirAtt = amplitudeConstant * directivity / dist;
         float kdPlusPhase = k * dist + tSpecs[i].x;
    
         field.x += ampDirAtt * cos(kdPlusPhase);

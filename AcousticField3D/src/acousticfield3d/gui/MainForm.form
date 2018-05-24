@@ -642,12 +642,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knotCreatorMenuActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transPointsContributionMenu">
+            <MenuItem class="javax.swing.JMenuItem" name="phaseDiscAnMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="trans point contrib"/>
+                <Property name="text" type="java.lang.String" value="PhaseDiscAn"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transPointsContributionMenuActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phaseDiscAnMenuActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
