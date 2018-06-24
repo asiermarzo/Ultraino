@@ -1732,8 +1732,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_matlabFieldMenuActionPerformed
 
     private void ImportAmpPhasesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImportAmpPhasesMenuActionPerformed
-        showNewFrame( new ImportPhasesAmpForm(this) );
-        
+        showNewFrame( new ImportPhasesAmpForm(this) );  
     }//GEN-LAST:event_ImportAmpPhasesMenuActionPerformed
 
     private void hybridSingleBeamMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hybridSingleBeamMenuActionPerformed
