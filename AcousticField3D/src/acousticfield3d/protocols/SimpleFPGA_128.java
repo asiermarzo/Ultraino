@@ -32,7 +32,7 @@ public class SimpleFPGA_128 extends SimpleFPGA{
     
     @Override
     public int getnTransducers(){
-        return 64 + 8;
+        return 64;
     }
     
     @Override
@@ -44,7 +44,6 @@ public class SimpleFPGA_128 extends SimpleFPGA{
     public int getSpeed() {
         return 1500000;
     } 
-    
     
     public static void exportAnimationMatlab(final MainForm mf) {
         final SimpleFPGA_128 ins = new SimpleFPGA_128();

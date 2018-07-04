@@ -29,25 +29,30 @@ public class MiscPanel extends javax.swing.JPanel {
     }
 
     public boolean isAmpDiscretizer(){
-        return ampDicreCheck.isSelected();
+        return ampDiscCheck.isSelected();
     }
     
     public int getAmpDiscretization(){
-        return Parse.toInt( ampDiscreText.getText() );
+        return Parse.toInt( ampDiscText.getText() );
     }
     
     public boolean isPhaseDiscretizer(){
-        return phaseDiscreCheck.isSelected();
+        return phaseDiscCheck.isSelected();
+    }
+
+    public JCheckBox getPhaseDiscCheck() {
+        return phaseDiscCheck;
+    }
+
+    public JTextField getPhaseDiscText() {
+        return phaseDiscText;
     }
     
  
     
-    public int getPhaseDiscretization(){
-        return Parse.toInt( phaseDiscreText.getText() );
-    }
     
-    public int getTransducersNumber(){
-        return Parse.toInt( transducersNumberText.getText() );
+    public int getPhaseDiscretization(){
+        return Parse.toInt( phaseDiscText.getText() );
     }
    
     public float getFiniteDiffH(){
@@ -73,13 +78,11 @@ public class MiscPanel extends javax.swing.JPanel {
         maskDelButton = new javax.swing.JButton();
         maskAddSphereButton = new javax.swing.JButton();
         colorText = new javax.swing.JTextField();
-        phaseDiscreCheck = new javax.swing.JCheckBox();
-        phaseDiscreText = new javax.swing.JTextField();
+        phaseDiscCheck = new javax.swing.JCheckBox();
+        phaseDiscText = new javax.swing.JTextField();
         reloadShadersButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        transducersNumberText = new javax.swing.JTextField();
-        ampDicreCheck = new javax.swing.JCheckBox();
-        ampDiscreText = new javax.swing.JTextField();
+        ampDiscCheck = new javax.swing.JCheckBox();
+        ampDiscText = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         hDivText = new javax.swing.JTextField();
 
@@ -181,9 +184,9 @@ public class MiscPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        phaseDiscreCheck.setText("Phase discretization (pi):");
+        phaseDiscCheck.setText("Phase discretization (pi):");
 
-        phaseDiscreText.setText("10");
+        phaseDiscText.setText("10");
 
         reloadShadersButton.setText("ReloadShaders");
         reloadShadersButton.addActionListener(new java.awt.event.ActionListener() {
@@ -192,13 +195,9 @@ public class MiscPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("Number of transducers:");
+        ampDiscCheck.setText("Amp discretization:");
 
-        transducersNumberText.setText("64");
-
-        ampDicreCheck.setText("Amp discretization:");
-
-        ampDiscreText.setText("10");
+        ampDiscText.setText("10");
 
         jLabel2.setText("hdiv (w):");
 
@@ -213,17 +212,13 @@ public class MiscPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(transducersNumberText))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(ampDicreCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(phaseDiscreCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(ampDiscCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(phaseDiscCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(phaseDiscreText)
-                            .addComponent(ampDiscreText)))
+                            .addComponent(phaseDiscText)
+                            .addComponent(ampDiscText)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -239,17 +234,13 @@ public class MiscPanel extends javax.swing.JPanel {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ampDicreCheck)
-                    .addComponent(ampDiscreText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ampDiscCheck)
+                    .addComponent(ampDiscText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phaseDiscreCheck)
-                    .addComponent(phaseDiscreText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(transducersNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                    .addComponent(phaseDiscCheck)
+                    .addComponent(phaseDiscText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(hDivText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -319,30 +310,29 @@ public class MiscPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_colorTextActionPerformed
 
     public JCheckBox getAmpDicreCheck() {
-        return ampDicreCheck;
+        return ampDiscCheck;
     }
 
     public JTextField getAmpDiscreText() {
-        return ampDiscreText;
+        return ampDiscText;
     }
 
     public JCheckBox getPhaseDiscreCheck() {
-        return phaseDiscreCheck;
+        return phaseDiscCheck;
     }
 
     public JTextField getPhaseDiscreText() {
-        return phaseDiscreText;
+        return phaseDiscText;
     }
 
     
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox ampDicreCheck;
-    private javax.swing.JTextField ampDiscreText;
+    private javax.swing.JCheckBox ampDiscCheck;
+    private javax.swing.JTextField ampDiscText;
     private javax.swing.JTextField colorText;
     private javax.swing.JTextField hDivText;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton maskAddCubeButton;
@@ -352,10 +342,9 @@ public class MiscPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup maskGroup;
     private javax.swing.JRadioButton maskMaskCheck;
     private javax.swing.JRadioButton maskVisibleCheck;
-    private javax.swing.JCheckBox phaseDiscreCheck;
-    private javax.swing.JTextField phaseDiscreText;
+    private javax.swing.JCheckBox phaseDiscCheck;
+    private javax.swing.JTextField phaseDiscText;
     private javax.swing.JButton reloadShadersButton;
     private javax.swing.ButtonGroup shadersTypeGroup;
-    private javax.swing.JTextField transducersNumberText;
     // End of variables declaration//GEN-END:variables
 }

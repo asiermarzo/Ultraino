@@ -27,19 +27,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="transducersNumberText" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="ampDicreCheck" max="32767" attributes="0"/>
-                          <Component id="phaseDiscreCheck" max="32767" attributes="0"/>
+                          <Component id="ampDiscCheck" max="32767" attributes="0"/>
+                          <Component id="phaseDiscCheck" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="phaseDiscreText" max="32767" attributes="0"/>
-                          <Component id="ampDiscreText" max="32767" attributes="0"/>
+                          <Component id="phaseDiscText" max="32767" attributes="0"/>
+                          <Component id="ampDiscText" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -62,20 +57,15 @@
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="ampDicreCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ampDiscreText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ampDiscCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ampDiscText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="phaseDiscreCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="phaseDiscreText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="phaseDiscCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="phaseDiscText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="transducersNumberText" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="56" max="32767" attributes="0"/>
+              <EmptySpace pref="80" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="hDivText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -220,12 +210,12 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JCheckBox" name="phaseDiscreCheck">
+    <Component class="javax.swing.JCheckBox" name="phaseDiscCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="Phase discretization (pi):"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="phaseDiscreText">
+    <Component class="javax.swing.JTextField" name="phaseDiscText">
       <Properties>
         <Property name="text" type="java.lang.String" value="10"/>
       </Properties>
@@ -238,22 +228,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reloadShadersButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Number of transducers:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="transducersNumberText">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="64"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="ampDicreCheck">
+    <Component class="javax.swing.JCheckBox" name="ampDiscCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="Amp discretization:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="ampDiscreText">
+    <Component class="javax.swing.JTextField" name="ampDiscText">
       <Properties>
         <Property name="text" type="java.lang.String" value="10"/>
       </Properties>

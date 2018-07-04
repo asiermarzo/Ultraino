@@ -11,6 +11,7 @@ import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Transform;
 import acousticfield3d.math.Vector3f;
+import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.ControlPoint;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.FileUtils;
@@ -71,6 +72,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         simpleForcesToCSVButton1 = new javax.swing.JButton();
         simpleForcesToCSVButton2 = new javax.swing.JButton();
         spatialResVsFocusButton1 = new javax.swing.JButton();
+        pressScanVsResButton = new javax.swing.JButton();
+        numPointsStartText = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Random points experiments");
@@ -81,7 +84,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
 
         jLabel2.setText("nPoints");
 
-        numPointsText.setText("1");
+        numPointsText.setText("30");
 
         goButton.setText("Go");
         goButton.addActionListener(new java.awt.event.ActionListener() {
@@ -193,6 +196,15 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             }
         });
 
+        pressScanVsResButton.setText("PressureScan vs res");
+        pressScanVsResButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pressScanVsResButtonActionPerformed(evt);
+            }
+        });
+
+        numPointsStartText.setText("1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,36 +213,13 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(spatialResVsFocusButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(repetitionsText, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
+                        .addComponent(spatialResVsFocusButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(simpleForcesToCSVButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(copyCubeButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(minDistText, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(minDistZText))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileText)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(selectButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(auxButton))
-                            .addComponent(generatePointsButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addComponent(simpleForcesToCSVButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(goButton)
@@ -244,16 +233,43 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(simpleForcesToCSVButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(simpleForcesGenPoints)))
+                                .addComponent(simpleForcesGenPoints))
+                            .addComponent(pressScanVsResButton))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(spatialResVsFocusButton)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(minDistText, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(minDistZText))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fileText))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(repetitionsText, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(numPointsStartText)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spatialResVsFocusButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(simpleForcesToCSVButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(simpleForcesToCSVButton2)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(numPointsText)
+                                .addGap(18, 18, 18)
+                                .addComponent(copyCubeButton))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(selectButton)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(auxButton))
+                                .addComponent(generatePointsButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -265,7 +281,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addComponent(repetitionsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(numPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(copyCubeButton))
+                    .addComponent(copyCubeButton)
+                    .addComponent(numPointsStartText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -301,7 +318,9 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addComponent(simpleForcesToCSVButton1)
                     .addComponent(simpleForcesToCSVButton2)
                     .addComponent(spatialResVsFocusButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pressScanVsResButton)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -368,7 +387,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         calcExperiments(null, true, true);
     }//GEN-LAST:event_goButtonActionPerformed
 
-    private void calcExperiments(final String fileName, final boolean reportText, final boolean calcForce){
+    private void calcExperiments(final String fileName, final boolean reportText, final boolean calcForce){ 
         final boolean needToGeneratePoints = (pointsToUse == null);
         if (needToGeneratePoints){
             pointsToUse = generatePoints();
@@ -402,6 +421,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
        individualPressures[2] = new Vector3f();
         */
         
+        
         final Vector3f pressureDiffTmp = new Vector3f();
         
         final float particleR = mf.scene.getParticleRadious();
@@ -430,6 +450,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                 resetTransducers();
 
                 //run algorithm
+               
                 mf.algForm.runBFGS(false, false, false);
 
                 //take measurements
@@ -453,9 +474,12 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
 
                     if (fw != null) {
                         //repetition nPoint x y z fx fy fz
-                        fw.write(i + "," + j + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
+                        fw.write(i +  "," + "," + j + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
                     }
+                
+                
                 }
+                
                 final double pressStdBetweenPoints = getStd(pressureDiffTmp, nPoints);
                 aggregate(pressureDiff, (float) pressStdBetweenPoints);
             }
@@ -585,9 +609,10 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_generateTestPointsButtonActionPerformed
 
     private void simpleForcesToCSVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpleForcesToCSVButtonActionPerformed
+        final int startingPoint = Parse.toInt( numPointsStartText.getText() );
         final int nPoints = Parse.toInt( numPointsText.getText() );
         
-        for (int i = 1; i <= nPoints; ++i){
+        for (int i = startingPoint; i <= nPoints; ++i){
             try {
                 if ( simpleForcesGenPoints.isSelected() ){
                     numPointsText.setText( i + "");
@@ -596,7 +621,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     pointsToUse = (float[][][]) FileUtils.readObject( new File("points" + i + ".xml"));
                 }
                 
-                calcExperiments(fileText + "_" + i + ".csv", false, true);
+                calcExperiments(fileText.getText() + "_" + i + ".csv", false, true);
             } catch (IOException ex) {
                 Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -729,6 +754,45 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_spatialResVsFocusButton1ActionPerformed
 
+    private void pressScanVsResButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressScanVsResButtonActionPerformed
+        //load the 1-n points
+        final float distance = 0.03f;
+        final int nPoint = 50;
+        final float width = 0.16f;
+        
+        final int[] transList = {8,16,32,37,45,60,70,80,90};
+        for (int nTrans : transList){
+            //delete all the previous transducers
+            mf.transPanel.selectAll();
+            mf.transPanel.deleteSelectedTransducers();
+            
+            //create the array of transducers
+            final float transWidth = width / nTrans;
+            final float transPower = 2.5f * 16 * 16 / nTrans / nTrans;
+            final float transApperture = 0.009f * 16 / nTrans;
+            mf.addTransducersForm.getColSpinner().setValue( nTrans );
+            mf.addTransducersForm.getRowSpinner().setValue( nTrans );
+            mf.addTransducersForm.getSizeText().setText( transWidth + " 0.003 " + transWidth);
+            mf.addTransducersForm.getSpaceText().setText(transWidth + "");
+            mf.addTransducersForm.getpText().setText( transPower + "");
+            mf.addTransducersForm.getwText().setText( transApperture + "");
+            mf.addTransducersForm.pressOkButton();
+            
+            //run the algorithm
+            mf.algForm.runBFGS(false, false, true);
+             
+            //scan the line
+            System.out.print(nTrans + ",");
+            final Vector3f avgP = Scene.calcCenter( mf.simulation.controlPoints );
+            for(int i = 0; i < nPoint; ++i){
+                final float offset = -(distance/2) + distance*i/nPoint;
+                final float pressure = CalcField.calcFieldAt(avgP.x + offset , avgP.y, avgP.z, mf).length();
+                System.out.print(pressure + ",");
+            }
+            System.out.println();
+        }
+    }//GEN-LAST:event_pressScanVsResButtonActionPerformed
+
     private void runExperiment(final int steps, final int alg){
         System.out.println("----- " + (alg==3?"gorkov":"laplacian") + " steps " + steps);
         mf.algForm.setAlgorithm(alg);
@@ -771,7 +835,9 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField minDistText;
     private javax.swing.JTextField minDistZText;
+    private javax.swing.JTextField numPointsStartText;
     private javax.swing.JTextField numPointsText;
+    private javax.swing.JButton pressScanVsResButton;
     private javax.swing.JTextField repetitionsText;
     private javax.swing.JButton selectButton;
     private javax.swing.JButton simpleForcesButton;
