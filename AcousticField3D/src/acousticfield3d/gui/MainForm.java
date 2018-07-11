@@ -324,6 +324,7 @@ public final class MainForm extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         delTransMenu = new javax.swing.JMenuItem();
         pointToTargetMenu = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
         transSetPhase0Menu = new javax.swing.JMenuItem();
         transSetPhasePiMenu = new javax.swing.JMenuItem();
         transSetAmp0Menu = new javax.swing.JMenuItem();
@@ -331,6 +332,9 @@ public final class MainForm extends javax.swing.JFrame {
         offNextOnTransducerMenu = new javax.swing.JMenuItem();
         selectTransTopMenu = new javax.swing.JMenuItem();
         selectTransTopMenu1 = new javax.swing.JMenuItem();
+        phaseUpMenu = new javax.swing.JMenuItem();
+        phaseDownMenu = new javax.swing.JMenuItem();
+        phasePiMenu = new javax.swing.JMenuItem();
         transOffsetMenu = new javax.swing.JMenuItem();
         transAssignmentMenu = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
@@ -905,6 +909,8 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu4.add(pointToTargetMenu);
 
+        jMenu8.setText("shortcuts");
+
         transSetPhase0Menu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
         transSetPhase0Menu.setText("Phase=0");
         transSetPhase0Menu.addActionListener(new java.awt.event.ActionListener() {
@@ -912,7 +918,7 @@ public final class MainForm extends javax.swing.JFrame {
                 transSetPhase0MenuActionPerformed(evt);
             }
         });
-        jMenu4.add(transSetPhase0Menu);
+        jMenu8.add(transSetPhase0Menu);
 
         transSetPhasePiMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
         transSetPhasePiMenu.setText("Phase=PI");
@@ -921,7 +927,7 @@ public final class MainForm extends javax.swing.JFrame {
                 transSetPhasePiMenuActionPerformed(evt);
             }
         });
-        jMenu4.add(transSetPhasePiMenu);
+        jMenu8.add(transSetPhasePiMenu);
 
         transSetAmp0Menu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
         transSetAmp0Menu.setText("Amp=0");
@@ -930,7 +936,7 @@ public final class MainForm extends javax.swing.JFrame {
                 transSetAmp0MenuActionPerformed(evt);
             }
         });
-        jMenu4.add(transSetAmp0Menu);
+        jMenu8.add(transSetAmp0Menu);
 
         transSetAmp1Menu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, 0));
         transSetAmp1Menu.setText("Amp=1");
@@ -939,7 +945,7 @@ public final class MainForm extends javax.swing.JFrame {
                 transSetAmp1MenuActionPerformed(evt);
             }
         });
-        jMenu4.add(transSetAmp1Menu);
+        jMenu8.add(transSetAmp1Menu);
 
         offNextOnTransducerMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, 0));
         offNextOnTransducerMenu.setText("offNextOn");
@@ -948,7 +954,7 @@ public final class MainForm extends javax.swing.JFrame {
                 offNextOnTransducerMenuActionPerformed(evt);
             }
         });
-        jMenu4.add(offNextOnTransducerMenu);
+        jMenu8.add(offNextOnTransducerMenu);
 
         selectTransTopMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
         selectTransTopMenu.setText("Select top");
@@ -957,7 +963,7 @@ public final class MainForm extends javax.swing.JFrame {
                 selectTransTopMenuActionPerformed(evt);
             }
         });
-        jMenu4.add(selectTransTopMenu);
+        jMenu8.add(selectTransTopMenu);
 
         selectTransTopMenu1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
         selectTransTopMenu1.setText("Select bottom");
@@ -966,7 +972,36 @@ public final class MainForm extends javax.swing.JFrame {
                 selectTransTopMenu1ActionPerformed(evt);
             }
         });
-        jMenu4.add(selectTransTopMenu1);
+        jMenu8.add(selectTransTopMenu1);
+
+        phaseUpMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
+        phaseUpMenu.setText("phaseUp");
+        phaseUpMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phaseUpMenuActionPerformed(evt);
+            }
+        });
+        jMenu8.add(phaseUpMenu);
+
+        phaseDownMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
+        phaseDownMenu.setText("phaseDown");
+        phaseDownMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phaseDownMenuActionPerformed(evt);
+            }
+        });
+        jMenu8.add(phaseDownMenu);
+
+        phasePiMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, 0));
+        phasePiMenu.setText("phasePi");
+        phasePiMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phasePiMenuActionPerformed(evt);
+            }
+        });
+        jMenu8.add(phasePiMenu);
+
+        jMenu4.add(jMenu8);
 
         transOffsetMenu.setText("Offsets");
         transOffsetMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -1842,6 +1877,18 @@ public final class MainForm extends javax.swing.JFrame {
     private void phaseDiscAnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDiscAnMenuActionPerformed
         showNewFrame( new ContribAndPhaseDiffForm(this));
     }//GEN-LAST:event_phaseDiscAnMenuActionPerformed
+
+    private void phaseUpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseUpMenuActionPerformed
+        transControlPanel.addPhaseSteps(1);
+    }//GEN-LAST:event_phaseUpMenuActionPerformed
+
+    private void phaseDownMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDownMenuActionPerformed
+        transControlPanel.addPhaseSteps(-1);
+    }//GEN-LAST:event_phaseDownMenuActionPerformed
+
+    private void phasePiMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phasePiMenuActionPerformed
+        transControlPanel.phasePi();
+    }//GEN-LAST:event_phasePiMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1897,6 +1944,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -1917,7 +1965,10 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel panelSlider;
     private javax.swing.JMenuItem particleControllerMenu;
     private javax.swing.JMenuItem phaseDiscAnMenu;
+    private javax.swing.JMenuItem phaseDownMenu;
     private javax.swing.JMenuItem phasePatternMenu;
+    private javax.swing.JMenuItem phasePiMenu;
+    private javax.swing.JMenuItem phaseUpMenu;
     private javax.swing.JMenuItem pointToTargetMenu;
     private javax.swing.JMenuItem polarPlotsMenu;
     private javax.swing.ButtonGroup preCubeSource;

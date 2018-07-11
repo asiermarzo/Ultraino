@@ -405,6 +405,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         }
         
         final int repetitions = pointsToUse.length;
+        //final int repetitions = 100;
         final int nPoints = pointsToUse[0].length;
         
         //init variables: sum, squareSum, max
@@ -474,7 +475,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
 
                     if (fw != null) {
                         //repetition nPoint x y z fx fy fz
-                        fw.write(i +  "," + "," + j + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
+                        fw.write(i + "," + j + "," + p.toStringSimple(",") + "," + forceG.toStringSimple(",") + "\n");
                     }
                 
                 

@@ -514,5 +514,9 @@ public class TransControlPanel extends javax.swing.JPanel {
             device.sendToogleQuickMultiplexMode();
         }
     }
+
+    public void phasePi() {
+        mf.transPanel.setTransPhase( "a" + 1 );
+    }
     
 }
