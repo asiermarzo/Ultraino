@@ -27,7 +27,7 @@ public class SimpleFPGA extends DeviceConnection{
     }
     
     public int getnTransducers(){
-        return 64;
+        return 256;
     }
     
     @Override
