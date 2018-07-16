@@ -8,6 +8,7 @@ package acousticfield3d.gui.misc;
 
 import acousticfield3d.algorithms.BFGSOptimization;
 import acousticfield3d.algorithms.CalcField;
+import acousticfield3d.algorithms.DivTransFocus;
 import acousticfield3d.algorithms.Kinoforms;
 import acousticfield3d.algorithms.SimplePhaseAlgorithms;
 import acousticfield3d.algorithms.bfgs.BFGSProgressListener;
@@ -146,7 +147,8 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                 smp.iterate();
             }
            smp.applySolution(mf.simulation);
-           
+        }else if (divTransCheck.isSelected()){
+            DivTransFocus.calcMultiFocus(mf, mf.simulation.transducers, bfgs.controlPoints, divTransMethodCombo.getSelectedIndex());
         }else{ //regular algorithms
             //kickstart?
             
@@ -284,6 +286,8 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         kinoformsCheck = new javax.swing.JRadioButton();
         kickstartBFGSorHoloCheck = new javax.swing.JCheckBox();
         iterButton = new javax.swing.JButton();
+        divTransCheck = new javax.swing.JRadioButton();
+        divTransMethodCombo = new javax.swing.JComboBox();
 
         jButton1.setText("jButton1");
 
@@ -395,7 +399,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
         reportCheck.setText("report");
 
-        itersMultiFocalKickText.setText("3000");
+        itersMultiFocalKickText.setText("10");
 
         resurePreCheck.setSelected(true);
         resurePreCheck.setText("ReusePre");
@@ -403,7 +407,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         piStartHalfCheck.setText("PI on half");
 
         varToOptimizeGroup.add(kinoformsCheck);
-        kinoformsCheck.setText("Kinoforms");
+        kinoformsCheck.setText("ITR");
 
         kickstartBFGSorHoloCheck.setText("BFGS or HOLO");
 
@@ -413,6 +417,11 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                 iterButtonActionPerformed(evt);
             }
         });
+
+        varToOptimizeGroup.add(divTransCheck);
+        divTransCheck.setText("divTrans");
+
+        divTransMethodCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Checker", "Line", "Random", "Closest" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -426,25 +435,6 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                         .addComponent(clearAreaButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(okButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(xMinText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(gMinText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(alphaText))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stepsText)
-                        .addGap(18, 18, 18)
-                        .addComponent(kinoformsCheck)
-                        .addGap(72, 72, 72))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -467,7 +457,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                         .addComponent(maxGLaplacian)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(simpleGorkovCheck)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 15, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -481,7 +471,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(equalizerCheck)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(equalizerWeightText, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                                .addComponent(equalizerWeightText)
                                 .addGap(122, 122, 122))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(resurePreCheck)
@@ -497,7 +487,33 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(itersMultiFocalKickText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(piStartHalfCheck)))
+                        .addComponent(piStartHalfCheck))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(stepsText))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(xMinText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(gMinText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(alphaText))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(kinoformsCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(divTransCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(divTransMethodCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -518,7 +534,9 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(stepsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(kinoformsCheck))
+                    .addComponent(kinoformsCheck)
+                    .addComponent(divTransCheck)
+                    .addComponent(divTransMethodCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -728,6 +746,8 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
     private javax.swing.JTextField centralWText;
     private javax.swing.JButton clearAreaButton;
     private javax.swing.JTextField distancesText;
+    private javax.swing.JRadioButton divTransCheck;
+    private javax.swing.JComboBox divTransMethodCombo;
     private javax.swing.JCheckBox equalizerCheck;
     private javax.swing.JTextField equalizerWeightText;
     private javax.swing.JCheckBox focalKickCheck;

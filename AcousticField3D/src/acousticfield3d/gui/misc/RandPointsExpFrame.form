@@ -52,7 +52,6 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="simpleForcesGenPoints" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="pressScanVsResButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -98,6 +97,11 @@
                               <Component id="generatePointsButton" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="pressScanVsResButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="separationvsfocusButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -160,7 +164,10 @@
                   <Component id="spatialResVsFocusButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pressScanVsResButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="pressScanVsResButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="separationvsfocusButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -343,6 +350,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="1"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="separationvsfocusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Separation vs focus"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="separationvsfocusButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

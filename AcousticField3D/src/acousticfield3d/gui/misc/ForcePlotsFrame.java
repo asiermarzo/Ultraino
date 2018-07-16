@@ -190,7 +190,8 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         for(int i = 0; i < nSteps; ++i){
            pos.addLocalInc(dir, disp/nSteps);
             
-            SimplePhaseAlgorithms.focus(mf.simulation.transducers, pos, mf.simulation.getMediumSpeed());
+           SimplePhaseAlgorithms.focus(mf.simulation.transducers, pos, mf.simulation.getMediumSpeed());
+            //mf.algForm.runBFGS(false, false, true);
            final double pressure = CalcField.calcFieldAt(pos.x, pos.y, pos.z, mf).length();
           
             

@@ -106,27 +106,6 @@
                       <Component id="okButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xMinText" min="-2" pref="64" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="gMinText" min="-2" pref="66" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="alphaText" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="stepsText" max="32767" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="kinoformsCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" alignment="0" min="-2" pref="53" max="-2" attributes="0"/>
                           <Component id="calcBFGSButton" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -152,7 +131,7 @@
                       <Component id="maxGLaplacian" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="simpleGorkovCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
@@ -168,7 +147,7 @@
                           <Group type="102" attributes="0">
                               <Component id="equalizerCheck" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="equalizerWeightText" pref="47" max="32767" attributes="0"/>
+                              <Component id="equalizerWeightText" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -189,6 +168,39 @@
                       <Component id="itersMultiFocalKickText" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="piStartHalfCheck" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="stepsText" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xMinText" min="-2" pref="64" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="gMinText" min="-2" pref="66" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="alphaText" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="kinoformsCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="divTransCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="divTransMethodCombo" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -217,6 +229,8 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="stepsText" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="kinoformsCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="divTransCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="divTransMethodCombo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -451,7 +465,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="itersMultiFocalKickText">
       <Properties>
-        <Property name="text" type="java.lang.String" value="3000"/>
+        <Property name="text" type="java.lang.String" value="10"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="resurePreCheck">
@@ -470,7 +484,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="varToOptimizeGroup"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Kinoforms"/>
+        <Property name="text" type="java.lang.String" value="ITR"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="kickstartBFGSorHoloCheck">
@@ -485,6 +499,26 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="iterButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="divTransCheck">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="varToOptimizeGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="divTrans"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="divTransMethodCombo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Checker"/>
+            <StringItem index="1" value="Line"/>
+            <StringItem index="2" value="Random"/>
+            <StringItem index="3" value="Closest"/>
+          </StringArray>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
