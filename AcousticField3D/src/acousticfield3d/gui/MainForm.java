@@ -1980,11 +1980,12 @@ public final class MainForm extends javax.swing.JFrame {
         final int x = evt.getX();
         final int y = evt.getY();
         final float dist = M.distance(x, y, firstDragX, firstDragY);
-        if (button == 1 && dist > 4){
+        /*
+        if (button == 1 && dist > 10){
             final int tags = addTagsForSelectionFilter(0);
             final ArrayList<Entity> selected = selectWithDrag(firstDragX,firstDragY,x,y, tags);
             setSelection(selected);
-        }
+        }*/
     }//GEN-LAST:event_panelMouseReleased
  
     private void showNewFrame(final JFrame frame){

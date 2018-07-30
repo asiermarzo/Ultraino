@@ -9,13 +9,6 @@
    </void>
   </void>
   <void class="acousticfield3d.Config" method="getField">
-   <string>lastSimFile</string>
-   <void method="set">
-    <object idref="Config0"/>
-    <string>\\ads.bris.ac.uk\filestore\myfiles\StudentPG2\am14010\Desktop\bigStanding3.xml.gz</string>
-   </void>
-  </void>
-  <void class="acousticfield3d.Config" method="getField">
    <string>frameX</string>
    <void method="set">
     <object idref="Config0"/>
@@ -62,7 +55,7 @@
   </void>
   <void method="put">
    <string>.zText</string>
-   <string>0.0787</string>
+   <string>-0.0350</string>
   </void>
   <void method="put">
    <string>.animPanel.durationText</string>
@@ -118,7 +111,7 @@
   </void>
   <void method="put">
    <string>.xText</string>
-   <string>0.0052</string>
+   <string>0.0050</string>
   </void>
   <void method="put">
    <string>.trapsPanel.yForceText</string>
@@ -194,7 +187,7 @@
   </void>
   <void method="put">
    <string>.transducersPanel.phaseText</string>
-   <string>1.4548</string>
+   <string>0.0000</string>
   </void>
   <void method="put">
    <string>.algForm.resurePreCheck</string>
@@ -234,7 +227,7 @@
   </void>
   <void method="put">
    <string>.transducersPanel.orderText</string>
-   <string>322</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.algForm.laplacianConstantsText</string>
@@ -338,7 +331,7 @@
   </void>
   <void method="put">
    <string>.ryText</string>
-   <string>180.0000</string>
+   <string>0.0000AAQAAA</string>
   </void>
   <void method="put">
    <string>.movePanel.autoSendCheck</string>
@@ -418,7 +411,7 @@
   </void>
   <void method="put">
    <string>.yText</string>
-   <string>0.2355</string>
+   <string>-0</string>
   </void>
   <void method="put">
    <string>.szText</string>
@@ -578,7 +571,7 @@
   </void>
   <void method="put">
    <string>.pointsPanel.cpEnableCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.trapsPanel.focusCheck</string>
@@ -586,7 +579,7 @@
   </void>
   <void method="put">
    <string>.rxText</string>
-   <string>180.0000</string>
+   <string>0.0000</string>
   </void>
   <void method="put">
    <string>.addTransducersForm.radialCheck</string>
