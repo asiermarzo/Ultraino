@@ -56,7 +56,6 @@ public class TrapsPanel extends javax.swing.JPanel {
         zForceText = new javax.swing.JTextField();
         calcLaplacianCheck = new javax.swing.JCheckBox();
         sendCheck = new javax.swing.JCheckBox();
-        calcDiscTmpButton = new javax.swing.JButton();
 
         focusCheck.setSelected(true);
         focusCheck.setText("focus");
@@ -105,13 +104,6 @@ public class TrapsPanel extends javax.swing.JPanel {
 
         sendCheck.setText("send");
 
-        calcDiscTmpButton.setText("T");
-        calcDiscTmpButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                calcDiscTmpButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,13 +142,11 @@ public class TrapsPanel extends javax.swing.JPanel {
                                 .addComponent(calcForceCheck)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(calcLaplacianCheck)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 19, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(focusCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(calcButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(calcDiscTmpButton)))
+                        .addComponent(calcButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -165,8 +155,7 @@ public class TrapsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(focusCheck)
-                    .addComponent(calcButton)
-                    .addComponent(calcDiscTmpButton))
+                    .addComponent(calcButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(noneRadio)
@@ -203,9 +192,9 @@ public class TrapsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    public void applyOnTarget(final Vector3f target){
+    public void applyOnPosition(final Vector3f position){
         final List<Transducer> transducers = mf.simulation.getTransducers();
-        getTrap().apply(mf.simulation, transducers, target);
+        getTrap().apply(mf.simulation, transducers, position);
     }
     
     private void calcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcButtonActionPerformed
@@ -215,33 +204,13 @@ public class TrapsPanel extends javax.swing.JPanel {
             return;
         }
         
-        applyOnTarget( cp.getTransform().getTranslation() );
+        applyOnPosition( cp.getTransform().getTranslation() );
         
         mf.needUpdate();
     }//GEN-LAST:event_calcButtonActionPerformed
 
     
     
-    private void calcDiscTmpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcDiscTmpButtonActionPerformed
-        //get the selected particle
-        final Entity e = mf.getSelection().get(0);
-        final Vector3f pos = e.getTransform().getTranslation();
-        
-        for(int i = 32; i >=0; --i){
-            //set the phase discretiation
-            mf.miscPanel.getPhaseDiscreCheck().setSelected( i != 0 );
-            if (i != 0){
-                mf.miscPanel.getPhaseDiscreText().setText(i + "");
-            }
-            
-            //click calcat
-            clickAt(pos);
-            
-            //print values
-            System.out.println(i + " " + pressureAText.getText() + " " + xForceText.getText() + " " + yForceText.getText() + " " + zForceText.getText());
-        }
-    }//GEN-LAST:event_calcDiscTmpButtonActionPerformed
-
 
     public boolean isCalcOnClick(){
         return calcClickCheck.isSelected();
@@ -277,7 +246,7 @@ public class TrapsPanel extends javax.swing.JPanel {
         setPressureA(field.length());
 
         if (calcClickCheck.isSelected() ) {
-            applyOnTarget(wPos);
+            applyOnPosition(wPos);
             if ( sendCheck.isSelected() ){
                 mf.transControlPanel.sendPattern();
             }
@@ -319,7 +288,6 @@ public class TrapsPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton calcButton;
     private javax.swing.JCheckBox calcClickCheck;
-    private javax.swing.JButton calcDiscTmpButton;
     private javax.swing.JCheckBox calcForceCheck;
     private javax.swing.JCheckBox calcLaplacianCheck;
     private javax.swing.JCheckBox focusCheck;

@@ -6,6 +6,7 @@
 
 package acousticfield3d.gui.panels;
 
+import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
@@ -16,6 +17,7 @@ import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.JButton;
 
 /**
@@ -73,6 +75,9 @@ public class MovePanel extends javax.swing.JPanel {
         gatherButton = new javax.swing.JButton();
         expandButton = new javax.swing.JButton();
         autoReturnButton = new javax.swing.JButton();
+        amplitudeLimiterCheck = new javax.swing.JCheckBox();
+        ampLimitText = new javax.swing.JTextField();
+        ampLimitStepText = new javax.swing.JTextField();
 
         jLabel2.setText("N:");
 
@@ -81,7 +86,7 @@ public class MovePanel extends javax.swing.JPanel {
         autoCalcCheck.setSelected(true);
         autoCalcCheck.setText("calc");
 
-        jLabel3.setText("Length:");
+        jLabel3.setText("Step size:");
 
         speedText.setText("0.001");
 
@@ -233,6 +238,12 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        amplitudeLimiterCheck.setText("ampLim");
+
+        ampLimitText.setText("3000");
+
+        ampLimitStepText.setText("0.001");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -288,10 +299,9 @@ public class MovePanel extends javax.swing.JPanel {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(speedText))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(moveAllCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(useAlgCheck))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(autoReturnButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -318,8 +328,16 @@ public class MovePanel extends javax.swing.JPanel {
                                     .addComponent(rZNButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(autoReturnButton)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(moveAllCheck)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(amplitudeLimiterCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ampLimitText)))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ampLimitStepText)
+                            .addComponent(useAlgCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -336,7 +354,7 @@ public class MovePanel extends javax.swing.JPanel {
                     .addComponent(autoAddCheck)
                     .addComponent(jLabel3)
                     .addComponent(speedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(leftButton)
                     .addComponent(upButton)
@@ -353,7 +371,7 @@ public class MovePanel extends javax.swing.JPanel {
                     .addComponent(resetButton)
                     .addComponent(snapButton)
                     .addComponent(neutralButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(angleText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -371,7 +389,12 @@ public class MovePanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(moveAllCheck)
                     .addComponent(useAlgCheck))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(amplitudeLimiterCheck)
+                    .addComponent(ampLimitText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ampLimitStepText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(interpButton)
                     .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,14 +424,18 @@ public class MovePanel extends javax.swing.JPanel {
         final boolean autoSend = autoSendCheck.isSelected();
         
         if (autoCalc) {
-            if (! useAlgCheck.isSelected()){
-                Entity e = getBeadEntity();
-                if (e != null){
-                    final Vector3f pos = e.getTransform().getTranslation();
-                    mf.trapsPanel.applyOnTarget(pos);
-                }
+            if (amplitudeLimiterCheck.isSelected()){
+                 ampLimitator();
             }else{
-                mf.algForm.runBFGS(false, false, true);
+                if (! useAlgCheck.isSelected()){
+                    Entity e = getBeadEntity();
+                    if (e != null){
+                        final Vector3f pos = e.getTransform().getTranslation();
+                        mf.trapsPanel.applyOnPosition(pos);
+                    }
+                }else{
+                    mf.algForm.runBFGS(false, false, true);
+                }
             }
         }
         
@@ -449,6 +476,7 @@ public class MovePanel extends javax.swing.JPanel {
             e.getTransform().getTranslation().addLocal(t);
         }
         
+        
         mf.transformToGUI( e.getTransform() );
         doAutoCalcAndSend();
         mf.needUpdate();
@@ -475,6 +503,7 @@ public class MovePanel extends javax.swing.JPanel {
             e.rotateAround(selectionCenter, rx, ry, rz);
         }
         
+        
         mf.transformToGUI( e.getTransform() );
         doAutoCalcAndSend();
         mf.needUpdate();
@@ -500,6 +529,7 @@ public class MovePanel extends javax.swing.JPanel {
             pos.moveTowards(sCenter, stepSize);
         }
         
+       
         mf.transformToGUI( e.getTransform() );
         doAutoCalcAndSend();
         mf.needUpdate();
@@ -699,9 +729,52 @@ public class MovePanel extends javax.swing.JPanel {
         autoCalcCheck.setSelected(enabled);
     }
     
-    
+    private void ampLimitator() {
+            final float maxAmp = Parse.toFloat( ampLimitText.getText() );
+            final float step = Parse.toFloat( ampLimitStepText.getText() );
+            final List<MeshEntity> points = mf.simulation.controlPoints;
+            final int nPoints = points.size();
+            
+            final float[] amplitudes = new float[nPoints];
+            
+            //copy of the original y positions
+            final float[] yPos = new float[nPoints];
+            for(int i = 0; i < nPoints; ++i){
+                yPos[i] = points.get(i).getTransform().getTranslation().y;  
+            }
+            
+            //we move up the points until the amplitude at their original position is lower than the thresold
+            boolean pointsBelowThresold = false;
+            while (! pointsBelowThresold){
+                mf.algForm.runBFGS(false, false, true);
+                
+                for(int i = 0; i < nPoints; ++i){
+                    final Vector3f pos = points.get(i).getTransform().getTranslation();
+                    amplitudes[i] = CalcField.calcFieldAt(pos.x, yPos[i], pos.z, mf).length();
+                }
+                
+                pointsBelowThresold = true;
+                for(int i = 0; i < nPoints; ++i){
+                    if (amplitudes[i] > maxAmp){
+                        pointsBelowThresold = false;
+                        points.get(i).getTransform().getTranslation().y += step;
+                    }
+                }
+                
+            }
+            
+            
+            for(int i = 0; i < nPoints; ++i){
+                points.get(i).getTransform().getTranslation().y = yPos[i];  
+            }
+     
+    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ampLimitStepText;
+    private javax.swing.JTextField ampLimitText;
+    private javax.swing.JCheckBox amplitudeLimiterCheck;
     private javax.swing.JTextField angleText;
     private javax.swing.JCheckBox autoAddCheck;
     private javax.swing.JCheckBox autoCalcCheck;
@@ -736,6 +809,7 @@ public class MovePanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox useAlgCheck;
     // End of variables declaration//GEN-END:variables
 
+    
     
 
 }

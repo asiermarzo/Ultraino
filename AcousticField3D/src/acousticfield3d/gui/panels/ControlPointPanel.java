@@ -51,14 +51,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
         cpAddButton = new javax.swing.JButton();
         cpDelButton = new javax.swing.JButton();
         placeBeadAtSliceCheck = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
-        numberText = new javax.swing.JTextField();
-        allVisibleButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        onlyVisibleButton = new javax.swing.JButton();
         selectAllButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         mirrorAddButton = new javax.swing.JButton();
         gridWText = new javax.swing.JTextField();
         gridHText = new javax.swing.JTextField();
@@ -110,44 +103,10 @@ public class ControlPointPanel extends javax.swing.JPanel {
 
         placeBeadAtSliceCheck.setText("PlaceBeadAtSlice");
 
-        jLabel1.setText("Number:");
-
-        numberText.setText("0");
-
-        allVisibleButton.setText("All");
-        allVisibleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                allVisibleButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Visible:");
-
-        onlyVisibleButton.setText("O");
-        onlyVisibleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onlyVisibleButtonActionPerformed(evt);
-            }
-        });
-
-        selectAllButton.setText("S A");
+        selectAllButton.setText("Select All");
         selectAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectAllButtonActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("TrapFollow");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("NoTrap");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -203,14 +162,6 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         .addGap(7, 7, 7)
                         .addComponent(cpColorText))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numberText))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(gridWText, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gridHText)
@@ -218,29 +169,21 @@ public class ControlPointPanel extends javax.swing.JPanel {
                         .addComponent(gridAddButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(mirrorAddButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addComponent(circleButton))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(groundLineCheck)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lineThicknessText))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(allVisibleButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(onlyVisibleButton))
-                                .addComponent(placeBeadAtSliceCheck)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(selectAllButton)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cpAddButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cpDelButton)))
-                            .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(groundLineCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lineThicknessText))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cpAddButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cpDelButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(placeBeadAtSliceCheck)
+                            .addComponent(selectAllButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -257,25 +200,12 @@ public class ControlPointPanel extends javax.swing.JPanel {
                     .addComponent(cpColorText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(numberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(allVisibleButton)
-                    .addComponent(onlyVisibleButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cpAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(selectAllButton)
-                        .addComponent(cpDelButton)))
+                    .addComponent(cpDelButton))
+                .addGap(15, 15, 15)
+                .addComponent(selectAllButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(placeBeadAtSliceCheck)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(mirrorAddButton)
@@ -289,43 +219,23 @@ public class ControlPointPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(groundLineCheck)
                     .addComponent(lineThicknessText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public ControlPoint createControlPoint(float x, float y, float z, int frame, int number){
+    public ControlPoint addControlPoint(final float x, final float y, final float z){
         ControlPoint me = new ControlPoint(Resources.MESH_SPHERE, null, Resources.SHADER_SOLID_SPEC);
         
         me.setTag( Entity.TAG_CONTROL_POINT );
-        me.setFrame( frame );
-        
+     
         me.setColor( Color.parse( getControlPointColor() ) );
         me.getTransform().getScale().set( getControlPointSize() );
         me.getTransform().getTranslation().set(x, y, z);
-        if (number == -1){
-            number = getNumber();
-        }
-        me.setNumber( number );
+
         return me;
     }
     
-     public ControlPoint addControlPoint(float x, float y, float z){
-         return addControlPoint(x,y,z,getNumber(),0);
-     }
-    
-    public ControlPoint addControlPoint(final Vector3f pos, int frame, int number){
-        return addControlPoint(pos.x, pos.y, pos.z, frame, number);
-    }
-            
-    public ControlPoint addControlPoint(float x, float y, float z, int frame, int number){
-        ControlPoint me = createControlPoint(x, y, z, frame, number);
-        mf.scene.getEntities().add( me );
-        mf.simulation.getControlPoints().add(me);
-       
-        return me;
-    }
-    
-    
+   
     private void cpEnableCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpEnableCheckActionPerformed
         Scene.setVisible( mf.scene.getEntities(), Entity.TAG_CONTROL_POINT, cpEnableCheck.isSelected());
         mf.needUpdate();
@@ -354,7 +264,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
 
     private void cpAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpAddButtonActionPerformed
         Vector3f sCenter = mf.simulation.getSimulationCenter();
-        addControlPoint (sCenter.x, sCenter.y, sCenter.z, getNumber(), 0);
+        addControlPoint (sCenter.x, sCenter.y, sCenter.z);
         mf.needUpdate();
     }//GEN-LAST:event_cpAddButtonActionPerformed
 
@@ -374,58 +284,10 @@ public class ControlPointPanel extends javax.swing.JPanel {
         mf.needUpdate();
     }//GEN-LAST:event_cpDelButtonActionPerformed
 
-    private void allVisibleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allVisibleButtonActionPerformed
-        Scene.setVisible( mf.scene.getEntities() , Entity.TAG_CONTROL_POINT, true);
-    }//GEN-LAST:event_allVisibleButtonActionPerformed
-
-    private void onlyVisibleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onlyVisibleButtonActionPerformed
-        setOnlyCurrentCPsVisible( getNumber() , -1);
-        mf.needUpdate();
-    }//GEN-LAST:event_onlyVisibleButtonActionPerformed
-
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
         selectAll();
         mf.needUpdate();
     }//GEN-LAST:event_selectAllButtonActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        final List<Entity> sel = mf.selection;
-        for(Entity e : sel){
-            if ( e instanceof ControlPoint){
-                ControlPoint s = (ControlPoint)e;
-                s.removeAutoTrap();
-            }
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        List<Transducer> trans ;
-        
-        if (mf.bag.isEmpty()){
-            trans = mf.simulation.transducers;
-        }else{
-            trans = new ArrayList<>();
-            for(Entity e : mf.bag){
-                if (e instanceof Transducer){
-                    trans.add( (Transducer) e);
-                }
-            }
-        }
-        
-        
-        
-        final List<Entity> sel = mf.selection;
-        
-        for(Entity e : sel){
-            if ( e instanceof ControlPoint){
-                ControlPoint s = (ControlPoint)e;
-                s.setTrap( mf.trapsPanel.getTrap() );
-                s.setTrans( trans );
-                s.setAutoTrap(true);
-            }
-        }
-        mf.needUpdate();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void mirrorAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mirrorAddButtonActionPerformed
         final Entity e = mf.movePanel.getBeadEntity();
@@ -440,13 +302,18 @@ public class ControlPointPanel extends javax.swing.JPanel {
         final float pz = sCenter.z + dz;
         final float nz = sCenter.z - dz;
         
-        addControlPoint (px, pos.y, nz, getNumber(), 0);
-        addControlPoint (nx, pos.y, pz, getNumber(), 0);
-        addControlPoint (nx, pos.y, nz, getNumber(), 0);
+        addControlPoint (px, pos.y, nz);
+        addControlPoint (nx, pos.y, pz);
+        addControlPoint (nx, pos.y, nz);
         
         mf.needUpdate();
     }//GEN-LAST:event_mirrorAddButtonActionPerformed
 
+    public ControlPoint addControlPoint(final Vector3f pos){
+        return addControlPoint(pos.x, pos.y, pos.z);
+    }
+    
+    
     private void gridAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gridAddButtonActionPerformed
         final int w = Parse.toInt( gridWText.getText() );
         final int h = Parse.toInt( gridHText.getText() );
@@ -463,8 +330,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
                 addControlPoint (
                         sCenter.x - simSize.x/2 + sepW + sepW*ix, 
                         sCenter.y, 
-                        sCenter.z - simSize.z/2 + sepH + sepH*iy, 
-                        getNumber(), 0);
+                        sCenter.z - simSize.z/2 + sepH + sepH*iy);
             }
         }
        mf.needUpdate();
@@ -543,8 +409,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
     public Entity selectFrame(int frame) {
         mf.clearSelection();
         for(MeshEntity me : mf.scene.getEntities()){
-            if ( (me.getTag() & Entity.TAG_CONTROL_POINT) != 0 &&
-                    me.getFrame() == frame){
+            if ( (me.getTag() & Entity.TAG_CONTROL_POINT) != 0 ){
                 me.selected = true;
                 mf.selection.add(me);
             }
@@ -556,24 +421,20 @@ public class ControlPointPanel extends javax.swing.JPanel {
         }
     }
     
-    public void setOnlyCurrentCPsVisible(int frame, int number){
-        Scene.setVisible( mf.scene.getEntities() , Entity.TAG_CONTROL_POINT, frame, number ,true);
+    public void setOnlyCurrentCPsVisible(int number){
+        Scene.setVisible( mf.scene.getEntities() , Entity.TAG_CONTROL_POINT, true);
     }
     
     public String getControlPointColor(){
         return cpColorText.getText();
     }
     
-    public int getNumber(){
-        return Parse.toInt( numberText.getText() );
-    }
-    
+   
     public float getControlPointSize(){
         return Parse.toFloat( cpSizeText.getText() );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton allVisibleButton;
     private javax.swing.JButton circleButton;
     private javax.swing.JButton cpAddButton;
     private javax.swing.JTextField cpColorText;
@@ -584,17 +445,11 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JTextField gridHText;
     private javax.swing.JTextField gridWText;
     private javax.swing.JCheckBox groundLineCheck;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JTextField lineThicknessText;
     private javax.swing.JButton mirrorAddButton;
-    private javax.swing.JTextField numberText;
-    private javax.swing.JButton onlyVisibleButton;
     private javax.swing.JCheckBox placeBeadAtSliceCheck;
     private javax.swing.JButton selectAllButton;
     // End of variables declaration//GEN-END:variables
@@ -615,6 +470,30 @@ public class ControlPointPanel extends javax.swing.JPanel {
     public void addPoints(ArrayList<ControlPoint> allPoints) {
         mf.scene.getEntities().addAll( allPoints );
         mf.simulation.controlPoints.addAll( allPoints );
+    }
+
+    public void mergeClosestPoint() {
+        final Entity currentPoint = mf.movePanel.getBeadEntity();
+        if (currentPoint == null) { return;}
+        
+        float minDist = Float.MAX_VALUE;
+        Entity entity = null;
+        for ( MeshEntity p : mf.simulation.controlPoints){
+            if (p != currentPoint){
+                final float dist = p.getTransform().getTranslation().distance( currentPoint.getTransform().getTranslation());
+                if (dist < minDist){
+                    minDist = dist;
+                    entity = p;
+                }
+            }
+        }
+        if (entity != null){
+            currentPoint.getTransform().getTranslation().addLocal( entity.getTransform().getTranslation()).divideLocal(2);
+            mf.scene.getEntities().remove( entity );
+            mf.simulation.controlPoints.remove( entity );
+            mf.selection.remove(entity);
+            mf.movePanel.applyVector(0, 0, 0);
+        }
     }
 
 

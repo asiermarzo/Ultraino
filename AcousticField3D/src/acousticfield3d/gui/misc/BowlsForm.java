@@ -5,21 +5,23 @@
  */
 package acousticfield3d.gui.misc;
 
+import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
+import acousticfield3d.utils.StringFormats;
 import java.util.ArrayList;
 
 /**
  *
  * @author am14010
  */
-public class AddRadialTransducersForm extends javax.swing.JFrame {
+public class BowlsForm extends javax.swing.JFrame {
     final MainForm mf;
     
-    public AddRadialTransducersForm(MainForm mf) {
+    public BowlsForm(MainForm mf) {
         this.mf = mf;
         initComponents();
     }
@@ -45,7 +47,11 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
         deleteAllButton = new javax.swing.JButton();
         alignTransducersCheck = new javax.swing.JCheckBox();
         doubleBowlCheck = new javax.swing.JCheckBox();
-        clone90Button = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        pressureAtFocusText = new javax.swing.JTextField();
+        fillButton = new javax.swing.JButton();
+        fillText = new javax.swing.JTextField();
+        autoDeleteCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -75,16 +81,26 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
             }
         });
 
-        alignTransducersCheck.setText("align transducers");
+        alignTransducersCheck.setText("align");
 
         doubleBowlCheck.setText("double bowl");
 
-        clone90Button.setText("Clone90");
-        clone90Button.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setText("Pa at focus:");
+
+        pressureAtFocusText.setEditable(false);
+        pressureAtFocusText.setText("0");
+
+        fillButton.setText("fill");
+        fillButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clone90ButtonActionPerformed(evt);
+                fillButtonActionPerformed(evt);
             }
         });
+
+        fillText.setText("5");
+
+        autoDeleteCheck.setSelected(true);
+        autoDeleteCheck.setText("autoDelete");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -94,28 +110,39 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(37, 37, 37)
-                        .addComponent(inclinationText, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(amountText)
                         .addGap(1, 1, 1))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(radiousText, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(createButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(clone90Button)
-                        .addGap(18, 18, 18)
+                        .addComponent(autoDeleteCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteAllButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(alignTransducersCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(doubleBowlCheck)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(doubleBowlCheck)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pressureAtFocusText))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(fillButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fillText, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 73, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -127,21 +154,25 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                     .addComponent(amountText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(fillButton)
+                    .addComponent(fillText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(doubleBowlCheck)
-                    .addComponent(alignTransducersCheck))
+                    .addComponent(alignTransducersCheck)
+                    .addComponent(jLabel4)
+                    .addComponent(pressureAtFocusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createButton)
                     .addComponent(deleteAllButton)
-                    .addComponent(clone90Button))
+                    .addComponent(autoDeleteCheck))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -149,6 +180,10 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+        if (autoDeleteCheck.isSelected()){
+            deleteAllButtonActionPerformed(evt);
+        }
+        
         final int[] amount = Parse.parseIntArray(amountText.getText(), ",");
         final float radious = Parse.toFloat( radiousText.getText() );
         final float inc = Parse.toFloat( inclinationText.getText() ) * M.DEG_TO_RAD;
@@ -180,27 +215,37 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
                 }
             }
         }
+        
+        final float pressure = CalcField.calcFieldAt(Vector3f.ZERO, mf).length();
+        pressureAtFocusText.setText( StringFormats.get().dc2(pressure) );
+        System.out.println("Bowl Pa: " + pressure + " " + amountText.getText() + 
+                ";" + radiousText.getText() + ";" + inclinationText.getText());
+        
         mf.needUpdate();
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void deleteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAllButtonActionPerformed
         mf.clearSelection();
         final ArrayList<Transducer> copy = new ArrayList<>(mf.simulation.transducers);
-        mf.transPanel.deleteTransducers( copy );
+        mf.transducersPanel.deleteTransducers( copy );
         mf.needUpdate();
     }//GEN-LAST:event_deleteAllButtonActionPerformed
 
-    private void clone90ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clone90ButtonActionPerformed
-        mf.clearSelection();
-        final ArrayList<Transducer> copy = new ArrayList<>(mf.simulation.transducers);
-        for(Transducer t : copy){
-            final Transducer tc = createTransducer();
-            tc.getTransform().getTranslation().set( t.getTransform().getTranslation());
-            tc.getTransform().rotateAround(Vector3f.ZERO, 0, 0, 90 * M.DEG_TO_RAD);
-            tc.pointToTarget( Vector3f.ZERO );
-            addTransducer(tc);
+    private void fillButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillButtonActionPerformed
+        final int n = Parse.toInt( fillText.getText() );
+        final StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < n; ++i){
+            if (i == 0){
+                sb.append("1");
+            }else{
+                sb.append( (i*6) + "");
+            }
+            if (i < n-1){
+                sb.append(",");
+            }
         }
-    }//GEN-LAST:event_clone90ButtonActionPerformed
+        amountText.setText(sb.toString());
+    }//GEN-LAST:event_fillButtonActionPerformed
 
 
     private Transducer createTransducer(){
@@ -214,14 +259,18 @@ public class AddRadialTransducersForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignTransducersCheck;
     private javax.swing.JTextField amountText;
-    private javax.swing.JButton clone90Button;
+    private javax.swing.JCheckBox autoDeleteCheck;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteAllButton;
     private javax.swing.JCheckBox doubleBowlCheck;
+    private javax.swing.JButton fillButton;
+    private javax.swing.JTextField fillText;
     private javax.swing.JTextField inclinationText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField pressureAtFocusText;
     private javax.swing.JTextField radiousText;
     // End of variables declaration//GEN-END:variables
 }

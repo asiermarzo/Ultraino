@@ -13,6 +13,7 @@ import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.Animation;
 import acousticfield3d.simulation.Transducer;
+import acousticfield3d.utils.StringFormats;
 import java.util.ArrayList;
 import javax.swing.JTextField;
 
@@ -251,7 +252,7 @@ public class TransducersPanel extends javax.swing.JPanel {
                     .addComponent(ampText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(phaseText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(wText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,7 +268,7 @@ public class TransducersPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(phaseHCheck)
                     .addComponent(showHideTransCheck))
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelButton)
                     .addComponent(orderText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -283,7 +284,7 @@ public class TransducersPanel extends javax.swing.JPanel {
 
     
     private void wTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wTextFocusGained
-        mf.changeSlider(FieldsToChange.wField, "W", mf.simulation.getMinSize(), 0, Float.MAX_VALUE);
+        mf.changeSlider(FieldsToChange.wField, "W", mf.simulation.getMinSize());
     }//GEN-LAST:event_wTextFocusGained
 
     private void wTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wTextActionPerformed
@@ -291,7 +292,7 @@ public class TransducersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_wTextActionPerformed
 
     private void frTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_frTextFocusGained
-        mf.changeSlider(FieldsToChange.frField, "FR", 40000, 0, Float.MAX_VALUE);
+        mf.changeSlider(FieldsToChange.frField, "FR", 40000);
     }//GEN-LAST:event_frTextFocusGained
 
     private void frTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frTextActionPerformed
@@ -299,7 +300,7 @@ public class TransducersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_frTextActionPerformed
 
     private void ampTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ampTextFocusGained
-        mf.changeSlider(FieldsToChange.ampField, "AMP", 1.0f, 0, 1.0f);
+        mf.changeSlider(FieldsToChange.ampField, "AMP", 1);
     }//GEN-LAST:event_ampTextFocusGained
 
     private void ampTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ampTextActionPerformed
@@ -307,7 +308,7 @@ public class TransducersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_ampTextActionPerformed
 
     private void phaseTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phaseTextFocusGained
-        mf.changeSlider(FieldsToChange.phaseField, "PHA", M.TWO_PI, Float.MIN_VALUE, Float.MAX_VALUE);
+        mf.changeSlider(FieldsToChange.phaseField, "PHA", M.TWO_PI);
     }//GEN-LAST:event_phaseTextFocusGained
 
     private void phaseTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseTextActionPerformed
@@ -341,7 +342,7 @@ public class TransducersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_phaseHCheckActionPerformed
 
     private void powerTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_powerTextFocusGained
-        mf.changeSlider(FieldsToChange.powerField, "POW", 2, Float.MIN_VALUE, Float.MAX_VALUE);
+        mf.changeSlider(FieldsToChange.powerField, "POW", 2);
     }//GEN-LAST:event_powerTextFocusGained
 
     private void powerTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powerTextActionPerformed
@@ -461,5 +462,74 @@ public class TransducersPanel extends javax.swing.JPanel {
             }
         }
         mf.needUpdate();
+    }
+
+    public void switchOnRandom(int switchOn) {
+        if (switchOn == 0){ return; }
+        
+        final ArrayList<Transducer> trans = new ArrayList<>();
+        for (Transducer t : mf.simulation.transducers) {
+            if (t.getpAmplitude() == 0 && switchOn > 0) {
+                trans.add(t);
+            } else if (t.getAmplitude() > 0 && switchOn < 0){
+                trans.add(t);
+            }
+        }
+        int amplitude = 1;
+        if (switchOn < 0) { 
+            switchOn = -switchOn;
+            amplitude = 0;
+        }
+        
+        while ( switchOn>0 && !trans.isEmpty() ){
+            final int index = M.randomInt(0, trans.size());
+            trans.get(index).setpAmplitude( amplitude );
+            trans.remove(index);
+            --switchOn;
+        }
+        
+        mf.movePanel.applyVector(0, 0, 0);
+        mf.needUpdate();
+    }
+
+    public void updateFromTransducer(Transducer t) {
+
+        getwText().setText(StringFormats.get().dc4(t.getApperture()));
+        getPowerText().setText(StringFormats.get().dc4(t.getPower()));
+        getFrText().setText(StringFormats.get().dc4(t.getFrequency()));
+
+        getAmpText().setText(StringFormats.get().dc4(t.getAmplitude()));
+        getPhaseText().setText(StringFormats.get().dc4(t.getPhase()));
+        getLabelText().setText(t.getOrderNumber() + "");
+        getPinText().setText(t.getDriverPinNumber() + "");
+    }
+
+    public void updateField(Transducer t, FieldsToChange field, float value, boolean absolute, boolean updateTextField) {
+        if (field == FieldsToChange.wField) {
+            t.apperture = absolute ? value : t.apperture + value;
+            if (updateTextField) {
+                getwText().setText(StringFormats.get().dc4(t.apperture));
+            }
+        } else if (field == FieldsToChange.frField) {
+            t.frequency = absolute ? value : t.frequency + value;
+            if (updateTextField) {
+                getFrText().setText(StringFormats.get().dc4(t.frequency));
+            }
+        } else if (field == FieldsToChange.ampField) {
+            t.amplitude = absolute ? value : t.amplitude + value;
+            if (updateTextField) {
+                getAmpText().setText(StringFormats.get().dc4(t.amplitude));
+            }
+        } else if (field == FieldsToChange.phaseField) {
+            t.phase = absolute ? value : t.phase + value;
+            if (updateTextField) {
+                getPhaseText().setText(StringFormats.get().dc4(t.phase));
+            }
+        } else if (field == FieldsToChange.powerField) {
+            t.power = absolute ? value : t.power + value;
+            if (updateTextField) {
+                getPowerText().setText(StringFormats.get().dc4(t.power));
+            }
+        }
     }
 }

@@ -175,10 +175,6 @@ public class TransControlPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(deviceCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(initSerialButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                        .addComponent(stopSerialButton))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(phaseSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,7 +184,7 @@ public class TransControlPanel extends javax.swing.JPanel {
                         .addComponent(onButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(offButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(phaseDownButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(sendAnimButton)
@@ -207,13 +203,27 @@ public class TransControlPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(switchButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(durationsButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(durationsButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(initSerialButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(stopSerialButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(initSerialButton)
+                    .addComponent(stopSerialButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deviceCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(connectExtraButton)
+                    .addComponent(extraNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sendButton)
                     .addComponent(switchButton))
@@ -235,17 +245,7 @@ public class TransControlPanel extends javax.swing.JPanel {
                     .addComponent(onButton)
                     .addComponent(offButton)
                     .addComponent(phaseDownButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(connectExtraButton)
-                    .addComponent(extraNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deviceCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(initSerialButton)
-                    .addComponent(stopSerialButton))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -272,16 +272,8 @@ public class TransControlPanel extends javax.swing.JPanel {
 
     private void phaseSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_phaseSpinnerStateChanged
         final int value = (Integer) phaseSpinner.getValue();
-        mf.transPanel.setTransPhase( stepsToPhase(value) );
+        mf.transducersPanel.setTransPhase( stepsToPhase(value) );
     }//GEN-LAST:event_phaseSpinnerStateChanged
-
-    private void onButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonActionPerformed
-        mf.transPanel.setTransAmp( 1 );
-    }//GEN-LAST:event_onButtonActionPerformed
-
-    private void offButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offButtonActionPerformed
-        mf.transPanel.setTransAmp( 0 );
-    }//GEN-LAST:event_offButtonActionPerformed
 
     public float stepsToPhase(float steps){
         
@@ -291,17 +283,9 @@ public class TransControlPanel extends javax.swing.JPanel {
     
     public void addPhaseSteps(float steps){
         final float phaseF = stepsToPhase(steps);
-        mf.transPanel.setTransPhase( "a" + phaseF );
+        mf.transducersPanel.setTransPhase( "a" + phaseF );
     }
     
-    private void phaseUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseUpButtonActionPerformed
-        addPhaseSteps(1);
-    }//GEN-LAST:event_phaseUpButtonActionPerformed
-
-    private void phaseDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDownButtonActionPerformed
-        addPhaseSteps(-1);
-    }//GEN-LAST:event_phaseDownButtonActionPerformed
-
     private void durationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationsButtonActionPerformed
         if (device != null){
             final int[] durations = Parse.parseIntArray( durationsText.getText(), " ");
@@ -320,6 +304,22 @@ public class TransControlPanel extends javax.swing.JPanel {
             device.sendToogleQuickMultiplexMode();
         }
     }//GEN-LAST:event_multiplexButtonActionPerformed
+
+    private void phaseDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDownButtonActionPerformed
+        addPhaseSteps(-1);
+    }//GEN-LAST:event_phaseDownButtonActionPerformed
+
+    private void phaseUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseUpButtonActionPerformed
+        addPhaseSteps(1);
+    }//GEN-LAST:event_phaseUpButtonActionPerformed
+
+    private void offButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offButtonActionPerformed
+        mf.transducersPanel.setTransAmp( 0 );
+    }//GEN-LAST:event_offButtonActionPerformed
+
+    private void onButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonActionPerformed
+        mf.transducersPanel.setTransAmp( 1 );
+    }//GEN-LAST:event_onButtonActionPerformed
 
 
     private DeviceConnection getDeviceConnection(int port){
@@ -437,7 +437,7 @@ public class TransControlPanel extends javax.swing.JPanel {
             return;
         }
         Transducer t = (Transducer)e;
-        mf.transPanel.setTransAmp( 0.0f );
+        mf.transducersPanel.setTransAmp( 0.0f );
         int indexTrans = mf.simulation.getTransducers().indexOf( t );
         if(indexTrans == -1){
             return;
@@ -446,7 +446,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         mf.clearSelection();
         if (indexTrans < simulation.getTransducers().size() - 1 ){
             selection.add( simulation.getTransducers().get( indexTrans + 1));
-            mf.transPanel.setTransAmp( 1.0f );
+            mf.transducersPanel.setTransAmp( 1.0f );
         }
         
     }  
@@ -516,7 +516,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     }
 
     public void phasePi() {
-        mf.transPanel.setTransPhase( "a" + 1 );
+        mf.transducersPanel.setTransPhase( "a" + 1 );
     }
     
 }

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package acousticfield3d.gui.misc;
+package acousticfield3d.gui;
 
 import acousticfield3d.math.M;
 import java.awt.Color;

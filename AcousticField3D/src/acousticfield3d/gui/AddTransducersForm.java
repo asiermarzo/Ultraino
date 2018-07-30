@@ -77,8 +77,8 @@ public class AddTransducersForm extends javax.swing.JFrame {
         radialCheck = new javax.swing.JRadioButton();
         circleCheck = new javax.swing.JRadioButton();
         jLabel11 = new javax.swing.JLabel();
+        recenterSimCheck = new javax.swing.JCheckBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Add Trasnducers");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -146,6 +146,9 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
         jLabel11.setText("Power:");
 
+        recenterSimCheck.setSelected(true);
+        recenterSimCheck.setText("recenter sim");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -202,9 +205,12 @@ public class AddTransducersForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(spaceText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(okButton))
-                        .addGap(0, 31, Short.MAX_VALUE)))
+                                .addComponent(spaceText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 31, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(okButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(recenterSimCheck)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -246,12 +252,13 @@ public class AddTransducersForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(sizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(spaceText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(okButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(okButton)
+                    .addComponent(recenterSimCheck))
                 .addContainerGap())
         );
 
@@ -438,13 +445,13 @@ public class AddTransducersForm extends javax.swing.JFrame {
             simpleCircleArrangement();
         }
         
-        if( wasEmpty ){
+        if( wasEmpty || recenterSimCheck.isSelected()){
             mf.updateBoundaries();
             mf.adjustGUIGainAndCameras();
         }
         mf.needUpdate();
         
-        dispose();
+        setVisible(false);
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -616,6 +623,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
     private javax.swing.JTextField posText;
     private javax.swing.JTextField powerText;
     private javax.swing.JRadioButton radialCheck;
+    private javax.swing.JCheckBox recenterSimCheck;
     private javax.swing.JTextField rotText;
     private javax.swing.JSpinner rowSpinner;
     private javax.swing.JTextField sizeText;

@@ -20,7 +20,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
@@ -86,10 +86,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="speedText" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="moveAllCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="useAlgCheck" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="autoReturnButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -127,8 +126,19 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="autoReturnButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="moveAllCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="amplitudeLimiterCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ampLimitText" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="ampLimitStepText" max="32767" attributes="0"/>
+                          <Component id="useAlgCheck" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -151,7 +161,7 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="speedText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="leftButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="upButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -171,7 +181,7 @@
                   <Component id="snapButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="neutralButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="angleText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -193,7 +203,13 @@
                   <Component id="moveAllCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="useAlgCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="7" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="amplitudeLimiterCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ampLimitText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ampLimitStepText" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="interpButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="stepSizeText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -225,7 +241,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Length:"/>
+        <Property name="text" type="java.lang.String" value="Step size:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="speedText">
@@ -420,6 +436,21 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoReturnButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="amplitudeLimiterCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="ampLim"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="ampLimitText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="3000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="ampLimitStepText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.001"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -7,6 +7,7 @@ package acousticfield3d.gui.misc;
 
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
+import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.protocols.DeviceConnection;
 import acousticfield3d.scene.Entity;
@@ -80,6 +81,12 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         lineXButton = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         circleStepSizeText = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        matrixNStepsText = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        matrixStepSizeText = new javax.swing.JTextField();
+        matrixButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         quickSwapText = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -217,12 +224,12 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                     .addComponent(okButton)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(rotatePairsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rotatePairsButton))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(rotateSelectionsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,7 +269,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         stepSizeText.setText("0.001");
 
-        circleXZButton.setText("XZ");
+        circleXZButton.setText("XY");
         circleXZButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 circleXZButtonActionPerformed(evt);
@@ -273,7 +280,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         circleHeightText.setText("0.01");
 
-        circleXYButton.setText("XY");
+        circleXYButton.setText("XZ");
         circleXYButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 circleXYButtonActionPerformed(evt);
@@ -293,6 +300,23 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         circleStepSizeText.setText("0.0005");
 
+        jLabel22.setText("Matrix");
+
+        jLabel23.setText("nSteps");
+
+        matrixNStepsText.setText("10 10");
+
+        jLabel24.setText("stepSize");
+
+        matrixStepSizeText.setText("0.001");
+
+        matrixButton.setText("Go");
+        matrixButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matrixButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -301,36 +325,54 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lineXButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(lineYButton))
-                    .addComponent(jLabel16)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(circleWidthText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(circleHeightText, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(circleStepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(circleXZButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(circleXYButton))
-                    .addComponent(jLabel13)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lengthText, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lengthText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                        .addComponent(stepSizeText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lineXButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lineYButton)
+                        .addGap(22, 22, 22))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(circleXZButton)
+                                .addGap(34, 34, 34)
+                                .addComponent(circleXYButton))
+                            .addComponent(jLabel13)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel23)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(matrixNStepsText))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(circleWidthText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel18)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(circleHeightText, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel19)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(circleStepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel24)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(matrixStepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(matrixButton))))
+                            .addComponent(jLabel22))
+                        .addContainerGap(57, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,11 +384,9 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                     .addComponent(jLabel14)
                     .addComponent(lengthText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lineYButton)
-                    .addComponent(lineXButton))
+                    .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lineXButton)
+                    .addComponent(lineYButton))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -361,7 +401,16 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(circleXZButton)
                     .addComponent(circleXYButton))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(matrixNStepsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24)
+                    .addComponent(matrixStepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(matrixButton))
+                .addGap(44, 44, 44))
         );
 
         jTabbedPane1.addTab("Line and Circle Paths", jPanel1);
@@ -483,7 +532,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(animWithCurrentPointsButton))
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("recalc", jPanel4);
@@ -772,11 +821,35 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private void animWithCurrentPointsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animWithCurrentPointsButtonActionPerformed
         final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
         for(MeshEntity p : points){
-            mf.trapsPanel.applyOnTarget(p.getTransform().getTranslation());
+            mf.trapsPanel.applyOnPosition(p.getTransform().getTranslation());
             //add the keyframe
             mf.animPanel.addKeyFrame();
         }
     }//GEN-LAST:event_animWithCurrentPointsButtonActionPerformed
+
+    private void matrixButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matrixButtonActionPerformed
+        final Vector2f size = new Vector2f().parse(matrixNStepsText.getText());
+        final float stepSize = Parse.toFloat( matrixStepSizeText.getText() );
+        final int xSteps = (int)size.x;
+        final int zSteps = (int)size.y;
+        
+        final Vector3f pos = mf.movePanel.getBeadEntity().getTransform().getTranslation();
+        final Vector3f oPos = pos.clone();
+        
+        final float initX = pos.x - stepSize*xSteps/2;
+        final float initZ = pos.z - stepSize*zSteps/2;
+        
+        for (int ix = 0; ix < xSteps; ++ix){
+            for (int iz = 0; iz < zSteps; ++iz){
+                pos.x = initX + stepSize*ix;
+                pos.z = initZ + stepSize*iz;
+                enableAndCalc();
+            }
+        }
+        
+        pos.set( oPos );
+        mf.needUpdate();
+    }//GEN-LAST:event_matrixButtonActionPerformed
 
   
     private void disableCalc() {
@@ -814,6 +887,9 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -829,6 +905,9 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JTextField lengthText;
     private javax.swing.JButton lineXButton;
     private javax.swing.JButton lineYButton;
+    private javax.swing.JButton matrixButton;
+    private javax.swing.JTextField matrixNStepsText;
+    private javax.swing.JTextField matrixStepSizeText;
     private javax.swing.JButton okButton;
     private javax.swing.JButton quickSwapButton;
     private javax.swing.JTextField quickSwapText;

@@ -202,7 +202,7 @@ public class ExportPlotsForm extends javax.swing.JFrame {
                 final float rads = M.degToRad(angle);
                 p.set(c).addLocal( M.sin(rads) * distance, M.cos(rads) * distance, 0);
                 
-                mf.cpPanel.addControlPoint(p, -1, -1);
+                mf.pointsPanel.addControlPoint(p);
             
                 final float amplitude = CalcField.calcFieldAt(p, mf).length();
                 sb.append(angle + "\t" + amplitude + "\t" + M.log10(amplitude) + "\n");
@@ -210,7 +210,7 @@ public class ExportPlotsForm extends javax.swing.JFrame {
                 final float x = M.lerp(startX, endX, i / (float)(nPoints-1));
                 p.set(c).addLocal(x, distance, 0);
                 
-                mf.cpPanel.addControlPoint(p, -1, -1);
+                mf.pointsPanel.addControlPoint(p);
             
                 final float amplitude = CalcField.calcFieldAt(p, mf).length();
                 sb.append(x + "\t" + amplitude + "\t" + M.log10(amplitude) + "\n");

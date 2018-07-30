@@ -90,7 +90,7 @@
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="phaseText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="wText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -109,7 +109,7 @@
                   <Component id="phaseHCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="showHideTransCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="labelButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="orderText" alignment="3" min="-2" max="-2" attributes="0"/>

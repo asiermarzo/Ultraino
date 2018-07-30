@@ -664,8 +664,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             final Vector3f pressAgg = new Vector3f();
             
             //delete all the previous transducers
-            mf.transPanel.selectAll();
-            mf.transPanel.deleteSelectedTransducers();
+            mf.transducersPanel.selectAll();
+            mf.transducersPanel.deleteSelectedTransducers();
             
             //create the array of transducers
             final float transWidth = width / nTrans;
@@ -749,8 +749,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         
         for (int nTrans = 1; nTrans < 256; ++ nTrans){
             //delete all the previous transducers
-            mf.transPanel.selectAll();
-            mf.transPanel.deleteSelectedTransducers();
+            mf.transducersPanel.selectAll();
+            mf.transducersPanel.deleteSelectedTransducers();
             
             //create the array of transducers
             final float transWidth = width / nTrans;
@@ -780,8 +780,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         final int[] transList = {8,16,32,37,45,60,70,80,90};
         for (int nTrans : transList){
             //delete all the previous transducers
-            mf.transPanel.selectAll();
-            mf.transPanel.deleteSelectedTransducers();
+            mf.transducersPanel.selectAll();
+            mf.transducersPanel.deleteSelectedTransducers();
 
             //create the array of transducers
             final float transWidth = width / nTrans;

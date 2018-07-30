@@ -122,11 +122,11 @@ public class UDPRemoteControl extends javax.swing.JFrame {
                         String[] s = sentence.split(" ");
                         final String command = s[0].toLowerCase();
                         if (command.startsWith("clear")){ //delete all the control points
-                            mf.cpPanel.deleteAllPoints();
+                            mf.pointsPanel.deleteAllPoints();
                         }else if (command.startsWith("create")){ //create n points
                             if (s.length >= 2){
                                 final int n = Parse.toInt( s[1] );
-                                mf.cpPanel.createPoints( n );
+                                mf.pointsPanel.createPoints( n );
                             }
                         }else if (command.startsWith("place")){ //place a point at the specified position
                             if (s.length >= 5){

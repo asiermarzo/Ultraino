@@ -61,14 +61,12 @@
                               <Component id="calcLaplacianCheck" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="19" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="focusCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="calcButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="calcDiscTmpButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="calcButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -82,7 +80,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="focusCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="calcButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="calcDiscTmpButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -231,14 +228,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="send"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="calcDiscTmpButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="T"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="calcDiscTmpButtonActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

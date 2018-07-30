@@ -8,22 +8,18 @@ package acousticfield3d.gui;
 
 
 import acousticfield3d.Config;
-import acousticfield3d.gui.misc.AddRadialTransducersForm;
+import acousticfield3d.gui.misc.BowlsForm;
 import acousticfield3d.gui.misc.AlgorithmsForm;
-import acousticfield3d.gui.misc.ContribAndPhaseDiffForm;
 import acousticfield3d.gui.misc.ExportPlotsForm;
 import acousticfield3d.gui.misc.ForcePlotsFrame;
-import acousticfield3d.gui.misc.HybridSingleBeamForm;
 import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
-import acousticfield3d.gui.misc.ParticleControllerFrame;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.GenerateComplexAnimations;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SwitchTimer;
 import acousticfield3d.gui.misc.UDPRemoteControl;
-import acousticfield3d.gui.misc.VortexLoopCreator;
 import acousticfield3d.utils.DialogUtils;
 import acousticfield3d.utils.FileUtils;
 import acousticfield3d.gui.panels.AnimPanel;
@@ -40,7 +36,6 @@ import acousticfield3d.math.Quaternion;
 import acousticfield3d.math.Transform;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.protocols.ArduinoMEGA64;
-import acousticfield3d.protocols.ArduinoMEGA64_Anim;
 import acousticfield3d.protocols.ArduinoNano;
 import acousticfield3d.protocols.SimpleFPGA_128;
 import acousticfield3d.renderer.Renderer;
@@ -52,8 +47,8 @@ import acousticfield3d.scene.SceneObjExport;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
+import acousticfield3d.utils.SimpleGUIPersistence;
 import acousticfield3d.utils.StringFormats;
-import acousticfield3d.utils.TextFrame;
 import acousticfield3d.workers.UpdateThread;
 
 import java.awt.Component;
@@ -71,6 +66,7 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
@@ -81,10 +77,13 @@ import javax.swing.JTextField;
 public final class MainForm extends javax.swing.JFrame {
     public static final String CONFIG_PATH = "config.ini.xml";
     
-    public final StringFormats formats;
+    public final ArrayList<Entity> selection =  new ArrayList<>();
+    public final ArrayList<Entity> bag = new ArrayList<>();
+    boolean cameraLooked;
+    boolean hasDragged;
+    int firstDragX, firstDragY;
+    String lastSimulationSavedOrLoaded;
     
-    final SliderPanel sliderPanel;
-    public final GLJPanel gljpanel;
     public final Renderer renderer;
     public final Scene scene;
     public Simulation simulation;
@@ -92,18 +91,15 @@ public final class MainForm extends javax.swing.JFrame {
     final BehavioursThread animationThread;
     public final UpdateThread updateThread;
     
-    public final ArrayList<Entity> selection =  new ArrayList<>();
-    public final ArrayList<Entity> bag = new ArrayList<>();
-    boolean cameraLooked;
-    boolean hasDragged;
-    int firstDragX, firstDragY;
+    final SliderPanel sliderPanel;
+    public final GLJPanel gljpanel;
     
     public final RtSlicePanel rtSlicePanel;
     public final AnimPanel animPanel;
     public final MiscPanel miscPanel;
-    public final ControlPointPanel cpPanel;
+    public final ControlPointPanel pointsPanel;
     public final DomainPanel domainPanel;
-    public final TransducersPanel transPanel;
+    public final TransducersPanel transducersPanel;
     public final TransControlPanel transControlPanel;
     public final MovePanel movePanel;
     public final TrapsPanel trapsPanel;
@@ -113,15 +109,11 @@ public final class MainForm extends javax.swing.JFrame {
     public final SimulationConfigForm simForm;
     public final AlgorithmsForm algForm;
     
-    public final ParticleControllerFrame particleController;
-    
     public final Config config;
     
     public MainForm(Config config) {
         this.config = config;
-        
-        formats = new StringFormats();
-        
+ 
         sliderPanel = new SliderPanel(1, true);
         
         cameraLooked = true;
@@ -133,9 +125,9 @@ public final class MainForm extends javax.swing.JFrame {
         
         rtSlicePanel = new RtSlicePanel(this);
         animPanel = new AnimPanel(this);
-        cpPanel = new ControlPointPanel(this);
+        pointsPanel = new ControlPointPanel(this);
         domainPanel = new DomainPanel(this);
-        transPanel = new TransducersPanel(this);
+        transducersPanel = new TransducersPanel(this);
         transControlPanel = new TransControlPanel(this);
         movePanel = new MovePanel(this);
         trapsPanel = new TrapsPanel(this);
@@ -144,9 +136,7 @@ public final class MainForm extends javax.swing.JFrame {
         simForm = new SimulationConfigForm(this);
         addTransducersForm = new AddTransducersForm(this, simulation, scene);
         algForm = new AlgorithmsForm(this);
-     
-        particleController = new ParticleControllerFrame(this);
-        
+      
         GLProfile glprofile = GLProfile.getDefault();
         GLCapabilities glcapabilities = new GLCapabilities(glprofile);
         gljpanel = new GLJPanel(glcapabilities);
@@ -174,11 +164,11 @@ public final class MainForm extends javax.swing.JFrame {
         });
         
         initComponents();
-        mainTabPanel.addTab("Trans", transPanel);
+        mainTabPanel.addTab("Trans", transducersPanel);
         mainTabPanel.addTab("Slices", rtSlicePanel);
         mainTabPanel.addTab("Anim", animPanel);
         mainTabPanel.addTab("Misc", miscPanel);
-        mainTabPanel.addTab("Points", cpPanel);
+        mainTabPanel.addTab("Points", pointsPanel);
         mainTabPanel.addTab("Sizes", domainPanel);
         mainTabPanel.addTab("Devs", transControlPanel);
         mainTabPanel.addTab("Move", movePanel);
@@ -187,14 +177,12 @@ public final class MainForm extends javax.swing.JFrame {
         initSimulation();
         
         animationThread = new BehavioursThread(scene, this);
-        //animationThread.start();
         updateThread = new UpdateThread(this);
+    }
+    
+    public void init(){
         updateThread.start();
-        
-        if (config != null && config.lastPath != null){
-            FileUtils.setLastIndicatedPath( new File( config.lastPath ) );
-            FileUtils.setLastChooserPath(new File( config.lastPath ) );
-        }
+        //animationThread.start();
     }
 
     
@@ -248,7 +236,6 @@ public final class MainForm extends javax.swing.JFrame {
         simulation.updateSimulationBoundaries();
         simulation.copyToCube( scene.getCubeHelper() );
         scene.updateBoundaryBoxes(simulation);
-        
     }
     
     public void adjustGUIGainAndCameras(){
@@ -296,22 +283,25 @@ public final class MainForm extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         loadSimMenu = new javax.swing.JMenuItem();
         saveSimMenu = new javax.swing.JMenuItem();
+        saveSameFileMenu = new javax.swing.JMenuItem();
+        loadLastMenu = new javax.swing.JMenuItem();
         importTransMenu = new javax.swing.JMenuItem();
         exportObjMenu = new javax.swing.JMenuItem();
         exportObjWithMtlMenu = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         simEditParamMenu = new javax.swing.JMenuItem();
+        simulationResizeMenu = new javax.swing.JMenuItem();
         recToSelMenu = new javax.swing.JMenuItem();
         selToBagMenu = new javax.swing.JMenuItem();
-        normSimPosMenu = new javax.swing.JMenuItem();
         simTransformMenu = new javax.swing.JMenuItem();
         assignSel2Menu = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         sel1Menu = new javax.swing.JMenuItem();
         sel2Menu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        zoomInMenu = new javax.swing.JMenuItem();
+        zoomOutMenu = new javax.swing.JMenuItem();
         camViewMenu = new javax.swing.JMenuItem();
-        camProjMenu = new javax.swing.JMenuItem();
         resetCamMenu = new javax.swing.JMenuItem();
         unlockCameraMenu = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -322,8 +312,8 @@ public final class MainForm extends javax.swing.JFrame {
         camCoverSelMenu = new javax.swing.JMenuItem();
         cameraMovMenu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        selectAllTransducersMenu = new javax.swing.JMenuItem();
         delTransMenu = new javax.swing.JMenuItem();
-        pointToTargetMenu = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         transSetPhase0Menu = new javax.swing.JMenuItem();
         transSetPhasePiMenu = new javax.swing.JMenuItem();
@@ -335,8 +325,14 @@ public final class MainForm extends javax.swing.JFrame {
         phaseUpMenu = new javax.swing.JMenuItem();
         phaseDownMenu = new javax.swing.JMenuItem();
         phasePiMenu = new javax.swing.JMenuItem();
+        randomTransducerOffMenu = new javax.swing.JMenuItem();
+        randomTransducerOnMenu = new javax.swing.JMenuItem();
+        pointToTargetMenu = new javax.swing.JMenuItem();
         transOffsetMenu = new javax.swing.JMenuItem();
         transAssignmentMenu = new javax.swing.JMenuItem();
+        PointsMenu = new javax.swing.JMenu();
+        selectAllPointsMenu = new javax.swing.JMenuItem();
+        mergePointsMenu = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         addKeyFrameMenu = new javax.swing.JMenuItem();
         exportToArduinoMenu = new javax.swing.JMenuItem();
@@ -363,17 +359,13 @@ public final class MainForm extends javax.swing.JFrame {
         matlabPhasesMenu = new javax.swing.JMenuItem();
         udpControlMenu = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
-        hybridSingleBeamMenu = new javax.swing.JMenuItem();
         scatterObjectMenu = new javax.swing.JMenuItem();
         bowlArrayMenu = new javax.swing.JMenuItem();
         randPointsExpMenu = new javax.swing.JMenuItem();
         sendSwitchbufMenu = new javax.swing.JMenuItem();
-        particleControllerMenu = new javax.swing.JMenuItem();
         rotateMultipleMenu = new javax.swing.JMenuItem();
         exportPhasesMenu = new javax.swing.JMenuItem();
         exportTransPhasePointsMenu = new javax.swing.JMenuItem();
-        knotCreatorMenu = new javax.swing.JMenuItem();
-        phaseDiscAnMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -609,7 +601,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(zText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(rzText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
                     .addComponent(sxText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -647,7 +639,7 @@ public final class MainForm extends javax.swing.JFrame {
                     .addComponent(panelSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sliderFieldLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainTabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
+                .addComponent(mainTabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
         );
 
         containerPanel.setLayout(new java.awt.BorderLayout());
@@ -666,6 +658,9 @@ public final class MainForm extends javax.swing.JFrame {
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 panelMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                panelMouseReleased(evt);
             }
         });
 
@@ -692,13 +687,31 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(loadSimMenu);
 
-        saveSimMenu.setText("Save");
+        saveSimMenu.setText("Save as");
         saveSimMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveSimMenuActionPerformed(evt);
             }
         });
         jMenu1.add(saveSimMenu);
+
+        saveSameFileMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveSameFileMenu.setText("Save");
+        saveSameFileMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveSameFileMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(saveSameFileMenu);
+
+        loadLastMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        loadLastMenu.setText("Load last");
+        loadLastMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadLastMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(loadLastMenu);
 
         importTransMenu.setText("Import trans");
         importTransMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -736,6 +749,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu5.add(simEditParamMenu);
 
+        simulationResizeMenu.setText("Resize");
+        simulationResizeMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simulationResizeMenuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(simulationResizeMenu);
+
         recToSelMenu.setText("Recenter to sel");
         recToSelMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -753,15 +774,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu5.add(selToBagMenu);
 
-        normSimPosMenu.setText("Normalize Sim Pos");
-        normSimPosMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                normSimPosMenuActionPerformed(evt);
-            }
-        });
-        jMenu5.add(normSimPosMenu);
-
-        simTransformMenu.setText("Transform");
+        simTransformMenu.setText("Transform All");
         simTransformMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simTransformMenuActionPerformed(evt);
@@ -805,6 +818,24 @@ public final class MainForm extends javax.swing.JFrame {
 
         jMenu2.setText("Camera");
 
+        zoomInMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, 0));
+        zoomInMenu.setText("Zoom in");
+        zoomInMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomInMenuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(zoomInMenu);
+
+        zoomOutMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, 0));
+        zoomOutMenu.setText("Zoom out");
+        zoomOutMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomOutMenuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(zoomOutMenu);
+
         camViewMenu.setText("Edit View");
         camViewMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -812,14 +843,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu2.add(camViewMenu);
-
-        camProjMenu.setText("Edit Projection");
-        camProjMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                camProjMenuActionPerformed(evt);
-            }
-        });
-        jMenu2.add(camProjMenu);
 
         resetCamMenu.setText("reset");
         resetCamMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -893,21 +916,22 @@ public final class MainForm extends javax.swing.JFrame {
 
         jMenu4.setText("Transducers");
 
-        delTransMenu.setText("Del");
+        selectAllTransducersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, 0));
+        selectAllTransducersMenu.setText("Select all");
+        selectAllTransducersMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllTransducersMenuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(selectAllTransducersMenu);
+
+        delTransMenu.setText("Delete");
         delTransMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delTransMenuActionPerformed(evt);
             }
         });
         jMenu4.add(delTransMenu);
-
-        pointToTargetMenu.setText("PointToTarget");
-        pointToTargetMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pointToTargetMenuActionPerformed(evt);
-            }
-        });
-        jMenu4.add(pointToTargetMenu);
 
         jMenu8.setText("shortcuts");
 
@@ -1001,9 +1025,35 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu8.add(phasePiMenu);
 
+        randomTransducerOffMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
+        randomTransducerOffMenu.setText("RandTransOff");
+        randomTransducerOffMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomTransducerOffMenuActionPerformed(evt);
+            }
+        });
+        jMenu8.add(randomTransducerOffMenu);
+
+        randomTransducerOnMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, 0));
+        randomTransducerOnMenu.setText("RandTransOn");
+        randomTransducerOnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomTransducerOnMenuActionPerformed(evt);
+            }
+        });
+        jMenu8.add(randomTransducerOnMenu);
+
         jMenu4.add(jMenu8);
 
-        transOffsetMenu.setText("Offsets");
+        pointToTargetMenu.setText("PointToTarget");
+        pointToTargetMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pointToTargetMenuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(pointToTargetMenu);
+
+        transOffsetMenu.setText("Offsets and transforms");
         transOffsetMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 transOffsetMenuActionPerformed(evt);
@@ -1020,6 +1070,28 @@ public final class MainForm extends javax.swing.JFrame {
         jMenu4.add(transAssignmentMenu);
 
         jMenuBar1.add(jMenu4);
+
+        PointsMenu.setText("Points");
+
+        selectAllPointsMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, 0));
+        selectAllPointsMenu.setText("Select All");
+        selectAllPointsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllPointsMenuActionPerformed(evt);
+            }
+        });
+        PointsMenu.add(selectAllPointsMenu);
+
+        mergePointsMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
+        mergePointsMenu.setText("Merge points");
+        mergePointsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mergePointsMenuActionPerformed(evt);
+            }
+        });
+        PointsMenu.add(mergePointsMenu);
+
+        jMenuBar1.add(PointsMenu);
 
         jMenu6.setText("Animations");
 
@@ -1092,7 +1164,7 @@ public final class MainForm extends javax.swing.JFrame {
 
         addTransMenu.setText("Arrays");
 
-        arrayAddMenu.setText("Arrangement");
+        arrayAddMenu.setText("Arrangements");
         arrayAddMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 arrayAddMenuActionPerformed(evt);
@@ -1214,14 +1286,6 @@ public final class MainForm extends javax.swing.JFrame {
 
         jMenu7.setText("VARIOUS");
 
-        hybridSingleBeamMenu.setText("HybridSingleBeams");
-        hybridSingleBeamMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hybridSingleBeamMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(hybridSingleBeamMenu);
-
         scatterObjectMenu.setText("Scatter Object");
         scatterObjectMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1254,14 +1318,6 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(sendSwitchbufMenu);
 
-        particleControllerMenu.setText("Particle Controllers");
-        particleControllerMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                particleControllerMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(particleControllerMenu);
-
         rotateMultipleMenu.setText("Gen Anims");
         rotateMultipleMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1285,22 +1341,6 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu7.add(exportTransPhasePointsMenu);
-
-        knotCreatorMenu.setText("Knot creator");
-        knotCreatorMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                knotCreatorMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(knotCreatorMenu);
-
-        phaseDiscAnMenu.setText("PhaseDiscAn");
-        phaseDiscAnMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phaseDiscAnMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(phaseDiscAnMenu);
 
         jMenuBar1.add(jMenu7);
 
@@ -1328,10 +1368,10 @@ public final class MainForm extends javax.swing.JFrame {
     private int lastButton, lastX, lastY;
     private void panelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMousePressed
         lastButton = evt.getButton();
-        lastX = evt.getX();
-        lastY = evt.getY();
+        firstDragX = lastX = evt.getX();
+        firstDragY = lastY = evt.getY();
         
-        if(lastButton == 2){
+        if(lastButton == 3){
             if (cameraLooked){
                 scene.getCamera().activateObservation(true, scene.getCamera().getObservationPoint());
             }
@@ -1349,16 +1389,17 @@ public final class MainForm extends javax.swing.JFrame {
         float diffY = (y - lastY);
         
         if(lastButton == 1){
-            
-        }else if(lastButton == 2){
+            //zoom( diffY * 1.5f * domainPanel.getGUIGain());
+        }else if(lastButton == 3){
             if (cameraLooked){
                 scene.getCamera().moveAzimuthAndInclination(-diffX * rotGain, -diffY * rotGain);
                 scene.getCamera().updateObservation();
             }else{
                 scene.getCamera().getTransform().rotateLocal(-diffY * rotGain, -diffX * rotGain, 0);
             }
-        }else if(lastButton == 3){
-           scene.getCamera().getTransform().moveLocalSpace(-diffX * moveGain, diffY * moveGain, 0);
+        }else if(lastButton == 2){
+           //scene.getCamera().getTransform().moveLocalSpace(-diffX * moveGain, diffY * moveGain, 0);
+            zoom( diffY * 1.5f * domainPanel.getGUIGain());
         }
         
         needUpdate();
@@ -1370,15 +1411,19 @@ public final class MainForm extends javax.swing.JFrame {
          float wheel = (float)evt.getPreciseWheelRotation();
          final float wheelGain = domainPanel.getGUIGain() * 6f;
          final float value = wheel * wheelGain;
-         if (cameraLooked){
+         zoom(value);
+    }//GEN-LAST:event_panelMouseWheelMoved
+
+    private void zoom(final float value){
+        if (cameraLooked){
             scene.getCamera().setDistance(scene.getCamera().getDistance()+ value);  
             scene.getCamera().updateObservation();
          }else{
              scene.getCamera().getTransform().moveLocalSpace(0, 0, value);
          }
          needUpdate();
-    }//GEN-LAST:event_panelMouseWheelMoved
-
+    }
+    
     private void lookCamera(Vector3f v){
         scene.getCamera().setOrtho(false);
         scene.getCamera().updateProjection( getGLAspect());
@@ -1408,6 +1453,7 @@ public final class MainForm extends javax.swing.JFrame {
         String target = FileUtils.selectFile(this, "open", ".xml.gz", null);
         if(target != null){
             loadSimulation(target);
+            lastSimulationSavedOrLoaded = target;
         }
     }//GEN-LAST:event_loadSimMenuActionPerformed
 
@@ -1448,27 +1494,32 @@ public final class MainForm extends javax.swing.JFrame {
     private void saveSimMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSimMenuActionPerformed
         String file = FileUtils.selectNonExistingFile(this, ".xml.gz");
         if ( file != null){
-            try {
-                simForm.guiToObj();
-                simulation.labelNumberTransducers();
-                simulation.setHoloMemory( holoPatternsForm.getHoloMemory() );
-                
-                simulation.getMaskObjects().clear();
-                scene.gatherMeshEntitiesWithTag( simulation.getMaskObjects(), Entity.TAG_MASK);
-                
-                simulation.getSlices().clear();
-                scene.gatherMeshEntitiesWithTag( simulation.getSlices(), Entity.TAG_SLICE);
-                
-                FileUtils.writeCompressedObject(new File(file), simulation);
-            } catch (IOException ex) {
-                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            saveSimulation(file);
         }
     }//GEN-LAST:event_saveSimMenuActionPerformed
 
+    private void saveSimulation(final String file){
+        try {
+            simForm.guiToObj();
+            simulation.labelNumberTransducers();
+            simulation.setHoloMemory(holoPatternsForm.getHoloMemory());
+
+            simulation.getMaskObjects().clear();
+            scene.gatherMeshEntitiesWithTag(simulation.getMaskObjects(), Entity.TAG_MASK);
+
+            simulation.getSlices().clear();
+            scene.gatherMeshEntitiesWithTag(simulation.getSlices(), Entity.TAG_SLICE);
+
+            FileUtils.writeCompressedObject(new File(file), simulation);
+            lastSimulationSavedOrLoaded = file;
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void delTransMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delTransMenuActionPerformed
 
-        transPanel.deleteSelectedTransducers();
+        transducersPanel.deleteSelectedTransducers();
 
     }//GEN-LAST:event_delTransMenuActionPerformed
 
@@ -1482,27 +1533,27 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_resetCamMenuActionPerformed
 
     private void xTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_xTextFocusGained
-        changeSlider(FieldsToChange.xField, "X", simulation.getMinSize() * 8.0f, Float.MIN_VALUE, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.xField, "X", simulation.getMinSize() * 8.0f);
     }//GEN-LAST:event_xTextFocusGained
 
     private void yTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_yTextFocusGained
-        changeSlider(FieldsToChange.yField, "Y", simulation.getMinSize() * 8.0f, Float.MIN_VALUE, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.yField, "Y", simulation.getMinSize() * 8.0f);
     }//GEN-LAST:event_yTextFocusGained
 
     private void zTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_zTextFocusGained
-        changeSlider(FieldsToChange.zField, "Z", simulation.getMinSize() * 8.0f, Float.MIN_VALUE, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.zField, "Z", simulation.getMinSize() * 8.0f);
     }//GEN-LAST:event_zTextFocusGained
 
     private void rxTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rxTextFocusGained
-        changeSlider(FieldsToChange.rxField, "RX", 360, Float.MIN_VALUE, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.rxField, "RX", 360);
     }//GEN-LAST:event_rxTextFocusGained
 
     private void ryTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ryTextFocusGained
-        changeSlider(FieldsToChange.ryField, "RY", 360, Float.MIN_VALUE, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.ryField, "RY", 360);
     }//GEN-LAST:event_ryTextFocusGained
 
     private void rzTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rzTextFocusGained
-        changeSlider(FieldsToChange.rzField, "RZ", 360, Float.MIN_VALUE, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.rzField, "RZ", 360);
     }//GEN-LAST:event_rzTextFocusGained
 
     private void panelSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelSliderMouseDragged
@@ -1565,7 +1616,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_syTextActionPerformed
 
     private void syTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_syTextFocusGained
-        changeSlider(FieldsToChange.syField, "SY", simulation.maxDistanceBoundary() / 8.0f, 0.0f, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.syField, "SY", simulation.maxDistanceBoundary() / 8.0f);
     }//GEN-LAST:event_syTextFocusGained
 
     private void sxTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sxTextActionPerformed
@@ -1573,33 +1624,23 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_sxTextActionPerformed
 
     private void sxTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sxTextFocusGained
-        changeSlider(FieldsToChange.sxField, "SX", simulation.maxDistanceBoundary() / 8.0f, 0.0f, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.sxField, "SX", simulation.maxDistanceBoundary() / 8.0f);
     }//GEN-LAST:event_sxTextFocusGained
 
     private void szTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_szTextFocusGained
-        changeSlider(FieldsToChange.szField, "SZ", simulation.maxDistanceBoundary() / 8.0f, 0.0f, Float.MAX_VALUE);
+        changeSlider(FieldsToChange.szField, "SZ", simulation.maxDistanceBoundary() / 8.0f);
     }//GEN-LAST:event_szTextFocusGained
 
     private void szTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_szTextActionPerformed
        updateTransForField(FieldsToChange.szField, szText.getText());
     }//GEN-LAST:event_szTextActionPerformed
   
-    
-    
     public void addMeshEntityToSceneCenter( MeshEntity me){
         me.getTransform().getTranslation().set( simulation.getSimulationCenter() );
         me.getTransform().getScale().set( simulation.maxDistanceBoundary() );
         scene.getEntities().add( me );
     }
     
-    private void camProjMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camProjMenuActionPerformed
-        /*
-        ProjectionForm pf = new ProjectionForm(scene.getCamera().getProjection());
-        pf.setLocationRelativeTo(this);
-        pf.setVisible(true);
-        */
-    }//GEN-LAST:event_camProjMenuActionPerformed
-
     private void camViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camViewMenuActionPerformed
         showNewFrame( new TransformForm(scene.getCamera().getTransform(), this) );
     }//GEN-LAST:event_camViewMenuActionPerformed
@@ -1614,19 +1655,19 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_addKeyFrameMenuActionPerformed
 
     private void transSetPhase0MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transSetPhase0MenuActionPerformed
-        transPanel.setTransPhase( 0.0f );
+        transducersPanel.setTransPhase( 0.0f );
     }//GEN-LAST:event_transSetPhase0MenuActionPerformed
 
     private void transSetPhasePiMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transSetPhasePiMenuActionPerformed
-        transPanel.setTransPhase( 1.0f );
+        transducersPanel.setTransPhase( 1.0f );
     }//GEN-LAST:event_transSetPhasePiMenuActionPerformed
 
     private void transSetAmp0MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transSetAmp0MenuActionPerformed
-        transPanel.setTransAmp( 0.0f );
+        transducersPanel.setTransAmp( 0.0f );
     }//GEN-LAST:event_transSetAmp0MenuActionPerformed
 
     private void transSetAmp1MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transSetAmp1MenuActionPerformed
-        transPanel.setTransAmp( 1.0f );
+        transducersPanel.setTransAmp( 1.0f );
     }//GEN-LAST:event_transSetAmp1MenuActionPerformed
 
     private void camLookSelectionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camLookSelectionMenuActionPerformed
@@ -1707,14 +1748,6 @@ public final class MainForm extends javax.swing.JFrame {
         showNewFrame( new TransducersOffsetForm(this) );
     }//GEN-LAST:event_transOffsetMenuActionPerformed
 
-    private void normSimPosMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normSimPosMenuActionPerformed
-        final Transform t = scene.uniformPositions( selection );
-        if (t != null){
-            TextFrame.showText("Transform", t.toString(), this);
-            needUpdate();
-        }
-    }//GEN-LAST:event_normSimPosMenuActionPerformed
-
     private void simTransformMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simTransformMenuActionPerformed
         ApplyTransformForm atf = new ApplyTransformForm(this);
         atf.setLocationRelativeTo(this);
@@ -1728,6 +1761,16 @@ public final class MainForm extends javax.swing.JFrame {
             if (f != null){
                 config.lastPath = f.toString();
             }
+            
+            config.frameX = this.getLocation().x;
+            config.frameY = this.getLocation().y;
+            config.frameWidth = this.getSize().width;
+            config.frameHeigh = this.getSize().height;
+            
+            config.lastSimFile = lastSimulationSavedOrLoaded;
+            
+            config.guiValues.clear();
+            SimpleGUIPersistence.extractValuesFrom(config.guiValues, "", this);
             
             //try to save config
             FileUtils.writeObject(new File(CONFIG_PATH), config);
@@ -1770,10 +1813,6 @@ public final class MainForm extends javax.swing.JFrame {
         showNewFrame( new ImportPhasesAmpForm(this) );  
     }//GEN-LAST:event_ImportAmpPhasesMenuActionPerformed
 
-    private void hybridSingleBeamMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hybridSingleBeamMenuActionPerformed
-        showNewFrame( new HybridSingleBeamForm(this));
-    }//GEN-LAST:event_hybridSingleBeamMenuActionPerformed
-
     private void auxKeyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auxKeyMenuActionPerformed
         trapsPanel.reportGorkovs();
     }//GEN-LAST:event_auxKeyMenuActionPerformed
@@ -1787,7 +1826,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_scatterObjectMenuActionPerformed
 
     private void bowlArrayMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bowlArrayMenuActionPerformed
-        showNewFrame( new AddRadialTransducersForm(this));
+        showNewFrame(new BowlsForm(this));
     }//GEN-LAST:event_bowlArrayMenuActionPerformed
 
     private void matlabPhasesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matlabPhasesMenuActionPerformed
@@ -1803,11 +1842,11 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_randPointsExpMenuActionPerformed
 
     private void selectTransTopMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTransTopMenuActionPerformed
-        transPanel.selectTopTransducers(true);
+        transducersPanel.selectTopTransducers(true);
     }//GEN-LAST:event_selectTransTopMenuActionPerformed
 
     private void selectTransTopMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTransTopMenu1ActionPerformed
-        transPanel.selectTopTransducers(false);
+        transducersPanel.selectTopTransducers(false);
     }//GEN-LAST:event_selectTransTopMenu1ActionPerformed
 
     private void sendSwitchbufMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendSwitchbufMenuActionPerformed
@@ -1817,10 +1856,6 @@ public final class MainForm extends javax.swing.JFrame {
     private void importTransMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importTransMenuActionPerformed
         addTransducersForm.importFromSim();
     }//GEN-LAST:event_importTransMenuActionPerformed
-
-    private void particleControllerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_particleControllerMenuActionPerformed
-        showNewFrame( particleController );
-    }//GEN-LAST:event_particleControllerMenuActionPerformed
 
     private void rotateMultipleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateMultipleMenuActionPerformed
         showNewFrame(new GenerateComplexAnimations(this)); 
@@ -1870,14 +1905,6 @@ public final class MainForm extends javax.swing.JFrame {
         showNewFrame( new UDPRemoteControl(this));
     }//GEN-LAST:event_udpControlMenuActionPerformed
 
-    private void knotCreatorMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_knotCreatorMenuActionPerformed
-        showNewFrame( new VortexLoopCreator(this));
-    }//GEN-LAST:event_knotCreatorMenuActionPerformed
-
-    private void phaseDiscAnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDiscAnMenuActionPerformed
-        showNewFrame( new ContribAndPhaseDiffForm(this));
-    }//GEN-LAST:event_phaseDiscAnMenuActionPerformed
-
     private void phaseUpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseUpMenuActionPerformed
         transControlPanel.addPhaseSteps(1);
     }//GEN-LAST:event_phaseUpMenuActionPerformed
@@ -1889,6 +1916,76 @@ public final class MainForm extends javax.swing.JFrame {
     private void phasePiMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phasePiMenuActionPerformed
         transControlPanel.phasePi();
     }//GEN-LAST:event_phasePiMenuActionPerformed
+
+    private void randomTransducerOffMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTransducerOffMenuActionPerformed
+        transducersPanel.switchOnRandom(-1);
+    }//GEN-LAST:event_randomTransducerOffMenuActionPerformed
+
+    private void randomTransducerOnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTransducerOnMenuActionPerformed
+        transducersPanel.switchOnRandom(1);
+    }//GEN-LAST:event_randomTransducerOnMenuActionPerformed
+
+    private void mergePointsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergePointsMenuActionPerformed
+        pointsPanel.mergeClosestPoint();
+    }//GEN-LAST:event_mergePointsMenuActionPerformed
+
+    private void zoomInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInMenuActionPerformed
+        zoom(1 * domainPanel.getGUIGain() * 6);
+    }//GEN-LAST:event_zoomInMenuActionPerformed
+
+    private void zoomOutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutMenuActionPerformed
+        zoom(-1 * domainPanel.getGUIGain() * 6);
+    }//GEN-LAST:event_zoomOutMenuActionPerformed
+
+    private void selectAllTransducersMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllTransducersMenuActionPerformed
+        transducersPanel.selectAll();
+    }//GEN-LAST:event_selectAllTransducersMenuActionPerformed
+
+    private void selectAllPointsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllPointsMenuActionPerformed
+        pointsPanel.selectAll();
+    }//GEN-LAST:event_selectAllPointsMenuActionPerformed
+
+    private void simulationResizeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulationResizeMenuActionPerformed
+        updateBoundaries();
+        adjustGUIGainAndCameras();
+        needUpdate();
+    }//GEN-LAST:event_simulationResizeMenuActionPerformed
+
+    private void loadLastMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadLastMenuActionPerformed
+        String fileToUse = null;
+        
+        if (lastSimulationSavedOrLoaded != null){
+            fileToUse = lastSimulationSavedOrLoaded;
+        }else if (config.lastSimFile != null){
+            fileToUse = config.lastSimFile;
+        }
+        
+        if( fileToUse != null ){
+            final int load = DialogUtils.getBooleanDialog(this, "Do you want to load " + fileToUse);
+            if (load == 1){
+                loadSimulation(fileToUse);
+                lastSimulationSavedOrLoaded = fileToUse;
+            }
+        }
+    }//GEN-LAST:event_loadLastMenuActionPerformed
+
+    private void saveSameFileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSameFileMenuActionPerformed
+        if (lastSimulationSavedOrLoaded != null){
+            saveSimulation(lastSimulationSavedOrLoaded);
+        }
+    }//GEN-LAST:event_saveSameFileMenuActionPerformed
+
+    private void panelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseReleased
+        final int button = evt.getButton();
+        final int x = evt.getX();
+        final int y = evt.getY();
+        final float dist = M.distance(x, y, firstDragX, firstDragY);
+        if (button == 1 && dist > 4){
+            final int tags = addTagsForSelectionFilter(0);
+            final ArrayList<Entity> selected = selectWithDrag(firstDragX,firstDragY,x,y, tags);
+            setSelection(selected);
+        }
+    }//GEN-LAST:event_panelMouseReleased
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -1897,6 +1994,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ImportAmpPhasesMenu;
+    private javax.swing.JMenu PointsMenu;
     private javax.swing.JMenuItem addKeyFrameMenu;
     private javax.swing.JMenu addTransMenu;
     private javax.swing.JMenuItem animExportRawMenu;
@@ -1909,7 +2007,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem bowlArrayMenu;
     private javax.swing.JMenuItem camCoverSelMenu;
     private javax.swing.JMenuItem camLookSelectionMenu;
-    private javax.swing.JMenuItem camProjMenu;
     private javax.swing.JMenuItem camViewMenu;
     private javax.swing.JMenuItem cameraMovMenu;
     private javax.swing.JMenuItem centerCamMenu;
@@ -1924,7 +2021,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportToArduinoMenu;
     private javax.swing.JMenuItem exportTransPhasePointsMenu;
     private javax.swing.JMenuItem forcePlotsMenu;
-    private javax.swing.JMenuItem hybridSingleBeamMenu;
     private javax.swing.JMenuItem importArrayMenu;
     private javax.swing.JMenuItem importTransMenu;
     private javax.swing.JMenuItem interpolateAnimMenu;
@@ -1950,21 +2046,19 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JMenuItem knotCreatorMenu;
+    private javax.swing.JMenuItem loadLastMenu;
     private javax.swing.JMenuItem loadSimMenu;
     private javax.swing.JTabbedPane mainTabPanel;
     private javax.swing.ButtonGroup maskObjectsGroup;
     private javax.swing.JMenuItem matlabFieldMenu;
     private javax.swing.JMenuItem matlabPhasesMenu;
-    private javax.swing.JMenuItem normSimPosMenu;
+    private javax.swing.JMenuItem mergePointsMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
     private javax.swing.JMenuItem optimizerMenu;
     private javax.swing.JMenuItem originCamMenu;
     private javax.swing.JMenuItem otherCamMenu;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelSlider;
-    private javax.swing.JMenuItem particleControllerMenu;
-    private javax.swing.JMenuItem phaseDiscAnMenu;
     private javax.swing.JMenuItem phaseDownMenu;
     private javax.swing.JMenuItem phasePatternMenu;
     private javax.swing.JMenuItem phasePiMenu;
@@ -1973,23 +2067,29 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem polarPlotsMenu;
     private javax.swing.ButtonGroup preCubeSource;
     private javax.swing.JMenuItem randPointsExpMenu;
+    private javax.swing.JMenuItem randomTransducerOffMenu;
+    private javax.swing.JMenuItem randomTransducerOnMenu;
     private javax.swing.JMenuItem recToSelMenu;
     private javax.swing.JMenuItem resetCamMenu;
     private javax.swing.JMenuItem rotateMultipleMenu;
     private javax.swing.JTextField rxText;
     private javax.swing.JTextField ryText;
     private javax.swing.JTextField rzText;
+    private javax.swing.JMenuItem saveSameFileMenu;
     private javax.swing.JMenuItem saveSimMenu;
     private javax.swing.JMenuItem scatterObjectMenu;
     private javax.swing.JMenuItem sel1Menu;
     private javax.swing.JMenuItem sel2Menu;
     private javax.swing.JMenuItem selToBagMenu;
+    private javax.swing.JMenuItem selectAllPointsMenu;
+    private javax.swing.JMenuItem selectAllTransducersMenu;
     private javax.swing.JMenuItem selectTransTopMenu;
     private javax.swing.JMenuItem selectTransTopMenu1;
     private javax.swing.JMenuItem sendSwitchbufMenu;
     private javax.swing.JMenuItem sendToDevicesMenu;
     private javax.swing.JMenuItem simEditParamMenu;
     private javax.swing.JMenuItem simTransformMenu;
+    private javax.swing.JMenuItem simulationResizeMenu;
     private javax.swing.ButtonGroup slicesSource;
     private javax.swing.JLabel sliderFieldLabel;
     private javax.swing.JTextField sxText;
@@ -2007,20 +2107,53 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JTextField xText;
     private javax.swing.JTextField yText;
     private javax.swing.JTextField zText;
+    private javax.swing.JMenuItem zoomInMenu;
+    private javax.swing.JMenuItem zoomOutMenu;
     // End of variables declaration//GEN-END:variables
 
     public void needUpdate() {
         panel.repaint();
     }
     
-    public MeshEntity getEntityWithClick(final int x, final int y){
+    public ArrayList<Entity> selectWithDrag(final int sx, final int sy, final int ex, final int ey, final int tags){
+        final float panelWidth = panel.getWidth();
+        final float panelHeight = panel.getHeight();
+        
+        return scene.pickObjectsWithDrag(
+                    sx / panelWidth, 1.0f - sy / panelHeight, 
+                    ex / panelWidth, 1.0f - ey / panelHeight, 
+                tags);
+    }
+            
+    public MeshEntity clickRaySelectEntity(final int x, final int y, final int tags){
          return scene.pickObject(
                     x / (float) panel.getWidth(),
-                    1.0f - y / (float) panel.getHeight(), Entity.TAG_SLICE);
+                    1.0f - y / (float) panel.getHeight(), tags);
     }
 
-    public Vector3f getClickOnObject(final MeshEntity e,final int x,final int y){
+    public Vector3f clickRayIntersectObject(final MeshEntity e,final int x,final int y){
         return scene.clickToObject(x / (float) panel.getWidth(), 1.0f - y / (float) panel.getHeight(), e);      
+    }
+    
+    private int addTagsForSelectionFilter(int tags){
+        final Component comp = mainTabPanel.getSelectedComponent();
+        
+        if (comp == transducersPanel || comp == transControlPanel){
+            tags |= Entity.TAG_TRANSDUCER;
+        }else if (comp == rtSlicePanel ){
+            tags |= Entity.TAG_SLICE;
+        }else if (comp == miscPanel){
+            tags |= Entity.TAG_MASK;
+        }else if (comp == domainPanel){
+            tags |= Entity.TAG_CUBE_HELPER;
+        }else if (comp == pointsPanel){
+     
+            tags |= Entity.TAG_CONTROL_POINT;
+        }else if (comp == movePanel){
+            tags |= Entity.TAG_CONTROL_POINT;
+        }
+        
+        return tags;
     }
     
     private void updateSelection(MouseEvent evt) {
@@ -2030,35 +2163,21 @@ public final class MainForm extends javax.swing.JFrame {
         
         final Component comp = mainTabPanel.getSelectedComponent();
         
-        if (comp == transPanel || comp == transControlPanel){
-            tags |= Entity.TAG_TRANSDUCER;
-        }else if (comp == rtSlicePanel ){
-            tags |= Entity.TAG_SLICE;
-        }else if (comp == miscPanel){
-            tags |= Entity.TAG_MASK;
-        }else if (comp == domainPanel){
-            tags |= Entity.TAG_CUBE_HELPER;
-        }else if (comp == cpPanel){
-            
-            if ( cpPanel.isClickAndPlace()){
-                
-                MeshEntity e = getEntityWithClick(x, y);
-                if (e != null) {
-                    final Vector3f col = getClickOnObject(e, x, y);
-                    cpPanel.addControlPoint(col.x, col.y, col.z, 0, -1);
-                    needUpdate();
-                }
-                return;
-            }
-            tags |= Entity.TAG_CONTROL_POINT;
-        }else if (comp == trapsPanel){
-            MeshEntity e = getEntityWithClick(x, y);
+        tags = addTagsForSelectionFilter(tags);
+        if (comp == pointsPanel && pointsPanel.isClickAndPlace()){     
+            final MeshEntity e = clickRaySelectEntity(x, y, Entity.TAG_SLICE);
             if (e != null) {
-                final Vector3f worldPos = getClickOnObject(e, x, y);
+                final Vector3f col = clickRayIntersectObject(e, x, y);
+                pointsPanel.addControlPoint(col.x, col.y, col.z);
+                needUpdate();
+            }
+            return;
+        }else if (comp == trapsPanel){
+            MeshEntity e = clickRaySelectEntity(x, y, Entity.TAG_SLICE);
+            if (e != null) {
+                final Vector3f worldPos = clickRayIntersectObject(e, x, y);
                 trapsPanel.clickAt(worldPos);
             }                           
-        }else if (comp == movePanel){
-            tags |= Entity.TAG_CONTROL_POINT;
         }
         
         Entity e = scene.pickObject(
@@ -2091,17 +2210,15 @@ public final class MainForm extends javax.swing.JFrame {
     }
 
     private void vectorToTextFields(final Vector3f v, JTextField x, JTextField y, JTextField z){
-        x.setText( formats.dc4( v.x ) );
-        y.setText( formats.dc4( v.y ) );
-        z.setText( formats.dc4( v.z ) );   
+        x.setText( StringFormats.get().dc4( v.x ) );
+        y.setText( StringFormats.get().dc4( v.y ) );
+        z.setText( StringFormats.get().dc4( v.z ) );   
     }
     
     public void transformToGUI(final Transform t){
        vectorToTextFields(t.getTranslation(), xText, yText, zText );
-
        final Vector3f angles = t.getRotation().toAngles(null).multLocal( M.RAD_TO_DEG );
        vectorToTextFields(angles, rxText, ryText, rzText );
-
        vectorToTextFields(t.getScale(), sxText, syText, szText );
     }
     
@@ -2110,15 +2227,7 @@ public final class MainForm extends javax.swing.JFrame {
         transformToGUI(e.getTransform());
 
         if (e instanceof Transducer) {
-            Transducer t = (Transducer) e;
-            transPanel.getwText().setText(formats.dc4(t.getApperture()));
-            transPanel.getPowerText().setText(formats.dc4(t.getPower()));
-            transPanel.getFrText().setText(formats.dc4(t.getFrequency()));
-
-            transPanel.getAmpText().setText(formats.dc4(t.getAmplitude()));
-            transPanel.getPhaseText().setText(formats.dc4(t.getPhase()));
-            transPanel.getLabelText().setText(t.getOrderNumber() + "");
-            transPanel.getPinText().setText(t.getDriverPinNumber() + "");
+            transducersPanel.updateFromTransducer((Transducer)e);
         }
 
     }
@@ -2139,12 +2248,10 @@ public final class MainForm extends javax.swing.JFrame {
         powerField
     };
     private FieldsToChange sliderField;
-    private float sliderMin, sliderMax, sliderScale;
-    public void changeSlider(FieldsToChange field, String name, float scale, float min, float max){
+    private float sliderScale;
+    public void changeSlider(FieldsToChange field, String name, float scale){
         sliderField = field;
         sliderFieldLabel.setText(name);
-        sliderMin = min;
-        sliderMax = max;
         sliderScale = scale;
     }
     
@@ -2156,22 +2263,22 @@ public final class MainForm extends javax.swing.JFrame {
             
             if(field == FieldsToChange.xField){
                 tra.getTranslation().x = absolute ? value : tra.getTranslation().x + value;
-                if (updateTextField) { xText.setText( formats.dc4(tra.getTranslation().x)); }
+                if (updateTextField) { xText.setText( StringFormats.get().dc4(tra.getTranslation().x)); }
             }else if(field == FieldsToChange.yField){
                 tra.getTranslation().y = absolute ? value : tra.getTranslation().y + value;
-                if (updateTextField) { yText.setText( formats.dc4(tra.getTranslation().y)); }
+                if (updateTextField) { yText.setText( StringFormats.get().dc4(tra.getTranslation().y)); }
             }else if(field == FieldsToChange.zField){
                 tra.getTranslation().z = absolute ? value : tra.getTranslation().z + value;
-                if (updateTextField) { zText.setText( formats.dc4(tra.getTranslation().z)); }
+                if (updateTextField) { zText.setText( StringFormats.get().dc4(tra.getTranslation().z)); }
             }else if(field == FieldsToChange.sxField){
                 tra.getScale().x = absolute ? value : tra.getScale().x + value;
-                if (updateTextField) { sxText.setText( formats.dc4( tra.getScale().x )); }
+                if (updateTextField) { sxText.setText( StringFormats.get().dc4( tra.getScale().x )); }
             }else if(field == FieldsToChange.syField){
                  tra.getScale().y = absolute ? value : tra.getScale().y + value;
-                if (updateTextField) { syText.setText( formats.dc4( tra.getScale().y )); }
+                if (updateTextField) { syText.setText( StringFormats.get().dc4( tra.getScale().y )); }
             }else if(field == FieldsToChange.szField){
                  tra.getScale().z = absolute ? value : tra.getScale().z + value;
-                if (updateTextField) { szText.setText( formats.dc4( tra.getScale().z )); }
+                if (updateTextField) { szText.setText( StringFormats.get().dc4( tra.getScale().z )); }
             }else if(field == FieldsToChange.rxField || 
                     field == FieldsToChange.ryField || 
                     field == FieldsToChange.rzField){
@@ -2180,35 +2287,19 @@ public final class MainForm extends javax.swing.JFrame {
                 q.toAngles(angles);
                 if(field == FieldsToChange.rxField) {
                     angles.x = absolute ? rads : angles.x + rads;
-                    if (updateTextField) { rxText.setText(formats.dc4(angles.x * M.RAD_TO_DEG)); }
+                    if (updateTextField) { rxText.setText(StringFormats.get().dc4(angles.x * M.RAD_TO_DEG)); }
                 }else if (field == FieldsToChange.ryField) {
                     angles.y = absolute ? rads : angles.y + rads;
-                    if (updateTextField) { ryText.setText(formats.dc4(angles.y * M.RAD_TO_DEG)); }
+                    if (updateTextField) { ryText.setText(StringFormats.get().dc4(angles.y * M.RAD_TO_DEG)); }
                 }else if (field == FieldsToChange.rzField) {
                     angles.z = absolute ? rads : angles.z + rads;
-                    if (updateTextField) { rzText.setText(formats.dc4(angles.z * M.RAD_TO_DEG)); }
+                    if (updateTextField) { rzText.setText(StringFormats.get().dc4(angles.z * M.RAD_TO_DEG)); }
                 }
                 q.fromAngles(angles);
             }
             
             if (e instanceof Transducer){
-                Transducer t = (Transducer)e;
-                if(field == FieldsToChange.wField){
-                    t.apperture = absolute ? value : t.apperture + value;
-                    if (updateTextField) { transPanel.getwText().setText( formats.dc4(t.apperture )); }
-                }else if(field == FieldsToChange.frField){
-                    t.frequency = absolute ? value : t.frequency + value;
-                    if (updateTextField) {transPanel.getFrText().setText( formats.dc4( t.frequency )); }
-                }else if(field == FieldsToChange.ampField){
-                    t.amplitude = absolute ? value : t.amplitude + value;
-                    if (updateTextField) {transPanel.getAmpText().setText( formats.dc4(t.amplitude )); }
-                }else if(field == FieldsToChange.phaseField){
-                    t.phase = absolute ? value : t.phase + value;
-                    if (updateTextField) { transPanel.getPhaseText().setText( formats.dc4( t.phase )); }
-                }else if(field == FieldsToChange.powerField){
-                    t.power = absolute ? value : t.power + value;
-                    if (updateTextField) { transPanel.getPowerText().setText( formats.dc4( t.power )); }
-                }
+                transducersPanel.updateField((Transducer)e, field,  value,  absolute,  updateTextField);
             }
             
             updateTextField = false; //only use the first transducer, only one value can be displayed in the text field
