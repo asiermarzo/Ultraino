@@ -1943,6 +1943,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void selectAllPointsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllPointsMenuActionPerformed
         pointsPanel.selectAll();
+        needUpdate();
     }//GEN-LAST:event_selectAllPointsMenuActionPerformed
 
     private void simulationResizeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulationResizeMenuActionPerformed

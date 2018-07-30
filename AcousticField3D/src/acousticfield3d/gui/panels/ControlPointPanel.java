@@ -232,6 +232,9 @@ public class ControlPointPanel extends javax.swing.JPanel {
         me.getTransform().getScale().set( getControlPointSize() );
         me.getTransform().getTranslation().set(x, y, z);
 
+        mf.scene.getEntities().add(me);
+        mf.simulation.controlPoints.add(me);
+        
         return me;
     }
     
@@ -404,6 +407,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
                 mf.selection.add(me);
             }
         }
+       
     }
     
     public Entity selectFrame(int frame) {
