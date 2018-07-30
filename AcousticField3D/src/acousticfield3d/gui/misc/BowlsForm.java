@@ -105,6 +105,7 @@ public class BowlsForm extends javax.swing.JFrame {
         autoDeleteCheck.setSelected(true);
         autoDeleteCheck.setText("autoDelete");
 
+        autoIncliCheck.setSelected(true);
         autoIncliCheck.setText("auto: min sep");
 
         autoIncliSepText.setText("0.01");
@@ -248,7 +249,7 @@ public class BowlsForm extends javax.swing.JFrame {
         final float pressure = CalcField.calcFieldAt(Vector3f.ZERO, mf).length();
         pressureAtFocusText.setText( StringFormats.get().dc2(pressure) );
         
-        float maxY = Float.MAX_VALUE;
+        float maxY = -Float.MAX_VALUE;
         for(Transducer t : mf.simulation.transducers){
             maxY = M.max(maxY, t.getTransform().getTranslation().y);
         }

@@ -208,6 +208,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="autoIncliCheck">
       <Properties>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="auto: min sep"/>
       </Properties>
     </Component>
