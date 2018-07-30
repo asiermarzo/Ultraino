@@ -32,7 +32,6 @@
 package acousticfield3d.utils;
 
 
-import acousticfield3d.math.ColorRGBA;
 import acousticfield3d.math.Quaternion;
 import acousticfield3d.math.TempVars;
 import acousticfield3d.math.Vector2f;
@@ -288,25 +287,6 @@ public final class BufferUtils {
         return createFloatBuffer(3 * vertices);
     }
 
-    /**
-     * Sets the data contained in the given color into the FloatBuffer at the
-     * specified index.
-     * 
-     * @param color
-     *            the data to insert
-     * @param buf
-     *            the buffer to insert into
-     * @param index
-     *            the postion to place the data; in terms of colors not floats
-     */
-    public static void setInBuffer(ColorRGBA color, FloatBuffer buf,
-            int index) {
-        buf.position(index * 4);
-        buf.put(color.r);
-        buf.put(color.g);
-        buf.put(color.b);
-        buf.put(color.a);
-    }
 
     /**
      * Sets the data contained in the given quaternion into the FloatBuffer at the 

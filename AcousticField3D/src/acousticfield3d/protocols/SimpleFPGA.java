@@ -26,6 +26,10 @@ public class SimpleFPGA extends DeviceConnection{
         return (byte) (0xFF & 253);
     }
     
+    public byte getStartAmplitudesCommand(){
+        return (byte) (0xFF & 252);
+    }
+    
     public int getnTransducers(){
         return 256;
     }
@@ -54,28 +58,37 @@ public class SimpleFPGA extends DeviceConnection{
         }
        
        final int nTrans = getnTransducers();
-       //final int nTrans = M.nearestPowerOfTwo( transducers.size() );
-       final byte[] data = new byte[nTrans + 1];
-       //Arrays.fill(data, PHASE_OFF);
+       final byte[] phaseDataPlusHeader = new byte[nTrans + 1];
+       final byte[] ampDataPlusHeader = new byte[nTrans + 1];
+        //Arrays.fill(data, PHASE_OFF);
        final int divs = getDivs();
       
        final byte PHASE_OFF = (byte) (0xFF & getDivs());
+       boolean ampModulationNeeded = false;
        
-        data[0] = getStartPhasesCommand(); 
+        phaseDataPlusHeader[0] = getStartPhasesCommand(); 
+        ampDataPlusHeader[0] = getStartAmplitudesCommand();
         for (Transducer t : transducers) {
             final int n = t.getOrderNumber() - number;
             //final int n = t.getDriverPinNumber();
             if (n >= 0 && n < nTrans) { //is it within range
                 int phase = t.getDiscPhase(divs);
-
+                int amplitude = t.getDiscAmplitude(divs); 
+                
                 if (t.getpAmplitude() == 0){
                     phase = PHASE_OFF;
+                }else if (t.getAmplitude() < 1.0f){
+                    ampModulationNeeded = true;
                 }
                         
-                data[n+1] = (byte) (phase & 0xFF);
+                phaseDataPlusHeader[n+1] = (byte) (phase & 0xFF);
+                ampDataPlusHeader[n+1] = (byte) (amplitude & 0xFF);
             }
         }
-       serial.write(data);
+       serial.write(phaseDataPlusHeader);
+       if ( ampModulationNeeded ){
+           serial.write(ampDataPlusHeader);
+       }
        serial.flush();
     }
     

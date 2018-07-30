@@ -94,7 +94,7 @@ public class Intersection {
                 e1 = vars.vect5,
                 e2 = vars.vect6;
 
-        Vector3f center = bbox.getCenter();
+        Vector3f center = bbox.center;
         Vector3f extent = bbox.getExtent(null);
 
 //   float min,max,p0,p1,p2,rad,fex,fey,fez;

@@ -6,6 +6,7 @@
 
 package acousticfield3d.scene;
 
+import acousticfield3d.math.Frustrum;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Matrix3f;
 import acousticfield3d.math.Matrix4f;
@@ -187,7 +188,6 @@ public class Scene {
     public MeshEntity pickObject(float x, float y, int tagBits){
         Ray r = pointToRay(x, y);
         
-        
         float minDistance = Float.MAX_VALUE;
         MeshEntity pick = null;
         for( MeshEntity me : entities){
@@ -202,12 +202,12 @@ public class Scene {
         return pick;
     }
     
-    public static void setVisible(List<MeshEntity> list, int tagBit, int frame, int number, boolean visible){
+    public static void setVisible(List<MeshEntity> list, int tagBit, int number, boolean visible){
         Iterator<MeshEntity> i = list.iterator();
         while (i.hasNext()){
             MeshEntity e = i.next();
             if ((e.tag & tagBit) != 0){
-                if ( (frame == -1 || e.frame == frame)&& (number == -1 || e.number == number)){
+                if ( (number == -1 || e.number == number)){
                     e.setVisible(visible);
                 }else{
                     e.setVisible(! visible);
@@ -293,29 +293,31 @@ public class Scene {
         final float simWidth = max.y - min.y;
         final float midY = (max.y + min.y) / 2.0f;
         
+        final int barColor = Color.WHITE;
+        
         me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(Color.BLACK);
+        me.setColor(barColor);
         me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
         me.getTransform().getTranslation().set(min.x, midY, min.z);
         me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
         entities.add(me);
         
         me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(Color.BLACK);
+        me.setColor(barColor);
         me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
         me.getTransform().getTranslation().set(min.x, midY, max.z);
         me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
         entities.add(me);
         
         me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(Color.BLACK);
+        me.setColor(barColor);
         me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
         me.getTransform().getTranslation().set(max.x, midY, min.z);
         me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
         entities.add(me);
         
         me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(Color.BLACK);
+        me.setColor(barColor);
         me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
         me.getTransform().getTranslation().set(max.x, midY, max.z);
         me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
@@ -335,9 +337,7 @@ public class Scene {
         cubeHelper.getMaterial().diffuse = 0.5f;
         cubeHelper.getMaterial().specular = 0.5f;
         cubeHelper.getMaterial().shininess = 10;
-        getEntities().add(cubeHelper );
-        
-        
+        getEntities().add(cubeHelper );    
     }
     
    
@@ -383,38 +383,7 @@ public class Scene {
         }
     }
 
-    public Transform uniformPositions(final List<Entity> selection) {
-        if (selection.size() < 3){
-            return null;
-        }
-        
-        final Vector3f a = selection.get(0).getTransform().getTranslation();
-        final Vector3f b = selection.get(1).getTransform().getTranslation();
-        final Vector3f c = selection.get(2).getTransform().getTranslation();
-        
-        final Vector3f v1 = b.subtract( a );
-        final Vector3f v2 = c.subtract( a );
-        
-        
-        //orientate
-        final Quaternion rot = new Quaternion().lookAt(v1, v2).inverseLocal();
-        
-        //translate
-        final Vector3f aTransformed = rot.mult(a);
-        
-        final Transform t = new Transform();
-        t.getRot().set( rot );
-        t.getTranslation().set( aTransformed.negateLocal() );
-        
-        for(Entity e : entities){
-            if( (e.tag & (Entity.TAG_TRANSDUCER | Entity.TAG_CONTROL_POINT )) != 0){
-                e.getTransform().combineWithParentNoScale(t);
-            }
-        }
-        
-        return t;
-    }
-    
+  
       public static Vector3f calcCenter(final List<? extends Entity> entities){
         final Vector3f center = new Vector3f();
         for(Entity e : entities){
@@ -447,5 +416,23 @@ public class Scene {
         }
        
         return bead.getTransform().getScale().maxComponent() / 2.0f;
+    }
+
+    public ArrayList<Entity> pickObjectsWithDrag(float sx, float sy, float ex, float ey, int tags) {
+        //order the points
+        final float minX = M.min(sx, ex);
+        final float minY = M.min(sy, ey);
+        final float maxX = M.max(sx, ex);
+        final float maxY = M.max(sy, ey);
+        
+        final Frustrum frustrum = new Frustrum(camera, minX, minY, maxX, maxY);
+        
+        final ArrayList<Entity> selected = new ArrayList<>();
+        for (MeshEntity e : entities){
+            if ( (e.getTag() & tags) != 0 && e.boxInside(frustrum)){
+                selected.add(e);
+            }
+        }
+        return selected;
     }
 }

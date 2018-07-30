@@ -6,6 +6,7 @@
 
 package acousticfield3d.scene;
 
+import acousticfield3d.math.Frustrum;
 import acousticfield3d.math.Transform;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.renderer.Material;
@@ -33,7 +34,6 @@ public class Entity {
     Transform transform;
     ArrayList<Behaviour> behaviours;
     int tag;
-    int frame;
     int number;
     public boolean selected;
     
@@ -95,14 +95,6 @@ public class Entity {
         this.tag = tag;
     }
     
-    public int getFrame() {
-        return frame;
-    }
-    
-    public void setFrame(int frame) {
-        this.frame = frame;
-    }
-    
     public int getNumber() {
         return number;
     }
@@ -134,5 +126,9 @@ public class Entity {
     
     public void rotateAround(final Vector3f pivot, float rx, float ry, float rz){
         getTransform().rotateAround( pivot, rx, ry, rz);
+    }
+
+    public boolean boxInside(final Frustrum frustrum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

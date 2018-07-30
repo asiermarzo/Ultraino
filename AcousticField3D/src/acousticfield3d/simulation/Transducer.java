@@ -6,7 +6,7 @@
 
 package acousticfield3d.simulation;
 
-import acousticfield3d.gui.misc.Gradients;
+import acousticfield3d.gui.Gradients;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.MeshEntity;
@@ -248,6 +248,10 @@ public class Transducer extends MeshEntity{
              max = M.max(max, t.getDriverPinNumber());
         }
         return max;
+    }
+
+    public int getDiscAmplitude(int divs) {
+        return M.iclamp(Math.round(amplitude * divs / 2), 0, divs);
     }
     
 }

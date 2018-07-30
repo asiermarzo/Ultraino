@@ -40,7 +40,7 @@ package acousticfield3d.math;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public final class Ray implements Cloneable, Collidable, java.io.Serializable {
+public final class Ray {
 
     static final long serialVersionUID = 1;
 
@@ -108,18 +108,7 @@ public final class Ray implements Cloneable, Collidable, java.io.Serializable {
 //    public boolean intersect(Vector3f v0,Vector3f v1,Vector3f v2){
 //        return intersectWhere(v0, v1, v2, null);
 //    }
-    /**
-     * <code>intersectWhere</code> determines if the Ray intersects a triangle. It then
-     * stores the point of intersection in the given loc vector
-     * @param t the Triangle to test against.
-     * @param loc
-     *            storage vector to save the collision point in (if the ray
-     *            collides)
-     * @return true if the ray collides.
-     */
-    public boolean intersectWhere(Triangle t, Vector3f loc) {
-        return intersectWhere(t.get(0), t.get(1), t.get(2), loc);
-    }
+
     
 
     /**
@@ -143,22 +132,7 @@ public final class Ray implements Cloneable, Collidable, java.io.Serializable {
         return intersects(v0, v1, v2, loc, false, false);
     }
 
-    /**
-     * <code>intersectWherePlanar</code> determines if the Ray intersects a
-     * triangle and if so it stores the point of
-     * intersection in the given loc vector as t, u, v where t is the distance
-     * from the origin to the point of intersection and u,v is the intersection
-     * point in terms of the triangle plane.
-     *
-     * @param t the Triangle to test against.
-     * @param loc
-     *            storage vector to save the collision point in (if the ray
-     *            collides) as t, u, v
-     * @return true if the ray collides.
-     */
-    public boolean intersectWherePlanar(Triangle t, Vector3f loc) {
-        return intersectWherePlanar(t.get(0), t.get(1), t.get(2), loc);
-    }
+
 
     /**
      * <code>intersectWherePlanar</code> determines if the Ray intersects a
@@ -384,24 +358,7 @@ public final class Ray implements Cloneable, Collidable, java.io.Serializable {
         return true;
     }
 
-    public int collideWith(Collidable other, CollisionResults results) {
-        if (other instanceof BoundingVolume) {
-            BoundingVolume bv = (BoundingVolume) other;
-            return bv.collideWith(this, results);
-        } else if (other instanceof AbstractTriangle) {
-            AbstractTriangle tri = (AbstractTriangle) other;
-            float d = intersects(tri.get1(), tri.get2(), tri.get3());
-            if (Float.isInfinite(d) || Float.isNaN(d)) {
-                return 0;
-            }
 
-            Vector3f point = new Vector3f(direction).multLocal(d).addLocal(origin);
-            results.addCollision(new CollisionResult(point, d));
-            return 1;
-        } else {
-            return -1;
-        }
-    }
 
     public float distanceSquared(Vector3f point) {
         TempVars vars = TempVars.get();

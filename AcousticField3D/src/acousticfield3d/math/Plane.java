@@ -31,9 +31,6 @@
  */
 package acousticfield3d.math;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
 /**
  * <code>Plane</code> defines a plane where Normal dot (x,y,z) = Constant.
  * This provides methods for calculating a "distance" of a point from this
@@ -43,19 +40,14 @@ import java.util.logging.Logger;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public class Plane implements Cloneable, java.io.Serializable {
+public class Plane {
 
-    static final long serialVersionUID = 1;
-
-    private static final Logger logger = Logger
-            .getLogger(Plane.class.getName());
-
-    public static enum Side {
+   public static enum Side {
         None,
         Positive,
         Negative
     }
-
+   
     /** 
      * Vector normal to the plane.
      */
@@ -176,7 +168,8 @@ public class Plane implements Cloneable, java.io.Serializable {
         return normal.dot(point) - constant;
     }
 
-    /**
+   
+       /**
      * <code>whichSide</code> returns the side at which a point lies on the
      * plane. The positive values returned are: NEGATIVE_SIDE, POSITIVE_SIDE and
      * NO_SIDE.
@@ -195,7 +188,7 @@ public class Plane implements Cloneable, java.io.Serializable {
             return Side.None;
         }
     }
-
+    
     public boolean isOnPlane(Vector3f point){
         float dist = pseudoDistance(point);
         if (dist < M.FLT_EPSILON && dist > -M.FLT_EPSILON)
@@ -204,15 +197,6 @@ public class Plane implements Cloneable, java.io.Serializable {
             return false;
     }
 
-    /**
-     * Initialize this plane using the three points of the given triangle.
-     * 
-     * @param t
-     *            the triangle
-     */
-    public void setPlanePoints(AbstractTriangle t) {
-        setPlanePoints(t.get1(), t.get2(), t.get3());
-    }
 
     /**
      * Initialize this plane using a point of origin and a normal.
@@ -257,15 +241,4 @@ public class Plane implements Cloneable, java.io.Serializable {
                 + constant + "]";
     }
 
-
-    @Override
-    public Plane clone() {
-        try {
-            Plane p = (Plane) super.clone();
-            p.normal = normal.clone();
-            return p;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }

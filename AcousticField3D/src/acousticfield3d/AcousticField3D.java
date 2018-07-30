@@ -9,10 +9,8 @@ package acousticfield3d;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.utils.FileUtils;
 import acousticfield3d.utils.Parse;
+import acousticfield3d.utils.SimpleGUIPersistence;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -50,15 +48,28 @@ public class AcousticField3D {
         
         //try to load config file
         Config config = new Config();
-        
         try {
             config = (Config) FileUtils.readObject( new File( MainForm.CONFIG_PATH ));
         } catch (Exception ex) {
         }
         
-        MainForm t = new MainForm(config);
+        final MainForm t = new MainForm(config);
+        if (config != null ){
+            if(config.lastPath != null){
+                FileUtils.setLastIndicatedPath( new File( config.lastPath ) );
+                FileUtils.setLastChooserPath(new File( config.lastPath ) );
+            }   
+        }
+        SimpleGUIPersistence.applyValuesTo(config.getGuiValues(), "", t);
+        t.init();
+        
         t.setVisible(true);
-        t.setLocationRelativeTo(null);
+        if (config.frameWidth == 0 || config.frameHeigh == 0){
+            t.setLocationRelativeTo(null);
+        }else{
+            t.setLocation( config.frameX, config.frameY);
+            t.setSize( config.frameWidth, config.frameHeigh);
+        }
         
         if (args.length > 0){
             for(String s : args){

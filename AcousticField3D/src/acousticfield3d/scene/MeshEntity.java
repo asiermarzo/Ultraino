@@ -6,6 +6,7 @@
 
 package acousticfield3d.scene;
 
+import acousticfield3d.math.Frustrum;
 import acousticfield3d.math.Ray;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.renderer.Texture;
@@ -74,6 +75,26 @@ public class MeshEntity extends Entity{
         
         //return distance if there was a collision
         return p.distance( r.origin );
+    }
+    
+    public boolean boxInside(final Frustrum frustrum){
+        Mesh m = Resources.get().getMesh(mesh);
+        if(m == null) { return false; }
+        
+        
+        Ray rSpace = new Ray(r.origin, r.direction, false);
+        transform.transformInversePoint(rSpace.origin, rSpace.origin);
+        transform.transformInverseVector(rSpace.direction, rSpace.direction);
+        
+        //intersection points with the box
+        
+        Vector3f p = m.getbBox().intersectPoint(rSpace);
+        if (p == null){return -1.0f;}
+        
+        //apply transform to points
+        transform.transformPoint(p, p);
+        
+        return true;
     }
 
     public boolean isDoubledSided() {

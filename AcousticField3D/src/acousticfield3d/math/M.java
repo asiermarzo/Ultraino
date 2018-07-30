@@ -1033,4 +1033,10 @@ final public class M {
     public static float angleDiff(float a, float b){
         return ( (a-b)%(PI*2.0f) + PI*3.0f) % (PI*2.0f)- PI;
     }
+    
+    public static float distance(final float ax, final float ay, final float bx, final float by){
+        final float diffX = ax-bx;
+        final float diffY = ay-by;
+        return M.sqrt( diffX*diffX + diffY*diffY);
+    }
 }

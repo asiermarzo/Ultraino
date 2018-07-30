@@ -199,8 +199,8 @@ public class Animation {
         final int nPoints = dis.readInt();
 
         //ensure that the simulation has the same amount of points
-        mf.cpPanel.deleteAllPoints();
-        mf.cpPanel.createPoints(nPoints);
+        mf.pointsPanel.deleteAllPoints();
+        mf.pointsPanel.createPoints(nPoints);
         
         int index = 0;
         for(int i = 0; i < nKeys; ++i){

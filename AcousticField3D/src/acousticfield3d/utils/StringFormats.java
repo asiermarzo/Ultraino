@@ -13,10 +13,14 @@ import java.text.DecimalFormatSymbols;
  * @author am14010
  */
 public class StringFormats {
-    private final DecimalFormat formatWith4Decs;
-    private final DecimalFormat formatWith2Decs;
     
-    public StringFormats(){
+    public static StringFormats get(){
+        return instance;
+    }
+    
+    private final static StringFormats instance = new StringFormats();
+    
+    private StringFormats(){
         formatWith4Decs = new DecimalFormat("0.0000");
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');
@@ -25,6 +29,10 @@ public class StringFormats {
         formatWith2Decs = new DecimalFormat("0.00");
         formatWith2Decs.setDecimalFormatSymbols(otherSymbols);
     }
+    
+    private final DecimalFormat formatWith4Decs;
+    private final DecimalFormat formatWith2Decs;
+    
     
     public String dc4( double f ){
         return formatWith4Decs.format( f );

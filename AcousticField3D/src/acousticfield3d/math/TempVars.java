@@ -145,23 +145,7 @@ public class TempVars {
      */
     public final BoundingBox bbox = new BoundingBox();
    
-    /**
-     * Fetching triangle from mesh
-     */
-    public final Triangle triangle = new Triangle();
-    /**
-     * Color
-     */
-    public final ColorRGBA color = new ColorRGBA();
-    
-    /**
-     * Skinning buffers
-     */
-    public final float[] skinPositions = new float[512 * 3];
-    public final float[] skinNormals = new float[512 * 3];
-     //tangent buffer as 4 components by elements
-    public final float[] skinTangents = new float[512 * 4];
-    
+
     /**
      * General vectors.
      */
@@ -220,4 +204,6 @@ public class TempVars {
      * BIHTree
      */
     public final float[] bihSwapTmp = new float[9];
+    
+    public final float[] skinPositions = new float[512 * 3];
 }

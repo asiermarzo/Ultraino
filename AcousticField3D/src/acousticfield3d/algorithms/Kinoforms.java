@@ -13,6 +13,7 @@ import acousticfield3d.scene.Entity;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public class Kinoforms {
     //green -> twin-trap
     //black -> standing-waves
 
+    final List<Transducer> onTrans;
     final int T; //n Transducers
     final int P; //n virtual points
     final int RP; //nreal points; 
@@ -50,12 +52,18 @@ public class Kinoforms {
         }
         
         //initialize transducers 
-        T = transducers.size();
+        onTrans = new ArrayList<>();
+        for(Transducer t : transducers){
+            if (t.getpAmplitude() > 0){
+                onTrans.add(t);
+            }
+        }
+        T = onTrans.size();
         transA = new float[T];
         transB = new float[T];
         for (int i = 0; i<T; ++i){
-            final float amp = transducers.get(i).getpAmplitude();
-            final float phase = transducers.get(i).getPhase() * M.PI;
+            final float amp = onTrans.get(i).getpAmplitude();
+            final float phase = onTrans.get(i).getPhase() * M.PI;
             transA[i] = amp * M.cos( phase );
             transB[i] = amp * M.sin( phase );
         }
@@ -95,14 +103,14 @@ public class Kinoforms {
             
             if ( trapType == 0 ){ //focal point
                 pointA[index+0] = 1; pointB[index+0] = 0;
-                addPropagator(mf, transducers, index+0, pos.x, pos.y, pos.z);
+                addPropagator(mf, onTrans, index+0, pos.x, pos.y, pos.z);
             }else if (trapType == 1 || trapType == 2){ //vortices
                 for(int m = 0;m < N_POINTS_VORTEX; ++m){
                     final int mi = (trapType == 1) ? m : N_POINTS_VORTEX - m - 1;
                     final float vA = VORTEX_A[mi];
                     final float vB = VORTEX_B[mi];
                     pointA[index+m] = vA; pointB[index+m] = vB;
-                    addPropagator(mf, transducers, index+m, pos.x + vortexSep*vA, pos.y, pos.z + vortexSep*vB);
+                    addPropagator(mf, onTrans, index+m, pos.x + vortexSep*vA, pos.y, pos.z + vortexSep*vB);
                 }
             }else if (trapType == 3){ //twin-traps
                 pointA[index+0] = 1; pointB[index+0] = 0;
@@ -110,14 +118,14 @@ public class Kinoforms {
                 
                 final float angle = getTwinTrapRotation( c );
                 final Vector2f disp = new Vector2f().setAngle(angle).multLocal( twinSep );
-                addPropagator(mf, transducers, index+0, pos.x + disp.x, pos.y, pos.z + disp.y);
-                addPropagator(mf, transducers, index+1, pos.x - disp.x, pos.y, pos.z - disp.y);
+                addPropagator(mf, onTrans, index+0, pos.x + disp.x, pos.y, pos.z + disp.y);
+                addPropagator(mf, onTrans, index+1, pos.x - disp.x, pos.y, pos.z - disp.y);
             }else if (trapType == 4){ //standing-wave
                 pointA[index+0] = 1; pointB[index+0] = 0;
                 pointA[index+1] = -1; pointB[index+1] = 0;
                 
-                addPropagator(mf, transducers, index+0, pos.x , pos.y + standingSep, pos.z );
-                addPropagator(mf, transducers, index+1, pos.x , pos.y - standingSep, pos.z );
+                addPropagator(mf, onTrans, index+0, pos.x , pos.y + standingSep, pos.z );
+                addPropagator(mf, onTrans, index+1, pos.x , pos.y - standingSep, pos.z );
             }
             
             index += N_POINTS[trapType];
@@ -137,8 +145,7 @@ public class Kinoforms {
         
     }
     
-    
-    public void iterate(){
+    public void iterate(final boolean fixAmplitude){
         //project transducers into control points
         for (int j = 0; j<P; ++j){
             pointA[j] = pointB[j] = 0;
@@ -189,19 +196,32 @@ public class Kinoforms {
         }
         
         //set transducer amplitude
-        for (int i = 0; i<T; ++i){
-            final float dist = M.sqrt(transA[i]*transA[i] + transB[i]*transB[i]);
-            transA[i] /= dist;
-            transB[i] /= dist;
+        if (fixAmplitude){
+            for (int i = 0; i<T; ++i){
+                final float dist = M.sqrt(transA[i]*transA[i] + transB[i]*transB[i]);
+                transA[i] /= dist;
+                transB[i] /= dist;
+            }
         }
-        
        
     }
     
-    public void applySolution(final Simulation s){
+    public void normalizeTransducersAmplitude(){
+        float maxDistance = 0;
+        for (int i = 0; i<T; ++i){
+            final float dist = M.sqrt(transA[i]*transA[i] + transB[i]*transB[i]);
+            maxDistance = M.max(dist, maxDistance);
+        }
+        for (int i = 0; i<T; ++i){
+            transA[i] /= maxDistance;
+            transB[i] /= maxDistance;
+        }
+    }
+    
+    public void applySolution(){
         for (int i = 0; i<T ; ++i){
             final Vector2f c = new Vector2f(transA[i], transB[i]);
-            final Transducer t = s.getTransducers().get(i);
+            final Transducer t = onTrans.get(i);
             t.setpAmplitude( c.length() );
             t.setPhase(c.getAngle() / M.PI);
         }

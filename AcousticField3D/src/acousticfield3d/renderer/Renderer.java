@@ -98,14 +98,12 @@ public class Renderer {
     }
     
     private void preRender(GL2 gl){
-        
         if (needToReloadShaders){
             needToReloadShaders = false;
             Resources.get().reloadShaders(gl);
         }
         
-        form.particleController.tick();
-        
+ 
         Simulation simulation = form.getSimulation();
         updateTransducersBuffers(simulation);
         
@@ -114,14 +112,14 @@ public class Renderer {
             Resources.get().updateShaderTransducers(nTransducers, gl);
         }
    
-        //tick the entities if they needed something to do (probably not)
+        //tick the entities in case that they needed something to do, (probably not)
         for(Entity e : scene.getEntities()){
             e.update( simulation );
         }
         
         //update the ground lines
-        if (form.cpPanel.isGroundLineSelected()){
-            form.cpPanel.updateGroundLines();
+        if (form.pointsPanel.isGroundLineSelected()){
+            form.pointsPanel.updateGroundLines();
         }
     }
 

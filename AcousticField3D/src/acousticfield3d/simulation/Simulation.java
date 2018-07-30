@@ -36,7 +36,7 @@ public class Simulation {
     public ArrayList<MeshEntity> controlPoints = new ArrayList<>();
     public GenericListModel<Animation> animations = new GenericListModel<>();
     public ArrayList<MeshEntity> maskObjects = new ArrayList<>();
-    public ArrayList<MeshEntity> slices = new ArrayList<MeshEntity>();
+    public ArrayList<MeshEntity> slices = new ArrayList<>();
     
     public float[] holoMemory;
     

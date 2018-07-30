@@ -42,7 +42,9 @@ import java.nio.FloatBuffer;
  * @author Joshua Slack
  * @version $Id: BoundingBox.java,v 1.50 2007/09/22 16:46:35 irrisor Exp $
  */
-public class BoundingBox extends BoundingVolume {
+public class BoundingBox {
+    Vector3f center = new Vector3f();
+    
     /**
      * the X-extent of the box (>=0, may be +Infinity)
      */
@@ -93,10 +95,8 @@ public class BoundingBox extends BoundingVolume {
         setMinMax(min, max);
     }
 
-    @Override
-    public Type getType() {
-        return Type.AABB;
-    }
+  
+    
 
     /**
      * <code>computeFromPoints</code> creates a new Bounding Box from a given
@@ -109,80 +109,6 @@ public class BoundingBox extends BoundingVolume {
         containAABB(points);
     }
 
-    /**
-     * <code>computeFromTris</code> creates a new Bounding Box from a given
- copyTo of triangles. It is used in OBBTree calculations.
-     * 
-     * @param tris
-     * @param start
-     * @param end
-     */
-    public void computeFromTris(Triangle[] tris, int start, int end) {
-        if (end - start <= 0) {
-            return;
-        }
-
-        TempVars vars = TempVars.get();
-
-        Vector3f min = vars.vect1.set(new Vector3f(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY));
-        Vector3f max = vars.vect2.set(new Vector3f(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY));
-
-        Vector3f point;
-        for (int i = start; i < end; i++) {
-            point = tris[i].get(0);
-            checkMinMax(min, max, point);
-            point = tris[i].get(1);
-            checkMinMax(min, max, point);
-            point = tris[i].get(2);
-            checkMinMax(min, max, point);
-        }
-
-        center.set(min.addLocal(max));
-        center.multLocal(0.5f);
-
-        xExtent = max.x - center.x;
-        yExtent = max.y - center.y;
-        zExtent = max.z - center.z;
-
-        vars.release();
-    }
-
-    /*
-    public void computeFromTris(int[] indices, Mesh mesh, int start, int end) {
-        if (end - start <= 0) {
-            return;
-        }
-
-        TempVars vars = TempVars.get();
-
-        Vector3f vect1 = vars.vect1;
-        Vector3f vect2 = vars.vect2;
-        Triangle triangle = vars.triangle;
-
-        Vector3f min = vect1.copyTo(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
-        Vector3f max = vect2.copyTo(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
-        Vector3f point;
-
-        for (int i = start; i < end; i++) {
-            mesh.getTriangle(indices[i], triangle);
-            point = triangle.get(0);
-            checkMinMax(min, max, point);
-            point = triangle.get(1);
-            checkMinMax(min, max, point);
-            point = triangle.get(2);
-            checkMinMax(min, max, point);
-        }
-
-        center.copyTo(min.addLocal(max));
-        center.multLocal(0.5f);
-
-        xExtent = max.x - center.x;
-        yExtent = max.y - center.y;
-        zExtent = max.z - center.z;
-
-        vars.release();
-    }
-    */
 
     public static void checkMinMax(Vector3f min, Vector3f max, Vector3f point) {
         if (point.x < min.x) {
@@ -283,10 +209,10 @@ public class BoundingBox extends BoundingVolume {
      * @param store
      *            box to store result in
      */
-    public BoundingVolume transform(Transform trans, BoundingVolume store) {
+    public BoundingBox transform(Transform trans, BoundingBox store) {
 
         BoundingBox box;
-        if (store == null || store.getType() != Type.AABB) {
+        if (store == null) {
             box = new BoundingBox();
         } else {
             box = (BoundingBox) store;
@@ -316,9 +242,9 @@ public class BoundingBox extends BoundingVolume {
         return box;
     }
 
-    public BoundingVolume transform(Matrix4f trans, BoundingVolume store) {
+    public BoundingBox transform(Matrix4f trans, BoundingBox store) {
         BoundingBox box;
-        if (store == null || store.getType() != Type.AABB) {
+        if (store == null) {
             box = new BoundingBox();
         } else {
             box = (BoundingBox) store;
@@ -372,98 +298,8 @@ public class BoundingBox extends BoundingVolume {
         }
     }
 
-    /**
-     * <code>merge</code> combines this bounding box locally with a second
-     * bounding volume. The result contains both the original box and the second
-     * volume.
-     *
-     * @param volume the bounding volume to combine with this box (or null) (not
-     * altered)
-     * @return this box (with its components modified) or null if the second
-     * volume is of some type other than AABB or Sphere
-     */
-    public BoundingVolume merge(BoundingVolume volume) {
-        return mergeLocal(volume);
-    }
 
-    /**
-     * <code>mergeLocal</code> combines this bounding box locally with a second
-     * bounding volume. The result contains both the original box and the second
-     * volume.
-     *
-     * @param volume the bounding volume to combine with this box (or null) (not
-     * altered)
-     * @return this box (with its components modified) or null if the second
-     * volume is of some type other than AABB or Sphere
-     */
-    public BoundingVolume mergeLocal(BoundingVolume volume) {
-        if (volume == null) {
-            return this;
-        }
 
-        switch (volume.getType()) {
-            case AABB:
-                BoundingBox vBox = (BoundingBox) volume;
-                return mergeLocal(vBox.center, vBox.xExtent, vBox.yExtent,
-                        vBox.zExtent);
-
-            case Sphere:
-                BoundingSphere vSphere = (BoundingSphere) volume;
-                return mergeLocal(vSphere.center, vSphere.radius,
-                        vSphere.radius, vSphere.radius);
-
-//            case OBB: {
-//                return mergeOBB((OrientedBoundingBox) volume);
-//            }
-
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Merges this AABB with the given OBB.
-     * 
-     * @param volume
-     *            the OBB to merge this AABB with.
-     * @return This AABB extended to fit the given OBB.
-     */
-//    private BoundingBox mergeOBB(OrientedBoundingBox volume) {
-//        if (!volume.correctCorners)
-//            volume.computeCorners();
-//
-//        TempVars vars = TempVars.get();
-//        Vector3f min = vars.compVect1.copyTo(center.x - xExtent, center.y - yExtent,
-//                center.z - zExtent);
-//        Vector3f max = vars.compVect2.copyTo(center.x + xExtent, center.y + yExtent,
-//                center.z + zExtent);
-//
-//        for (int i = 1; i < volume.vectorStore.length; i++) {
-//            Vector3f temp = volume.vectorStore[i];
-//            if (temp.x < min.x)
-//                min.x = temp.x;
-//            else if (temp.x > max.x)
-//                max.x = temp.x;
-//
-//            if (temp.y < min.y)
-//                min.y = temp.y;
-//            else if (temp.y > max.y)
-//                max.y = temp.y;
-//
-//            if (temp.z < min.z)
-//                min.z = temp.z;
-//            else if (temp.z > max.z)
-//                max.z = temp.z;
-//        }
-//
-//        center.copyTo(min.addLocal(max));
-//        center.multLocal(0.5f);
-//
-//        xExtent = max.x - center.x;
-//        yExtent = max.y - center.y;
-//        zExtent = max.z - center.z;
-//        return this;
-//    }
     /**
      * <code>mergeLocal</code> combines this bounding box locally with a second
      * bounding box described by its center and extents.
@@ -529,32 +365,7 @@ public class BoundingBox extends BoundingVolume {
         return this;
     }
 
-    /**
-     * <code>clone</code> creates a new BoundingBox object containing the same
-     * data as this one.
-     * 
-     * @param store
-     *            where to store the cloned information. if null or wrong class,
-     *            a new store is created.
-     * @return the new BoundingBox
-     */
-    @Override
-    public BoundingVolume clone(BoundingVolume store) {
-        if (store != null && store.getType() == Type.AABB) {
-            BoundingBox rVal = (BoundingBox) store;
-            rVal.center.set(center);
-            rVal.xExtent = xExtent;
-            rVal.yExtent = yExtent;
-            rVal.zExtent = zExtent;
-            rVal.checkPlane = checkPlane;
-            return rVal;
-        }
-
-        BoundingBox rVal = new BoundingBox(center.clone(),
-                xExtent, yExtent, zExtent);
-        return rVal;
-    }
-
+  
     /**
      * <code>toString</code> returns the string representation of this object.
      * The form is: "[Center: <Vector> xExtent: X.XX yExtent: Y.YY zExtent:
@@ -575,8 +386,7 @@ public class BoundingBox extends BoundingVolume {
      * 
      * @see BoundingVolume#intersects(com.jme3.bounding.BoundingVolume) 
      */
-    @Override
-    public boolean intersects(BoundingVolume bv) {
+    public boolean intersects(BoundingBox bv) {
         return bv.intersectsBoundingBox(this);
     }
 
@@ -585,7 +395,6 @@ public class BoundingBox extends BoundingVolume {
      * 
      * @see BoundingVolume#intersectsSphere(com.jme3.bounding.BoundingSphere)
      */
-    @Override
     public boolean intersectsSphere(BoundingSphere bs) {
         assert Vector3f.isValidVector(center) && Vector3f.isValidVector(bs.center);
 
@@ -646,8 +455,8 @@ public class BoundingBox extends BoundingVolume {
         float rhs;
 
         TempVars vars = TempVars.get();
-
-        Vector3f diff = ray.origin.subtract(getCenter(vars.vect2), vars.vect1);
+        vars.vect2.set(center);
+        Vector3f diff = ray.origin.subtract( vars.vect2, vars.vect1);
 
         final float[] fWdU = vars.fWdU;
         final float[] fAWdU = vars.fAWdU;
@@ -712,7 +521,7 @@ public class BoundingBox extends BoundingVolume {
     /**
      * @see com.jme.bounding.BoundingVolume#intersectsWhere(com.jme.math.Ray)
      */
-    private int collideWithRay(Ray ray, CollisionResults results) {
+    private int collideWithRay(Ray ray) {
         TempVars vars = TempVars.get();
 
         Vector3f diff = vars.vect1.set(ray.origin).subtractLocal(center);
@@ -737,16 +546,16 @@ public class BoundingBox extends BoundingVolume {
                     new Vector3f(ray.direction).multLocal(distances[1]).addLocal(ray.origin)
                 };
 
-                CollisionResult result = new CollisionResult(points[0], distances[0]);
+                /*CollisionResult result = new CollisionResult(points[0], distances[0]);
                 results.addCollision(result);
                 result = new CollisionResult(points[1], distances[1]);
-                results.addCollision(result);
+                results.addCollision(result);*/
                 return 2;
             }
 
-            Vector3f point = new Vector3f(ray.direction).multLocal(t[0]).addLocal(ray.origin);
+          /*  Vector3f point = new Vector3f(ray.direction).multLocal(t[0]).addLocal(ray.origin);
             CollisionResult result = new CollisionResult(point, t[0]);
-            results.addCollision(result);
+            results.addCollision(result);*/
             return 1;
         }
         return 0;
@@ -781,22 +590,7 @@ public class BoundingBox extends BoundingVolume {
         return null;
     }
 
-    public int collideWith(Collidable other, CollisionResults results) {
-        if (other instanceof Ray) {
-            Ray ray = (Ray) other;
-            return collideWithRay(ray, results);
-        } else if (other instanceof Triangle) {
-            Triangle t = (Triangle) other;
-            if (intersects(t.get1(), t.get2(), t.get3())) {
-                CollisionResult r = new CollisionResult();
-                results.addCollision(r);
-                return 1;
-            }
-            return 0;
-        } else {
-            return -1;
-        }
-    }
+   
 
     /**
      * C code ported from <a href="http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/tribox3.txt">
@@ -812,21 +606,20 @@ public class BoundingBox extends BoundingVolume {
         return Intersection.intersect(this, v1, v2, v3);
     }
 
-    @Override
     public boolean contains(Vector3f point) {
         return M.abs(center.x - point.x) < xExtent
                 && M.abs(center.y - point.y) < yExtent
                 && M.abs(center.z - point.z) < zExtent;
     }
 
-    @Override
+
     public boolean intersects(Vector3f point) {
         return M.abs(center.x - point.x) <= xExtent
                 && M.abs(center.y - point.y) <= yExtent
                 && M.abs(center.z - point.z) <= zExtent;
     }
 
-    @Override
+
     public float distanceToEdge(Vector3f point) {
         // compute coordinates of point in box coordinate system
         TempVars vars= TempVars.get();
@@ -1020,7 +813,7 @@ public class BoundingBox extends BoundingVolume {
     }
 
 
-    @Override
+   
     public float getVolume() {
         return (8 * xExtent * yExtent * zExtent);
     }

@@ -17,19 +17,6 @@ import java.util.List;
  * @author am14010
  */
 public class SimpleFPGA_128 extends SimpleFPGA{
-
-
-    @Override
-    public byte getStartPhasesCommand(){
-        return (byte) (0xFF & 255);
-    }
-    
-    @Override
-    public byte getSwapCommand(){
-        return (byte) (0xFF & 254);
-    }
-    
-    
     @Override
     public int getnTransducers(){
         return 64;
@@ -42,7 +29,7 @@ public class SimpleFPGA_128 extends SimpleFPGA{
 
     @Override
     public int getSpeed() {
-        return 1500000;
+        return 1000000;
     } 
     
     public static void exportAnimationMatlab(final MainForm mf) {
