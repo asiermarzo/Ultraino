@@ -78,9 +78,8 @@ public class MeshEntity extends Entity{
     }
     
     public boolean boxInside(final Frustrum frustrum){
-        Mesh m = Resources.get().getMesh(mesh);
+       /* Mesh m = Resources.get().getMesh(mesh);
         if(m == null) { return false; }
-        
         
         Ray rSpace = new Ray(r.origin, r.direction, false);
         transform.transformInversePoint(rSpace.origin, rSpace.origin);
@@ -89,12 +88,13 @@ public class MeshEntity extends Entity{
         //intersection points with the box
         
         Vector3f p = m.getbBox().intersectPoint(rSpace);
-        if (p == null){return -1.0f;}
+        if (p == null){return false;}
         
         //apply transform to points
         transform.transformPoint(p, p);
         
-        return true;
+        return true;*/
+        return false;
     }
 
     public boolean isDoubledSided() {

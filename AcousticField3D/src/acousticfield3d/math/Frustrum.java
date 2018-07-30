@@ -5,11 +5,17 @@
  */
 package acousticfield3d.math;
 
+import acousticfield3d.scene.Camera;
+
 /**
  *
  * @author am14010
  */
 public class Frustrum {
+
+    public Frustrum(Camera camera, float minX, float minY, float maxX, float maxY) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     //six planes: front, back, left, right, up, down
     
     //create from 8 points
