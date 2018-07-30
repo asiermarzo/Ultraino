@@ -52,6 +52,9 @@ public class BowlsForm extends javax.swing.JFrame {
         fillButton = new javax.swing.JButton();
         fillText = new javax.swing.JTextField();
         autoDeleteCheck = new javax.swing.JCheckBox();
+        autoIncliCheck = new javax.swing.JCheckBox();
+        autoIncliSepText = new javax.swing.JTextField();
+        sweepParametersButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -102,6 +105,17 @@ public class BowlsForm extends javax.swing.JFrame {
         autoDeleteCheck.setSelected(true);
         autoDeleteCheck.setText("autoDelete");
 
+        autoIncliCheck.setText("auto: min sep");
+
+        autoIncliSepText.setText("0.01");
+
+        sweepParametersButton.setText("Sweep");
+        sweepParametersButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sweepParametersButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,7 +130,9 @@ public class BowlsForm extends javax.swing.JFrame {
                         .addGap(1, 1, 1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(createButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sweepParametersButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                         .addComponent(autoDeleteCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteAllButton))
@@ -129,20 +145,22 @@ public class BowlsForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pressureAtFocusText))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(fillButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fillText, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 73, Short.MAX_VALUE)))
+                        .addComponent(fillButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fillText, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(autoIncliCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(autoIncliSepText)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -153,15 +171,19 @@ public class BowlsForm extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(amountText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fillButton)
-                    .addComponent(fillText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(fillButton)
+                        .addComponent(fillText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(radiousText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inclinationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(autoIncliCheck)
+                    .addComponent(autoIncliSepText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(doubleBowlCheck)
@@ -172,7 +194,8 @@ public class BowlsForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createButton)
                     .addComponent(deleteAllButton)
-                    .addComponent(autoDeleteCheck))
+                    .addComponent(autoDeleteCheck)
+                    .addComponent(sweepParametersButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -180,13 +203,19 @@ public class BowlsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+        createAction();
+    }//GEN-LAST:event_createButtonActionPerformed
+
+    private void createAction(){
+        final boolean wasEmpty = mf.simulation.transducers.isEmpty();
+        
         if (autoDeleteCheck.isSelected()){
-            deleteAllButtonActionPerformed(evt);
+            deleteAllButtonActionPerformed( null );
         }
         
         final int[] amount = Parse.parseIntArray(amountText.getText(), ",");
         final float radious = Parse.toFloat( radiousText.getText() );
-        final float inc = Parse.toFloat( inclinationText.getText() ) * M.DEG_TO_RAD;
+        final float inc = getInclination();
         final boolean doubleBowl = doubleBowlCheck.isSelected();
         final boolean alignTransducers = alignTransducersCheck.isSelected();
         
@@ -218,12 +247,22 @@ public class BowlsForm extends javax.swing.JFrame {
         
         final float pressure = CalcField.calcFieldAt(Vector3f.ZERO, mf).length();
         pressureAtFocusText.setText( StringFormats.get().dc2(pressure) );
-        System.out.println("Bowl Pa: " + pressure + " " + amountText.getText() + 
-                ";" + radiousText.getText() + ";" + inclinationText.getText());
         
+        float maxY = Float.MAX_VALUE;
+        for(Transducer t : mf.simulation.transducers){
+            maxY = M.max(maxY, t.getTransform().getTranslation().y);
+        }
+        maxY = -maxY;
+        System.out.println(pressure + "," + n +
+                "," + radiousText.getText() + "," + inclinationText.getText() + "," + maxY);
+        
+        if (wasEmpty){
+            mf.updateBoundaries();
+            mf.adjustGUIGainAndCameras();
+        }
         mf.needUpdate();
-    }//GEN-LAST:event_createButtonActionPerformed
-
+    }
+    
     private void deleteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAllButtonActionPerformed
         mf.clearSelection();
         final ArrayList<Transducer> copy = new ArrayList<>(mf.simulation.transducers);
@@ -232,6 +271,10 @@ public class BowlsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteAllButtonActionPerformed
 
     private void fillButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillButtonActionPerformed
+        fillAction();
+    }//GEN-LAST:event_fillButtonActionPerformed
+
+    private void fillAction(){
         final int n = Parse.toInt( fillText.getText() );
         final StringBuilder sb = new StringBuilder();
         for(int i = 0; i < n; ++i){
@@ -245,8 +288,43 @@ public class BowlsForm extends javax.swing.JFrame {
             }
         }
         amountText.setText(sb.toString());
-    }//GEN-LAST:event_fillButtonActionPerformed
+    }
+    
+    private void sweepParametersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sweepParametersButtonActionPerformed
+        
+        for (float radious = 0.001f; radious < 0.3f; radious += 0.01){
+            for (int amount = 1; amount < 20; ++amount){
+                radiousText.setText( radious + "");
+                fillText.setText( amount + "");
+                fillAction();
+                
+                if (amount * getInclination() < M.PI/2){
+                    createAction();
+                }
+            }
+        }
+    }//GEN-LAST:event_sweepParametersButtonActionPerformed
 
+        private float getInclination() {
+        if (autoIncliCheck.isSelected()){
+            final float radious = Parse.toFloat( radiousText.getText() );
+            final float minSep = Parse.toFloat( autoIncliSepText.getText() );
+            final int[] amount = Parse.parseIntArray(amountText.getText(), ",");
+            
+            final float angleSepRows = 2.0f * M.atan( minSep / radious / 2);
+            final int nRows = amount.length;
+            float minAngleSepTrans = 0.0f;
+            for(int i = 1; i < nRows; ++i){
+                final float angleTrans = M.asin(minSep*amount[i] / radious / 2 / M.PI ) / (float)(i);
+                minAngleSepTrans = M.max(minAngleSepTrans, angleTrans);
+            }
+            final float inclinationNeeded = M.max(angleSepRows, minAngleSepTrans);
+            inclinationText.setText( StringFormats.get().dc4(inclinationNeeded * M.RAD_TO_DEG));
+            return inclinationNeeded;
+        }else{
+            return Parse.toFloat( inclinationText.getText() ) * M.DEG_TO_RAD;
+        }
+    }
 
     private Transducer createTransducer(){
         return mf.addTransducersForm.createTransducer();
@@ -260,6 +338,8 @@ public class BowlsForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox alignTransducersCheck;
     private javax.swing.JTextField amountText;
     private javax.swing.JCheckBox autoDeleteCheck;
+    private javax.swing.JCheckBox autoIncliCheck;
+    private javax.swing.JTextField autoIncliSepText;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteAllButton;
     private javax.swing.JCheckBox doubleBowlCheck;
@@ -272,5 +352,8 @@ public class BowlsForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField pressureAtFocusText;
     private javax.swing.JTextField radiousText;
+    private javax.swing.JButton sweepParametersButton;
     // End of variables declaration//GEN-END:variables
+
+
 }
