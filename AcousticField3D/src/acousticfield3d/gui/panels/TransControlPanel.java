@@ -65,6 +65,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         connectExtraButton = new javax.swing.JButton();
         extraNumberText = new javax.swing.JTextField();
         multiplexButton = new javax.swing.JButton();
+        pushPullModeCheck = new javax.swing.JCheckBox();
 
         sendButton.setText("Send");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
@@ -166,6 +167,8 @@ public class TransControlPanel extends javax.swing.JPanel {
             }
         });
 
+        pushPullModeCheck.setText("push/pull mode");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,6 +176,9 @@ public class TransControlPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pushPullModeCheck)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(deviceCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -223,7 +229,9 @@ public class TransControlPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectExtraButton)
                     .addComponent(extraNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pushPullModeCheck)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sendButton)
                     .addComponent(switchButton))
@@ -373,12 +381,39 @@ public class TransControlPanel extends javax.swing.JPanel {
         sendPattern(true);
     }
     
+    
+    private List<Transducer> getTransducers(){
+        if (pushPullModeCheck.isSelected()){
+            final ArrayList<Transducer> trans = mf.simulation.getTransducers();
+            final ArrayList<Transducer> pushPullTrans = new ArrayList<>(trans.size()*2);
+            for(Transducer t : trans){
+                Transducer t1 = new Transducer();
+                Transducer t2 = new Transducer();
+                t1.setFrequency( t.getFrequency() );
+                t2.setFrequency( t.getFrequency() );
+                t1.setAmplitude( t.getAmplitude() );
+                t2.setAmplitude( t.getAmplitude() );
+                t1.setPhase( t.getPhase() );
+                t2.setPhase( t.getPhase() + 1 ); //PI out of phase for the push/pull driving
+                t1.setDriverPinNumber( t1.getDriverPinNumber() * 2);
+                t2.setDriverPinNumber( t1.getDriverPinNumber() * 2 + 1);
+                t1.setNumber( t1.getDriverPinNumber() );
+                t2.setNumber( t2.getDriverPinNumber() );
+                pushPullTrans.add(t1);
+                pushPullTrans.add(t2);
+            }
+            return pushPullTrans;
+        }else{
+            return mf.simulation.getTransducers();
+        }
+    }
+    
     public void sendPattern(final boolean swapBuffers){
         if (device != null){
             if( ! extraDevices.isEmpty() ){
-                device.sendPattern( mf.simulation.getTransducers() );
+                device.sendPattern( getTransducers() );
                 for(DeviceConnection dc : extraDevices){
-                    dc.sendPattern( mf.simulation.getTransducers() );
+                    dc.sendPattern( getTransducers() );
                 }
                 if (swapBuffers){
                     device.switchBuffers();
@@ -387,7 +422,7 @@ public class TransControlPanel extends javax.swing.JPanel {
                     }
                 }
             }else{
-                device.sendPattern( mf.simulation.getTransducers() );
+                device.sendPattern( getTransducers() );
                 if (swapBuffers){
                     device.switchBuffers();
                 }
@@ -465,6 +500,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     private javax.swing.JButton phaseDownButton;
     private javax.swing.JSpinner phaseSpinner;
     private javax.swing.JButton phaseUpButton;
+    private javax.swing.JCheckBox pushPullModeCheck;
     private javax.swing.JButton sendAnimButton;
     private javax.swing.JButton sendButton;
     private javax.swing.JButton stopSerialButton;

@@ -49,6 +49,7 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         pressButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         directionText = new javax.swing.JTextField();
+        gradientForcesButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,6 +79,13 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
 
         directionText.setText("0 1 0");
 
+        gradientForcesButton.setText("Gradient Forces");
+        gradientForcesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradientForcesButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,18 +99,20 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(directionText))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dispText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(showButton))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(dispText, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(showButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(gradientForcesButton))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -115,7 +125,9 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(dispText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(showButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(showButton)
+                    .addComponent(gradientForcesButton))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pressButton)
@@ -204,10 +216,52 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         TextFrame.showText("Pressures", sb.toString(), this);
     }//GEN-LAST:event_pressButtonActionPerformed
 
+    private void gradientForcesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradientForcesButtonActionPerformed
+        final int nSteps = Parse.toInt( nPointsText.getText() );
+        final float disp = Parse.toFloat( dispText.getText() );
+        
+        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT );
+        if (bead == null){
+            return;
+        }
+        
+        final Vector3f pos = bead.getTransform().getTranslation();
+        final Vector3f cPos = pos.clone();
+        final float particleR = bead.getTransform().getScale().maxComponent() / 2.0f;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("X \t Y \t Z \t gForceX \t gForceY \t gForceZ \n");
+        for(int i = 0; i < nSteps; ++i){
+            final float dispS = ( (i / (float)nSteps) - 0.5f) * disp;
+           
+            pos.set(cPos.x + dispS, cPos.y, cPos.z);
+            mf.algForm.runBFGS(false, false, true);
+            final Vector3f gForceX = CalcField.calcForceGradients(pos.x, pos.y, pos.z, particleR, mf);
+            /*pos.set(cPos.x , cPos.y + dispS, cPos.z);
+            mf.algForm.runBFGS(false, false, true);
+            final Vector3f gForceY = CalcField.calcForceGradients(pos.x, pos.y, pos.z, particleR, mf);
+            pos.set(cPos.x , cPos.y, cPos.z + dispS);
+            mf.algForm.runBFGS(false, false, true);
+            final Vector3f gForceZ = CalcField.calcForceGradients(pos.x, pos.y, pos.z , particleR, mf);
+           */
+            
+            sb.append( (pos.x + dispS) + " \t");
+            sb.append( (pos.y + dispS) + " \t");
+            sb.append( (pos.z + dispS) + " \t");
+            sb.append(gForceX.x + " \t");
+            sb.append(gForceX.y + " \t");
+            sb.append(gForceX.z + "\n");
+
+        }
+        pos.set(cPos);
+        TextFrame.showText("Gradient Forces", sb.toString(), this);
+    }//GEN-LAST:event_gradientForcesButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField directionText;
     private javax.swing.JTextField dispText;
+    private javax.swing.JButton gradientForcesButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

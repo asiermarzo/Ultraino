@@ -29,7 +29,7 @@ public class SimpleFPGA_128 extends SimpleFPGA{
 
     @Override
     public int getSpeed() {
-        return 1000000;
+        return 250000;
     } 
     
     public static void exportAnimationMatlab(final MainForm mf) {
