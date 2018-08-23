@@ -285,7 +285,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                         
                         if (len >= 6){
                             final Vector3f normal = new Vector3f(s[3], s[5], s[4]).multLocal(1, -1, 1);
-                            t.getTransform().getRotation().lookAt(normal, Vector3f.UNIT_Y);
+                            t.getTransform().getRotation().fromAngles(normal);
                         }
                         if (len >= 9){
                             t.setPower( Parse.toFloat( s[6]) );
@@ -295,7 +295,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                         if (len >= 14){
                             t.setType(Parse.toInt( s[9] ) );
 
-                            t.getTransform().getScale().parse( s[10], s[12], s[11]).multLocal(1, -1, 1);
+                            t.getTransform().getScale().parse( s[10], s[12], s[11] );
 
                             t.setPhase(Parse.toFloat(  s[13] ) / M.PI );
                         }

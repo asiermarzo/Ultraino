@@ -43,6 +43,9 @@ public class FileUtils {
 
   
     
+  public static String getFileName(final String p){
+      return getFileName(new File(p));
+  }
   
   public static String getFileName(File p){
       String name = p.getName();

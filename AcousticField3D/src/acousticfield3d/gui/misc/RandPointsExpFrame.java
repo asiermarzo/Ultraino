@@ -76,6 +76,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         pressScanVsResButton = new javax.swing.JButton();
         numPointsStartText = new javax.swing.JTextField();
         separationvsfocusButton = new javax.swing.JButton();
+        compareArrangementsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Random points experiments");
@@ -214,6 +215,13 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             }
         });
 
+        compareArrangementsButton.setText("CompareArrangements");
+        compareArrangementsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compareArrangementsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -236,7 +244,10 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                                 .addComponent(jButton1)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2))
-                            .addComponent(simpleForcesButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(simpleForcesButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(compareArrangementsButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(generateTestPointsButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -318,7 +329,9 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(simpleForcesButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(simpleForcesButton)
+                    .addComponent(compareArrangementsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generateTestPointsButton)
@@ -830,6 +843,25 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_separationvsfocusButtonActionPerformed
 
+    private void compareArrangementsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareArrangementsButtonActionPerformed
+        final String[] simulations = {"Classic.xml.gz", "FeynmanFlat80.xml.gz", "TinyLev.xml.gz", "Tat1.xml.gz", "Tat2.xml.gz", "Tat3.xml.gz", "Tat4.xml.gz", "Tat5.xml.gz"};
+        final String[] points = {"pointsTmp_2cm.xml","pointsTmp_3cm.xml","pointsTmp_4cm.xml"};
+        
+        for(String sim : simulations){
+            for(String point : points){
+                try {
+                    mf.loadSimulation(sim);
+                    pointsToUse = (float[][][]) FileUtils.readObject(new File(point));
+                    calcExperiments(FileUtils.getFileName(sim) + "_" + FileUtils.getFileName(point) + ".csv", false, true);
+                } catch (IOException ex) {
+                    Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+  
+        
+    }//GEN-LAST:event_compareArrangementsButtonActionPerformed
+
     private void runExperiment(final int steps, final int alg){
         System.out.println("----- " + (alg==3?"gorkov":"laplacian") + " steps " + steps);
         mf.algForm.setAlgorithm(alg);
@@ -858,6 +890,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton auxButton;
+    private javax.swing.JButton compareArrangementsButton;
     private javax.swing.JButton copyCubeButton;
     private javax.swing.JTextField fileText;
     private javax.swing.JButton generatePointsButton;
