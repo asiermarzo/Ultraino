@@ -268,7 +268,6 @@ public class AddTransducersForm extends javax.swing.JFrame {
     
     void importArray() {
         //x,y,z,nx,ny,nz,power,frequency,apperture,Type(0=circle,1=square),sx,sy,sz,phase
-	
         String file = FileUtils.selectFile(this, "open", ".csv", null);
         if (file != null){
             try {

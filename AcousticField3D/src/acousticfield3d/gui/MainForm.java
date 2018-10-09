@@ -17,6 +17,7 @@ import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.GenerateComplexAnimations;
 import acousticfield3d.gui.misc.ScatterObjectForm;
+import acousticfield3d.gui.misc.SliceExperiments;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SwitchTimer;
 import acousticfield3d.gui.misc.UDPRemoteControl;
@@ -361,11 +362,12 @@ public final class MainForm extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         scatterObjectMenu = new javax.swing.JMenuItem();
         bowlArrayMenu = new javax.swing.JMenuItem();
-        randPointsExpMenu = new javax.swing.JMenuItem();
         sendSwitchbufMenu = new javax.swing.JMenuItem();
         rotateMultipleMenu = new javax.swing.JMenuItem();
         exportPhasesMenu = new javax.swing.JMenuItem();
         exportTransPhasePointsMenu = new javax.swing.JMenuItem();
+        sliceExpMenu = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1302,14 +1304,6 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(bowlArrayMenu);
 
-        randPointsExpMenu.setText("Rand points Exp");
-        randPointsExpMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                randPointsExpMenuActionPerformed(evt);
-            }
-        });
-        jMenu7.add(randPointsExpMenu);
-
         sendSwitchbufMenu.setText("Send switch buf");
         sendSwitchbufMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1341,6 +1335,22 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu7.add(exportTransPhasePointsMenu);
+
+        sliceExpMenu.setText("Rand points Exp");
+        sliceExpMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sliceExpMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(sliceExpMenu);
+
+        jMenuItem1.setText("Slice Experiments");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem1);
 
         jMenuBar1.add(jMenu7);
 
@@ -1837,9 +1847,9 @@ public final class MainForm extends javax.swing.JFrame {
         showNewFrame( algForm );
     }//GEN-LAST:event_optimizerMenuActionPerformed
 
-    private void randPointsExpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randPointsExpMenuActionPerformed
+    private void sliceExpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sliceExpMenuActionPerformed
         showNewFrame( new RandPointsExpFrame(this) );
-    }//GEN-LAST:event_randPointsExpMenuActionPerformed
+    }//GEN-LAST:event_sliceExpMenuActionPerformed
 
     private void selectTransTopMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTransTopMenuActionPerformed
         transducersPanel.selectTopTransducers(true);
@@ -1988,6 +1998,10 @@ public final class MainForm extends javax.swing.JFrame {
             setSelection(selected);
         }*/
     }//GEN-LAST:event_panelMouseReleased
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        showNewFrame( new SliceExperiments(this) );
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2045,6 +2059,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -2068,7 +2083,6 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem pointToTargetMenu;
     private javax.swing.JMenuItem polarPlotsMenu;
     private javax.swing.ButtonGroup preCubeSource;
-    private javax.swing.JMenuItem randPointsExpMenu;
     private javax.swing.JMenuItem randomTransducerOffMenu;
     private javax.swing.JMenuItem randomTransducerOnMenu;
     private javax.swing.JMenuItem recToSelMenu;
@@ -2092,6 +2106,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem simEditParamMenu;
     private javax.swing.JMenuItem simTransformMenu;
     private javax.swing.JMenuItem simulationResizeMenu;
+    private javax.swing.JMenuItem sliceExpMenu;
     private javax.swing.ButtonGroup slicesSource;
     private javax.swing.JLabel sliderFieldLabel;
     private javax.swing.JTextField sxText;

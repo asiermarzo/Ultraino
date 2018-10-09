@@ -7,8 +7,10 @@ package acousticfield3d.algorithms;
 
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
+import acousticfield3d.math.TempVars;
 import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector3f;
+import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 
 /**
@@ -62,14 +64,14 @@ public class CalcField {
         return field;
     }
     
-    public static Vector2f calcFieldForTrans(final Transducer t, final float phase, final float px, final float py, final float pz, final MainForm mf){
+    public static Vector2f calcFieldForTrans(final Transducer t, final float phase, final float px, final float py, final float pz, final Simulation s){
         final Vector3f nor = new Vector3f();
         final Vector3f tPos = new Vector3f();
         final Vector3f diffVec = new Vector3f();
         
         final Vector2f field = new Vector2f();
        
-        final float mSpeed = mf.simForm.getMediumSpeed();
+        final float mSpeed = s.getMediumSpeed();
         
         tPos.set(t.getTransform().getTranslation());
         t.getTransform().getRotation().mult(Vector3f.UNIT_Y, nor);
@@ -88,11 +90,12 @@ public class CalcField {
 
         float ampDirAtt = 1 * directivity / dist;
         float kdPlusPhase = k * dist + phase;
-        field.x += ampDirAtt * M.cos(kdPlusPhase);
-        field.y += ampDirAtt * M.sin(kdPlusPhase);
+        field.x = ampDirAtt * M.cos(kdPlusPhase);
+        field.y = ampDirAtt * M.sin(kdPlusPhase);
     
         return field;
     }
+    
     
     public static double calcFieldGradientDot(final float x, final float y, final float z,
             final float dx,final float dy,final float dz,

@@ -349,5 +349,10 @@ public class Simulation {
         }
     }
     
-    
+    public void resetTransducers(){
+        for (Transducer t :transducers){
+            t.setpAmplitude(1);
+            t.setPhase(0);
+        }
+    }
 }

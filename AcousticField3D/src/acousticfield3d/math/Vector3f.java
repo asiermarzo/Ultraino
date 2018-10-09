@@ -99,6 +99,12 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         x = y = z = v;
     }
     
+    public Vector3f(final float[] v) {
+        x = v[0];
+        y = v[1];
+        z = v[2];
+    }
+    
     public void reset(){
         x = y = z = 0.0f;
     }
@@ -160,6 +166,13 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         this.x = x;
         this.y = y;
         this.z = z;
+        return this;
+    }
+    
+    public Vector3f set(final float[] v) {
+        this.x = v[0];
+        this.y = v[1];
+        this.z = v[2];
         return this;
     }
 
