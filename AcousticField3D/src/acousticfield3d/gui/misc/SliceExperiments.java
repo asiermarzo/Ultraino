@@ -9,10 +9,10 @@ import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.algorithms.SliceCalculation;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
-import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector2i;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.Entity;
+import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.ControlPoint;
 import acousticfield3d.utils.FileUtils;
@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 public class SliceExperiments extends javax.swing.JFrame {
     final MainForm mf;
     private SliceCalculation sc;
+    float[][][] pointsToUse;
     
     public SliceExperiments(MainForm mf) {
         this.mf = mf;
@@ -48,6 +49,7 @@ public class SliceExperiments extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         nPointsText = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -63,8 +65,16 @@ public class SliceExperiments extends javax.swing.JFrame {
         startButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         outputText = new javax.swing.JTextField();
+        applyButton = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        repetitionText = new javax.swing.JTextField();
+        loadPointsButton = new javax.swing.JButton();
+        calcPeaksButton1 = new javax.swing.JButton();
+        addPointsButton = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
+
+        jLabel6.setText("jLabel6");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Slice Experiments");
@@ -113,7 +123,7 @@ public class SliceExperiments extends javax.swing.JFrame {
 
         nPointsMaxText.setText("25");
 
-        startButton.setText("start");
+        startButton.setText("Start");
         startButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startButtonActionPerformed(evt);
@@ -122,6 +132,38 @@ public class SliceExperiments extends javax.swing.JFrame {
 
         jLabel5.setText("outputPrefix:");
 
+        applyButton.setText("Apply");
+        applyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("repetition");
+
+        repetitionText.setText("0");
+
+        loadPointsButton.setText("Load points");
+        loadPointsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadPointsButtonActionPerformed(evt);
+            }
+        });
+
+        calcPeaksButton1.setText("Filter");
+        calcPeaksButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcPeaksButton1ActionPerformed(evt);
+            }
+        });
+
+        addPointsButton.setText("AddP");
+        addPointsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPointsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,38 +171,54 @@ public class SliceExperiments extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(loadPointsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(applyButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(repetitionText, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(minSepText, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(calcButton))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(minSepText, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(calcButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(initSliceButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(calcSliceButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(calcPeaksButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(calcPeaksButton1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(initSliceButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(calcSliceButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(calcPeaksButton))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(outputText))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(nPointsMinText, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(nPointsMaxText, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(startButton))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nPointsMinText, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nPointsMaxText, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(startButton))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(outputText, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addComponent(addPointsButton)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +234,8 @@ public class SliceExperiments extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(initSliceButton)
                     .addComponent(calcSliceButton)
-                    .addComponent(calcPeaksButton))
+                    .addComponent(calcPeaksButton)
+                    .addComponent(calcPeaksButton1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -187,8 +246,15 @@ public class SliceExperiments extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(outputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(outputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addPointsButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(repetitionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loadPointsButton)
+                    .addComponent(applyButton))
+                .addContainerGap())
         );
 
         pack();
@@ -242,6 +308,7 @@ public class SliceExperiments extends javax.swing.JFrame {
             mf.pointsPanel.addControlPoint(p);
         }
         //System.out.println("Found " + points.size() + " peaks");
+        mf.needUpdate();
     }//GEN-LAST:event_calcPeaksButtonActionPerformed
 
     private float findRatio(final float[][] points){
@@ -280,7 +347,7 @@ public class SliceExperiments extends javax.swing.JFrame {
                 
         for (int iPoint = startingPoint; iPoint <= maxPoints; ++iPoint) {
             try {
-                final float[][][] pointsToUse = (float[][][]) FileUtils.readObject(new File("points" + iPoint + ".xml"));
+                pointsToUse = (float[][][]) FileUtils.readObject(new File("points" + iPoint + ".xml"));
 
                 FileWriter fw = null;
                 fw = new FileWriter(new File(outputText.getText() + iPoint + ".csv"));
@@ -336,6 +403,73 @@ public class SliceExperiments extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_startButtonActionPerformed
 
+    private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
+        final int repetition = Parse.toInt( repetitionText.getText() );
+        final int nPoints = pointsToUse[0].length;
+        //create the points
+        final ControlPoint[] cPoints = new ControlPoint[nPoints];
+        mf.clearSelection();
+        for (int i = 0; i < nPoints; ++i) {
+            final ControlPoint cp = new ControlPoint();
+            cPoints[i] = cp;
+            mf.selection.add(cp);
+        }
+
+        final float[][] pointSet = pointsToUse[repetition];
+        //place the control points
+        for (int j = 0; j < nPoints; ++j) {
+            final float[] point = pointSet[j];
+            cPoints[j].getTransform().getTranslation().set(point[0], point[1], point[2]);
+        }
+
+        //clear the phases
+        mf.simulation.resetTransducers();
+
+        //run algorithm
+        mf.algForm.runBFGS(false, false, false);
+
+        //calc the slice
+        calcSliceButtonActionPerformed(null);
+    }//GEN-LAST:event_applyButtonActionPerformed
+
+
+    
+    private void loadPointsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPointsButtonActionPerformed
+        final int startingPoint = Parse.toInt(nPointsMinText.getText());
+        try {
+            pointsToUse = (float[][][]) FileUtils.readObject(new File("points" + startingPoint + ".xml"));
+        } catch (IOException ex) {
+            Logger.getLogger(SliceExperiments.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_loadPointsButtonActionPerformed
+
+    private void calcPeaksButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcPeaksButton1ActionPerformed
+        final ArrayList<MeshEntity> toRemove = new ArrayList<>();
+        final int repetition = Parse.toInt( repetitionText.getText() );
+        final float[][] pointSet = pointsToUse[repetition];
+        final float minDistThre = Parse.toFloat( minSepText.getText() );
+        
+        for(MeshEntity cp : mf.simulation.controlPoints){
+            final float minDist = minDist(cp.getTransform().getTranslation(), pointSet);
+            if (minDist < minDistThre){
+                toRemove.add( cp );
+            }
+        }
+        mf.pointsPanel.deletePoints( toRemove );
+        mf.needUpdate();
+    }//GEN-LAST:event_calcPeaksButton1ActionPerformed
+
+    private void addPointsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPointsButtonActionPerformed
+        final int repetition = Parse.toInt( repetitionText.getText() );
+        
+        final float[][] pointSet = pointsToUse[repetition];
+        for (int i = 0; i < pointSet.length; i++) {
+            float[] point = pointSet[i];
+            mf.pointsPanel.addControlPoint(point[0], point[1], point[2]);
+        }
+        mf.needUpdate();
+    }//GEN-LAST:event_addPointsButtonActionPerformed
+
     private float minDist(final Vector3f art3d,final float[][] points) {
         float minDist = Float.MAX_VALUE;
         final Vector3f tmpV =  new Vector3f();
@@ -348,8 +482,11 @@ public class SliceExperiments extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addPointsButton;
+    private javax.swing.JButton applyButton;
     private javax.swing.JButton calcButton;
     private javax.swing.JButton calcPeaksButton;
+    private javax.swing.JButton calcPeaksButton1;
     private javax.swing.JButton calcSliceButton;
     private javax.swing.JButton initSliceButton;
     private javax.swing.JButton jButton1;
@@ -358,11 +495,15 @@ public class SliceExperiments extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JButton loadPointsButton;
     private javax.swing.JTextField minSepText;
     private javax.swing.JTextField nPointsMaxText;
     private javax.swing.JTextField nPointsMinText;
     private javax.swing.JTextField nPointsText;
     private javax.swing.JTextField outputText;
+    private javax.swing.JTextField repetitionText;
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 

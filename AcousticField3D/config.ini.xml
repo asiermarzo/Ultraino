@@ -9,6 +9,13 @@
    </void>
   </void>
   <void class="acousticfield3d.Config" method="getField">
+   <string>lastSimFile</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <string>\\ads.bris.ac.uk\filestore\myfiles\StudentPG2\am14010\Desktop\array16.xml.gz</string>
+   </void>
+  </void>
+  <void class="acousticfield3d.Config" method="getField">
    <string>frameX</string>
    <void method="set">
     <object idref="Config0"/>
@@ -26,7 +33,7 @@
    <string>frameWidth</string>
    <void method="set">
     <object idref="Config0"/>
-    <int>1378</int>
+    <int>1382</int>
    </void>
   </void>
   <void class="acousticfield3d.Config" method="getField">
@@ -55,7 +62,7 @@
   </void>
   <void method="put">
    <string>.zText</string>
-   <string>-0.0350</string>
+   <string>0.0000</string>
   </void>
   <void method="put">
    <string>.animPanel.durationText</string>
@@ -91,7 +98,7 @@
   </void>
   <void method="put">
    <string>.syText</string>
-   <string>0.0030</string>
+   <string>0.1530</string>
   </void>
   <void method="put">
    <string>.pointsPanel.gridHText</string>
@@ -111,7 +118,7 @@
   </void>
   <void method="put">
    <string>.xText</string>
-   <string>0.0050</string>
+   <string>0.0000</string>
   </void>
   <void method="put">
    <string>.trapsPanel.yForceText</string>
@@ -119,7 +126,7 @@
   </void>
   <void method="put">
    <string>.transducersPanel.wText</string>
-   <string>0.0090</string>
+   <string>0.0160</string>
   </void>
   <void method="put">
    <string>.animPanel.pingpongWrap</string>
@@ -155,7 +162,7 @@
   </void>
   <void method="put">
    <string>.algForm.stepsText</string>
-   <string>1</string>
+   <string>500</string>
   </void>
   <void method="put">
    <string>.holoPatternsForm.varText</string>
@@ -171,7 +178,7 @@
   </void>
   <void method="put">
    <string>.simForm.mediumCombo</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.trapsPanel.xForceText</string>
@@ -187,7 +194,7 @@
   </void>
   <void method="put">
    <string>.transducersPanel.phaseText</string>
-   <string>0.0000</string>
+   <string>0.0406</string>
   </void>
   <void method="put">
    <string>.algForm.resurePreCheck</string>
@@ -219,15 +226,19 @@
   </void>
   <void method="put">
    <string>.algForm.itersMultiFocalKickText</string>
-   <string>10</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.transControlPanel.pushPullModeCheck</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.addTransducersForm.sizeText</string>
-   <string>0.01 0.003 0.01</string>
+   <string>0.004 0.003 0.004</string>
   </void>
   <void method="put">
    <string>.transducersPanel.orderText</string>
-   <string>0</string>
+   <string>22</string>
   </void>
   <void method="put">
    <string>.algForm.laplacianConstantsText</string>
@@ -275,7 +286,7 @@
   </void>
   <void method="put">
    <string>.trapsPanel.pressureBText</string>
-   <string>1500</string>
+   <string>2044.1522</string>
   </void>
   <void method="put">
    <string>.algForm.kinoformsCheck</string>
@@ -295,7 +306,7 @@
   </void>
   <void method="put">
    <string>.trapsPanel.calcClickCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.movePanel.autoCalcCheck</string>
@@ -315,11 +326,11 @@
   </void>
   <void method="put">
    <string>.rtSlicePanel.QAmpCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.simForm.particleCombo</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.transducersPanel.frText</string>
@@ -331,7 +342,7 @@
   </void>
   <void method="put">
    <string>.ryText</string>
-   <string>0.0000AAQAAA</string>
+   <string>0.0000</string>
   </void>
   <void method="put">
    <string>.movePanel.autoSendCheck</string>
@@ -347,11 +358,11 @@
   </void>
   <void method="put">
    <string>.transducersPanel.powerText</string>
-   <string>2.4000</string>
+   <string>8.6100</string>
   </void>
   <void method="put">
    <string>.movePanel.useAlgCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.trapsPanel.zForceText</string>
@@ -411,11 +422,11 @@
   </void>
   <void method="put">
    <string>.yText</string>
-   <string>-0</string>
+   <string>0.1300</string>
   </void>
   <void method="put">
    <string>.szText</string>
-   <string>0.0100</string>
+   <string>0.1530</string>
   </void>
   <void method="put">
    <string>.holoPatternsForm.onlySelectionCheck</string>
@@ -459,11 +470,11 @@
   </void>
   <void method="put">
    <string>.pointsPanel.cpColorText</string>
-   <string>255,255,255,255</string>
+   <string>0,255,0,255</string>
   </void>
   <void method="put">
    <string>.rtSlicePanel.rtSliceEnableCheck</string>
-   <string>1</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.simForm.particleSpeedText</string>
@@ -471,7 +482,7 @@
   </void>
   <void method="put">
    <string>.domainPanel.showCubeCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.addTransducersForm.rotText</string>
@@ -479,11 +490,11 @@
   </void>
   <void method="put">
    <string>.sxText</string>
-   <string>0.0100</string>
+   <string>0.1530</string>
   </void>
   <void method="put">
    <string>.trapsPanel.pressureAText</string>
-   <string>500</string>
+   <string>1183.7317</string>
   </void>
   <void method="put">
    <string>.transducersPanel.showHideTransCheck</string>
@@ -495,7 +506,7 @@
   </void>
   <void method="put">
    <string>.addTransducersForm.spaceText</string>
-   <string>0.01</string>
+   <string>0.004</string>
   </void>
   <void method="put">
    <string>.addTransducersForm.freqText</string>
@@ -579,7 +590,7 @@
   </void>
   <void method="put">
    <string>.rxText</string>
-   <string>0.0000</string>
+   <string>90.0000</string>
   </void>
   <void method="put">
    <string>.addTransducersForm.radialCheck</string>
@@ -603,7 +614,7 @@
   </void>
   <void method="put">
    <string>.rtSlicePanel.amplitudeCheck</string>
-   <string>1</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.algForm.focalKickCheck</string>

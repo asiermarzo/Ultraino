@@ -500,6 +500,11 @@ public class ControlPointPanel extends javax.swing.JPanel {
         }
     }
 
+    public void deletePoints(ArrayList<MeshEntity> toRemove) {
+        mf.scene.getEntities().removeAll( toRemove );
+        mf.simulation.controlPoints.removeAll(toRemove);
+    }
+
 
     
 }
