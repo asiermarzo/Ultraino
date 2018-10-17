@@ -680,17 +680,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             mf.transducersPanel.selectAll();
             mf.transducersPanel.deleteSelectedTransducers();
             
-            //create the array of transducers
-            final float transWidth = width / nTrans;
-            final float transPower = 2.5f * 16 * 16 / nTrans / nTrans;
-            final float transApperture = 0.009f * 16 / nTrans;
-            mf.addTransducersForm.getColSpinner().setValue( nTrans );
-            mf.addTransducersForm.getRowSpinner().setValue( nTrans );
-            mf.addTransducersForm.getSizeText().setText( transWidth + " 0.003 " + transWidth);
-            mf.addTransducersForm.getSpaceText().setText(transWidth + "");
-            mf.addTransducersForm.getpText().setText( transPower + "");
-            mf.addTransducersForm.getwText().setText( transApperture + "");
-            mf.addTransducersForm.pressOkButton();
+            createArrayOfTransducers(width , nTrans);
             
             //for each point
             for(int i = 0; i < repetitions; ++i){
@@ -765,18 +755,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             mf.transducersPanel.selectAll();
             mf.transducersPanel.deleteSelectedTransducers();
             
-            //create the array of transducers
-            final float transWidth = width / nTrans;
-            final float transPower = 2.5f * 16 * 16 / nTrans / nTrans;
-            final float transApperture = 0.009f * 16 / nTrans;
-            mf.addTransducersForm.getColSpinner().setValue( nTrans );
-            mf.addTransducersForm.getRowSpinner().setValue( nTrans );
-            mf.addTransducersForm.getSizeText().setText( transWidth + " 0.003 " + transWidth);
-            mf.addTransducersForm.getSpaceText().setText(transWidth + "");
-            mf.addTransducersForm.getpText().setText( transPower + "");
-            mf.addTransducersForm.getwText().setText( transApperture + "");
-            mf.addTransducersForm.pressOkButton();
-            
+            createArrayOfTransducers(width , nTrans);
             
             System.out.print("nTrans\t" + nTrans + "\t");
             calcExperiments(null, true, false);
@@ -785,28 +764,32 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_spatialResVsFocusButton1ActionPerformed
 
-    private void pressScanVsResButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressScanVsResButtonActionPerformed
-        final float distance = 0.03f;
-        final int nPoint = 50;
-        final float width = 0.16f;
+    protected void createArrayOfTransducers(final float width,final int nTrans) {
+        //create the array of transducers
+        final float transWidth = width / nTrans;
+        final float transPower = 2.5f * 16 * 16 / nTrans / nTrans;
+        final float transApperture = 0.009f * 16 / nTrans;
+        mf.addTransducersForm.getColSpinner().setValue( nTrans );
+        mf.addTransducersForm.getRowSpinner().setValue( nTrans );
+        mf.addTransducersForm.getSizeText().setText( transWidth + " 0.003 " + transWidth);
+        mf.addTransducersForm.getSpaceText().setText(transWidth + "");
+        mf.addTransducersForm.getpText().setText( transPower + "");
+        mf.addTransducersForm.getwText().setText( transApperture + "");
+        mf.addTransducersForm.pressOkButton();
+    }
 
-        final int[] transList = {8,16,32,37,45,60,70,80,90};
+    private void pressScanVsResButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressScanVsResButtonActionPerformed
+        final float scanLength = 0.03f;
+        final int nPoints = 50;
+        final float arrayWidth = 0.16f;
+
+        final int[] transList = {8,16,32,37,70,90};
         for (int nTrans : transList){
             //delete all the previous transducers
             mf.transducersPanel.selectAll();
             mf.transducersPanel.deleteSelectedTransducers();
 
-            //create the array of transducers
-            final float transWidth = width / nTrans;
-            final float transPower = 2.5f * 16 * 16 / nTrans / nTrans;
-            final float transApperture = 0.009f * 16 / nTrans;
-            mf.addTransducersForm.getColSpinner().setValue( nTrans );
-            mf.addTransducersForm.getRowSpinner().setValue( nTrans );
-            mf.addTransducersForm.getSizeText().setText( transWidth + " 0.003 " + transWidth);
-            mf.addTransducersForm.getSpaceText().setText(transWidth + "");
-            mf.addTransducersForm.getpText().setText( transPower + "");
-            mf.addTransducersForm.getwText().setText( transApperture + "");
-            mf.addTransducersForm.pressOkButton();
+            createArrayOfTransducers(arrayWidth , nTrans);
 
             //run the algorithm
             mf.algForm.runBFGS(false, false, true);
@@ -814,8 +797,8 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             //scan the line
             System.out.print(nTrans + ",");
             final Vector3f avgP = Scene.calcCenter( mf.simulation.controlPoints );
-            for(int i = 0; i < nPoint; ++i){
-                final float offset = -(distance/2) + distance*i/nPoint;
+            for(int i = 0; i < nPoints; ++i){
+                final float offset = -(scanLength/2) + scanLength*i/nPoints;
                 final float pressure = CalcField.calcFieldAt(avgP.x + offset , avgP.y, avgP.z, mf).length();
                 System.out.print(pressure + ",");
             }

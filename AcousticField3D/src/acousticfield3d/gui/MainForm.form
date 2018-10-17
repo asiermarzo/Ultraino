@@ -650,6 +650,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="forcePlotsMenuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="AmpLinePlotMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="AmpLinePlot"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AmpLinePlotMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="matlabFieldMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="MatlabField"/>

@@ -10,6 +10,7 @@ package acousticfield3d.gui;
 import acousticfield3d.Config;
 import acousticfield3d.gui.misc.BowlsForm;
 import acousticfield3d.gui.misc.AlgorithmsForm;
+import acousticfield3d.gui.misc.AmpLinePlot;
 import acousticfield3d.gui.misc.ExportPlotsForm;
 import acousticfield3d.gui.misc.ForcePlotsFrame;
 import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
@@ -354,6 +355,7 @@ public final class MainForm extends javax.swing.JFrame {
         sendToDevicesMenu = new javax.swing.JMenuItem();
         polarPlotsMenu = new javax.swing.JMenuItem();
         forcePlotsMenu = new javax.swing.JMenuItem();
+        AmpLinePlotMenu = new javax.swing.JMenuItem();
         matlabFieldMenu = new javax.swing.JMenuItem();
         ImportAmpPhasesMenu = new javax.swing.JMenuItem();
         auxKeyMenu = new javax.swing.JMenuItem();
@@ -1243,6 +1245,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu9.add(forcePlotsMenu);
 
+        AmpLinePlotMenu.setText("AmpLinePlot");
+        AmpLinePlotMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AmpLinePlotMenuActionPerformed(evt);
+            }
+        });
+        jMenu9.add(AmpLinePlotMenu);
+
         matlabFieldMenu.setText("MatlabField");
         matlabFieldMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2002,6 +2012,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         showNewFrame( new SliceExperiments(this) );
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void AmpLinePlotMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmpLinePlotMenuActionPerformed
+        showNewFrame( new AmpLinePlot(this));
+    }//GEN-LAST:event_AmpLinePlotMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2009,6 +2023,7 @@ public final class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AmpLinePlotMenu;
     private javax.swing.JMenuItem ImportAmpPhasesMenu;
     private javax.swing.JMenu PointsMenu;
     private javax.swing.JMenuItem addKeyFrameMenu;
@@ -2332,10 +2347,11 @@ public final class MainForm extends javax.swing.JFrame {
     }
        
     public BufferedImage captureScreen(){
+        
         BufferedImage bi = new BufferedImage(gljpanel.getWidth(), gljpanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
         gljpanel.paint( bi.getGraphics() );
         return bi;
     }
+   
     
-
 }
