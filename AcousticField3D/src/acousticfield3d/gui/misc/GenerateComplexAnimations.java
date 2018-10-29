@@ -29,6 +29,8 @@ import java.util.logging.Logger;
 public class GenerateComplexAnimations extends javax.swing.JFrame {
     final MainForm mf;
     
+    private boolean prevCalcFrame, prevSendFrame;
+    
     public GenerateComplexAnimations(MainForm mf) {
         this.mf = mf;
         initComponents();
@@ -101,6 +103,11 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         recalcAnimationButton = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         animWithCurrentPointsButton = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        atomText = new javax.swing.JTextField();
+        atomButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Rotate multiple times");
@@ -537,6 +544,50 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("recalc", jPanel4);
 
+        jLabel25.setText("first particle selected is the centre, the others are x,y,z rotations");
+
+        jLabel26.setText("nSteps:");
+
+        atomText.setText("360");
+
+        atomButton.setText("Calc");
+        atomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atomButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel25)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(atomText, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(atomButton)))
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26)
+                    .addComponent(atomText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(atomButton))
+                .addContainerGap(196, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Atom", jPanel5);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -555,6 +606,9 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         int rx = Parse.toInt( rxText.getText() );
         int ry = Parse.toInt( ryText.getText() );
         int rz = Parse.toInt( rzText.getText() );
+        
+        snapBeforeCalc();
+        
         while (rx > 0 || ry > 0 || rz > 0){
             disableCalc();
             
@@ -575,6 +629,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
             
             System.out.println("calc rot " + rx + " " + ry + " " + rz);
         }
+        applyAfterCalc();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void rotatePairsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotatePairsButtonActionPerformed
@@ -582,6 +637,8 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         
         final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
         final int n = points.size();
+        
+        snapBeforeCalc();
         
         for(int i = 0; i < steps; ++i){
            disableCalc();
@@ -597,17 +654,17 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
            enableAndCalc();
         }
         
+        applyAfterCalc();
         
-        mf.movePanel.setGenerateKeyFrame(true);
-        mf.movePanel.setCalculate(true);
     }//GEN-LAST:event_rotatePairsButtonActionPerformed
 
     private void rotateSelectionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateSelectionsButtonActionPerformed
-        final int steps = Parse.toInt( rotateSelectionsText.getText());
+       final int steps = Parse.toInt( rotateSelectionsText.getText());
         
        final ArrayList<Entity> sel1 = mf.movePanel.getSelection(1);
        final ArrayList<Entity> sel2 = mf.movePanel.getSelection(2);
        
+       snapBeforeCalc();
        
         for(int i = 0; i < steps; ++i){
            disableCalc();
@@ -620,8 +677,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
            enableAndCalc();
         }
         
-        mf.movePanel.setGenerateKeyFrame(true);
-        mf.movePanel.setCalculate(true);
+        applyAfterCalc();
     }//GEN-LAST:event_rotateSelectionsButtonActionPerformed
 
     private void bounceAndRotateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bounceAndRotateButtonActionPerformed
@@ -638,7 +694,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         final Vector3f diff = new Vector3f();
         final Vector3f absDiff = new Vector3f();
         
-        
+        snapBeforeCalc();
         for(int i = 0; i < steps; ++i){
            disableCalc();
 
@@ -662,8 +718,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
            enableAndCalc();
         }
-        mf.movePanel.setGenerateKeyFrame(true);
-        mf.movePanel.setCalculate(true);
+        applyAfterCalc();
     }//GEN-LAST:event_bounceAndRotateButtonActionPerformed
 
     private void twinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twinButtonActionPerformed
@@ -851,6 +906,39 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         mf.needUpdate();
     }//GEN-LAST:event_matrixButtonActionPerformed
 
+    private void atomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atomButtonActionPerformed
+       final int steps = Parse.toInt( atomText.getText());
+        
+       if (mf.selection.size() < 4){ return; }
+       
+       final Vector3f cP = mf.selection.get(0).getTransform().getTranslation();
+       final Vector3f xP = mf.selection.get(1).getTransform().getTranslation();
+       final Vector3f yP = mf.selection.get(2).getTransform().getTranslation();
+       final Vector3f zP = mf.selection.get(3).getTransform().getTranslation();
+       final float distX = cP.distance( xP );
+       final float distY = cP.distance( yP );
+       final float distZ = cP.distance( zP );
+       
+       snapBeforeCalc();
+       
+       final float rads = M.TWO_PI / steps;
+       
+       for(int i = 0; i < steps; ++i){
+           disableCalc();
+           final float tRads = rads * i;
+            final float cos = M.cos( tRads );
+            final float sin = M.sin( tRads );
+            
+            xP.y = cP.y + distX * cos; xP.z = cP.z + distX * sin;
+            yP.z = cP.z + distY * cos; yP.x = cP.x + distY * sin;
+            zP.x = cP.x + distZ * cos; zP.y = cP.y + distZ * sin;
+           
+           enableAndCalc();
+        }
+        
+        applyAfterCalc();
+    }//GEN-LAST:event_atomButtonActionPerformed
+
   
     private void disableCalc() {
         mf.movePanel.setGenerateKeyFrame(false);
@@ -865,6 +953,8 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton animWithCurrentPointsButton;
+    private javax.swing.JButton atomButton;
+    private javax.swing.JTextField atomText;
     private javax.swing.JButton bounceAndRotateButton;
     private javax.swing.JTextField bounceAndRotateStepsText;
     private javax.swing.JTextField boundariesText;
@@ -890,6 +980,8 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -901,6 +993,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField lengthText;
     private javax.swing.JButton lineXButton;
@@ -923,4 +1016,14 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JButton twinButton;
     private javax.swing.JTextField twinTrapsText;
     // End of variables declaration//GEN-END:variables
+
+    private void applyAfterCalc() {
+        mf.movePanel.setGenerateKeyFrame(prevSendFrame);
+        mf.movePanel.setCalculate(prevCalcFrame);
+    }
+
+    private void snapBeforeCalc() {
+        prevCalcFrame =  mf.movePanel.isCalculate();
+        prevSendFrame = mf.movePanel.isCalculate();
+    }
 }

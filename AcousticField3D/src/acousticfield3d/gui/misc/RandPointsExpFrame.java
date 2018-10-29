@@ -797,6 +797,10 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             //scan the line
             System.out.print(nTrans + ",");
             final Vector3f avgP = Scene.calcCenter( mf.simulation.controlPoints );
+            
+            //SimplePhaseAlgorithms.focus(mf.simulation.getTransducers(), avgP, mf.simulation.getMediumSpeed());
+            //SimplePhaseAlgorithms.addTwinSignature(mf.simulation.getTransducers(), M.HALF_PI);
+            
             for(int i = 0; i < nPoints; ++i){
                 final float offset = -(scanLength/2) + scanLength*i/nPoints;
                 final float pressure = CalcField.calcFieldAt(avgP.x + offset , avgP.y, avgP.z, mf).length();

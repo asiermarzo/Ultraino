@@ -425,6 +425,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
 
         divTransMethodCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Checker", "Line", "Random", "Closest" }));
 
+        normAmpCheck.setSelected(true);
         normAmpCheck.setText("NormAmp");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

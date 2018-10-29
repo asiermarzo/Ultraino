@@ -88,6 +88,7 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
         checkButton1 = new javax.swing.JButton();
         exportPhaseCorrButton = new javax.swing.JButton();
         exportDivsText = new javax.swing.JTextField();
+        offsetsPhaseExportText = new javax.swing.JTextField();
 
         jLabel2.setText("Trans number:");
 
@@ -224,6 +225,8 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
 
         exportDivsText.setText("32");
 
+        offsetsPhaseExportText.setText("offsets");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -284,6 +287,8 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nextButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(offsetsPhaseExportText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exportDivsText, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exportPhaseCorrButton))
@@ -335,7 +340,8 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
                     .addComponent(prevButton)
                     .addComponent(nextButton)
                     .addComponent(exportPhaseCorrButton)
-                    .addComponent(exportDivsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(exportDivsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(offsetsPhaseExportText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -693,14 +699,26 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
     }//GEN-LAST:event_checkButton1ActionPerformed
 
     private void exportPhaseCorrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPhaseCorrButtonActionPerformed
+        final ArrayList<Transducer> trans = mf.simulation.transducers;
+        final int[] phaseOffsets = new int[trans.size()];
+        final String[] offsets = offsetsPhaseExportText.getText().split(",");
+        if (offsets.length == trans.size()){
+            for( int i = 0; i < offsets.length; ++i){
+                phaseOffsets[i] = Parse.toInt( offsets[i] );
+            }
+        }
+        
         final StringBuilder sb = new StringBuilder();
         final int divs = Parse.toInt( exportDivsText.getText() );
         
-        final ArrayList<Transducer> trans = mf.simulation.transducers;
+        int i = 0;
         for(Transducer t : trans){
             final float phaseCor = t.getPhaseCorrection();
-            int iPhaseCor = Transducer.calcDiscPhase(phaseCor, divs);
+            int iPhaseCor = Transducer.calcDiscPhase(phaseCor, divs) + phaseOffsets[i] ;
+            if (iPhaseCor < 0){ iPhaseCor += divs; }
+            iPhaseCor %= divs;
             sb.append( iPhaseCor + ",");
+            i++;
         }
         sb.deleteCharAt( sb.length() - 1);
         
@@ -741,6 +759,7 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
     private javax.swing.JCheckBox minAmpCheck;
     private javax.swing.JTextField minAmpText;
     private javax.swing.JButton nextButton;
+    private javax.swing.JTextField offsetsPhaseExportText;
     private javax.swing.JCheckBox onlyPolCheck;
     private javax.swing.JCheckBox phaseCorrectionCheck;
     private javax.swing.JLabel phaseCorrectionLabel;

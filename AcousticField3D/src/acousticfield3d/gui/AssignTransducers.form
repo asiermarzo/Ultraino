@@ -95,6 +95,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="nextButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="offsetsPhaseExportText" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="exportDivsText" min="-2" pref="43" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="exportPhaseCorrButton" min="-2" max="-2" attributes="0"/>
@@ -157,6 +159,7 @@
                   <Component id="nextButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="exportPhaseCorrButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="exportDivsText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="offsetsPhaseExportText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -389,6 +392,11 @@
     <Component class="javax.swing.JTextField" name="exportDivsText">
       <Properties>
         <Property name="text" type="java.lang.String" value="32"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="offsetsPhaseExportText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="offsets"/>
       </Properties>
     </Component>
   </SubComponents>

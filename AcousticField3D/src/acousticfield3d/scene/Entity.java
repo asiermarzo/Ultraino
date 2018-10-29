@@ -131,4 +131,8 @@ public class Entity {
     public boolean boxInside(final Frustrum frustrum) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public float distanceTo(final Entity e){
+        return getTransform().getTranslation().distance( e.getTransform().getTranslation());
+    }
 }

@@ -42,6 +42,8 @@ public class SimpleFPGA extends DeviceConnection{
     @Override
     public int getSpeed() {
         return 250000;
+        //115200
+        //250000
     } 
 
     @Override
@@ -77,7 +79,7 @@ public class SimpleFPGA extends DeviceConnection{
                 
                 if (t.getpAmplitude() == 0){
                     phase = PHASE_OFF;
-                }else if (t.getAmplitude() < 1.0f){
+                }else if (t.getAmplitude() < 0.99f){
                     ampModulationNeeded = true;
                 }
                         

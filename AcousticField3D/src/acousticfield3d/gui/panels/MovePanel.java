@@ -729,6 +729,14 @@ public class MovePanel extends javax.swing.JPanel {
         autoCalcCheck.setSelected(enabled);
     }
     
+    public boolean isGenerateKeyFrame(){
+        return autoAddCheck.isSelected();
+    }
+    
+    public boolean isCalculate(){
+        return autoCalcCheck.isSelected();
+    }
+    
     private void ampLimitator() {
             final float maxAmp = Parse.toFloat( ampLimitText.getText() );
             final float step = Parse.toFloat( ampLimitStepText.getText() );
