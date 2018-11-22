@@ -70,14 +70,15 @@ public class AddTransducersForm extends javax.swing.JFrame {
         powerText = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         freqText = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        phaseText = new javax.swing.JTextField();
         gridCheck = new javax.swing.JRadioButton();
         hexCheck = new javax.swing.JRadioButton();
         radialCheck = new javax.swing.JRadioButton();
         circleCheck = new javax.swing.JRadioButton();
         jLabel11 = new javax.swing.JLabel();
         recenterSimCheck = new javax.swing.JCheckBox();
+        jLabel8 = new javax.swing.JLabel();
+        presetsCombo = new javax.swing.JComboBox();
+        presetButton = new javax.swing.JButton();
 
         setTitle("Add Trasnducers");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -127,10 +128,6 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
         freqText.setText("40000");
 
-        jLabel10.setText("Phase:");
-
-        phaseText.setText("0");
-
         arrangementGroup.add(gridCheck);
         gridCheck.setSelected(true);
         gridCheck.setText("grid");
@@ -148,6 +145,17 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
         recenterSimCheck.setSelected(true);
         recenterSimCheck.setText("recenter sim");
+
+        jLabel8.setText("presets:");
+
+        presetsCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Murata 10mm 40kHz", "Manorshi 16mm 40kHz" }));
+
+        presetButton.setText("Set");
+        presetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presetButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,19 +181,25 @@ public class AddTransducersForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(powerText))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(wText, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(phaseText))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sizeText))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(okButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(recenterSimCheck))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(presetsCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(presetButton))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(wText, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -206,11 +220,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(spaceText, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 31, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(okButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(recenterSimCheck)))
+                        .addGap(0, 31, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -245,9 +255,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(wText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(phaseText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(wText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -255,7 +263,12 @@ public class AddTransducersForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(spaceText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(presetsCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(presetButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(recenterSimCheck))
@@ -457,6 +470,24 @@ public class AddTransducersForm extends javax.swing.JFrame {
         setVisible( false );
     }//GEN-LAST:event_formWindowClosing
 
+    private void presetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presetButtonActionPerformed
+        
+        final int selected = presetsCombo.getSelectedIndex();
+        if (selected == 0){ //murata 10
+            freqText.setText("40000");
+            powerText.setText("2.4");
+            wText.setText("0.009");
+            sizeText.setText("0.01 0.003 0.01");
+            spaceText.setText("0.01");
+        }else if (selected == 1){ //manorshi 16
+            freqText.setText("40000");
+            powerText.setText("5.3");
+            wText.setText("0.009");
+            sizeText.setText("0.016 0.003 0.016");
+            spaceText.setText("0.016");
+        }
+    }//GEN-LAST:event_presetButtonActionPerformed
+
     private void radialArrangement() throws NumberFormatException {
         final int nPerCircle = (Integer)colSpinner.getValue();
         final int nPerRow = (Integer)rowSpinner.getValue();
@@ -579,7 +610,6 @@ public class AddTransducersForm extends javax.swing.JFrame {
         final float freq = Float.parseFloat(freqText.getText());
         final float apperture = Float.parseFloat(wText.getText());
         final float power = Float.parseFloat(powerText.getText());
-        final float phase = Float.parseFloat(phaseText.getText());
         
         final Vector3f size = new Vector3f().parse( sizeText.getText() );
         
@@ -591,7 +621,6 @@ public class AddTransducersForm extends javax.swing.JFrame {
         t.getTransform().setScale( size );
         t.apperture = apperture;
         t.amplitude = 1;
-        t.phase = phase * M.PI;
         t.frequency = freq;
         t.power = power;
         t.setTag(Entity.TAG_TRANSDUCER);
@@ -608,7 +637,6 @@ public class AddTransducersForm extends javax.swing.JFrame {
     private javax.swing.JRadioButton gridCheck;
     private javax.swing.JRadioButton hexCheck;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -616,11 +644,13 @@ public class AddTransducersForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton okButton;
-    private javax.swing.JTextField phaseText;
     private javax.swing.JTextField posText;
     private javax.swing.JTextField powerText;
+    private javax.swing.JButton presetButton;
+    private javax.swing.JComboBox presetsCombo;
     private javax.swing.JRadioButton radialCheck;
     private javax.swing.JCheckBox recenterSimCheck;
     private javax.swing.JTextField rotText;
