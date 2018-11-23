@@ -18,6 +18,7 @@ import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.GenerateComplexAnimations;
 import acousticfield3d.gui.misc.ScatterObjectForm;
+import acousticfield3d.gui.misc.ShapePointsFrame;
 import acousticfield3d.gui.misc.SliceExperiments;
 import acousticfield3d.gui.misc.SliderPanel;
 import acousticfield3d.gui.misc.SwitchTimer;
@@ -335,6 +336,7 @@ public final class MainForm extends javax.swing.JFrame {
         PointsMenu = new javax.swing.JMenu();
         selectAllPointsMenu = new javax.swing.JMenuItem();
         mergePointsMenu = new javax.swing.JMenuItem();
+        pointsShapeMenu = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         addKeyFrameMenu = new javax.swing.JMenuItem();
         exportToArduinoMenu = new javax.swing.JMenuItem();
@@ -920,7 +922,7 @@ public final class MainForm extends javax.swing.JFrame {
 
         jMenu4.setText("Transducers");
 
-        selectAllTransducersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, 0));
+        selectAllTransducersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         selectAllTransducersMenu.setText("Select all");
         selectAllTransducersMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1094,6 +1096,14 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         PointsMenu.add(mergePointsMenu);
+
+        pointsShapeMenu.setText("Shapes");
+        pointsShapeMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pointsShapeMenuActionPerformed(evt);
+            }
+        });
+        PointsMenu.add(pointsShapeMenu);
 
         jMenuBar1.add(PointsMenu);
 
@@ -2016,6 +2026,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void AmpLinePlotMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmpLinePlotMenuActionPerformed
         showNewFrame( new AmpLinePlot(this));
     }//GEN-LAST:event_AmpLinePlotMenuActionPerformed
+
+    private void pointsShapeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pointsShapeMenuActionPerformed
+        showNewFrame( new ShapePointsFrame(this));
+    }//GEN-LAST:event_pointsShapeMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2096,6 +2110,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem phasePiMenu;
     private javax.swing.JMenuItem phaseUpMenu;
     private javax.swing.JMenuItem pointToTargetMenu;
+    private javax.swing.JMenuItem pointsShapeMenu;
     private javax.swing.JMenuItem polarPlotsMenu;
     private javax.swing.ButtonGroup preCubeSource;
     private javax.swing.JMenuItem randomTransducerOffMenu;

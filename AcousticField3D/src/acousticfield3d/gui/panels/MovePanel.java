@@ -520,12 +520,12 @@ public class MovePanel extends javax.swing.JPanel {
             final ArrayList<Entity> sel = mf.getSelection();
             for (Entity ent : sel) {
                 final Vector3f pos = ent.getTransform().getTranslation();
-                sCenter.y = pos.y;
+                //sCenter.y = pos.y;
                 pos.moveTowards(sCenter, stepSize);
             }
         }else{
             final Vector3f pos = e.getTransform().getTranslation();
-            sCenter.y = pos.y;
+            //sCenter.y = pos.y;
             pos.moveTowards(sCenter, stepSize);
         }
         

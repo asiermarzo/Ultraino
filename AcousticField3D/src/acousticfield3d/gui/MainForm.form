@@ -279,7 +279,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="selectAllTransducersMenu">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="A"/>
+                  <KeyStroke key="Ctrl+A"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Select all"/>
               </Properties>
@@ -485,6 +485,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mergePointsMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="pointsShapeMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Shapes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pointsShapeMenuActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
