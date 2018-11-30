@@ -139,7 +139,7 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
         mf.movePanel.snapBeadPositions();
         for (int i = 0; i < nPoints; i++) {
             //apply the algorithm
-            mf.movePanel.applyVector(0, 0, 0);
+            mf.movePanel.applyDisplacement(0, 0, 0);
             
             //calc center of the structure (is it the center of mass??)
             final Vector3f center = Scene.calcCenter( mf.simulation.controlPoints );

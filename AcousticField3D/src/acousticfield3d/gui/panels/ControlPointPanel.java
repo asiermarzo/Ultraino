@@ -496,7 +496,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
             mf.scene.getEntities().remove( entity );
             mf.simulation.controlPoints.remove( entity );
             mf.selection.remove(entity);
-            mf.movePanel.applyVector(0, 0, 0);
+            mf.movePanel.applyDisplacement(0, 0, 0);
         }
     }
 

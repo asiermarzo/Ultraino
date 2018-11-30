@@ -713,7 +713,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
            }
            
            cPos.addLocalInc(direction, speed);
-           mf.movePanel.applyVector(direction.x, direction.y, direction.z);
+           mf.movePanel.applyDisplacement(direction.x, direction.y, direction.z);
            mf.movePanel.applyRotation(rotVec.x, rotVec.y, rotVec.z);
 
            enableAndCalc();
@@ -948,7 +948,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private void enableAndCalc() {
         mf.movePanel.setGenerateKeyFrame(true);
         mf.movePanel.setCalculate(true);
-        mf.movePanel.applyVector(0, 0, 0);
+        mf.movePanel.applyDisplacement(0, 0, 0);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

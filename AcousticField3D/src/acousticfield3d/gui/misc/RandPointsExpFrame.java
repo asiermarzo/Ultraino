@@ -77,6 +77,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         numPointsStartText = new javax.swing.JTextField();
         separationvsfocusButton = new javax.swing.JButton();
         compareArrangementsButton = new javax.swing.JButton();
+        generateCSVPointsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Random points experiments");
@@ -222,6 +223,13 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
             }
         });
 
+        generateCSVPointsButton.setText("Generate in CSV");
+        generateCSVPointsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateCSVPointsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -237,24 +245,6 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                         .addComponent(simpleForcesToCSVButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(simpleForcesToCSVButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(goButton)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(simpleForcesButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(compareArrangementsButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(generateTestPointsButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(simpleForcesToCSVButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(simpleForcesGenPoints)))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -292,7 +282,30 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pressScanVsResButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(separationvsfocusButton)))
+                        .addComponent(separationvsfocusButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(goButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(generateCSVPointsButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(simpleForcesButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(compareArrangementsButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(133, 133, 133)
+                                .addComponent(simpleForcesToCSVButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(simpleForcesGenPoints))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(generateTestPointsButton)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -314,8 +327,15 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addComponent(minDistZText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(generatePointsButton, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(9, 9, 9)
-                .addComponent(goButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(goButton)
+                            .addComponent(generateCSVPointsButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generateTestPointsButton)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -334,7 +354,6 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                     .addComponent(compareArrangementsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(generateTestPointsButton)
                     .addComponent(simpleForcesToCSVButton)
                     .addComponent(simpleForcesGenPoints))
                 .addGap(18, 18, 18)
@@ -347,7 +366,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pressScanVsResButton)
                     .addComponent(separationvsfocusButton))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -849,6 +868,17 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_compareArrangementsButtonActionPerformed
 
+    private void generateCSVPointsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCSVPointsButtonActionPerformed
+        final int sPoints = Parse.toInt( numPointsStartText.getText() );
+        final int ePoints = Parse.toInt( numPointsText.getText() );
+        for(int i = sPoints; i <= ePoints; ++i){
+            numPointsText.setText(i + "");
+            final float[][][] pointSet = generatePoints();
+            savePointsAsCSV("points " + i + ".csv", pointSet);
+        }
+        
+    }//GEN-LAST:event_generateCSVPointsButtonActionPerformed
+
     private void runExperiment(final int steps, final int alg){
         System.out.println("----- " + (alg==3?"gorkov":"laplacian") + " steps " + steps);
         mf.algForm.setAlgorithm(alg);
@@ -880,6 +910,7 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
     private javax.swing.JButton compareArrangementsButton;
     private javax.swing.JButton copyCubeButton;
     private javax.swing.JTextField fileText;
+    private javax.swing.JButton generateCSVPointsButton;
     private javax.swing.JButton generatePointsButton;
     private javax.swing.JButton generateTestPointsButton;
     private javax.swing.JButton goButton;
@@ -949,6 +980,25 @@ public class RandPointsExpFrame extends javax.swing.JFrame {
         for (Transducer t : mf.simulation.transducers){
             t.setpAmplitude(1);
             t.setPhase(0);
+        }
+    }
+
+    private void savePointsAsCSV(String fileName, float[][][] pointSet) {
+        final StringBuilder sb = new StringBuilder();
+        
+        final int nInstances = pointSet.length;
+        final int nPoints = pointSet[0].length;
+        
+        for(int instance = 0; instance < nInstances; ++instance){
+            for (int point = 0; point < nPoints; ++point){
+                final float[] p = pointSet[instance][point];
+                sb.append(instance + "," + point + "," + p[0] + "," + p[1] + "," + p[2] + "\n");
+            }
+        }
+        try {
+            FileUtils.writeBytesInFile(new File(fileName), sb.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(RandPointsExpFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

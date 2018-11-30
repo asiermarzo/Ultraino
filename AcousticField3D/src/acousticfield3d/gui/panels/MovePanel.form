@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="lateralTrapGroup">
-    </Component>
-  </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -126,19 +122,9 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="moveAllCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="amplitudeLimiterCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ampLimitText" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="ampLimitStepText" max="32767" attributes="0"/>
-                          <Component id="useAlgCheck" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="moveAllCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="useAlgCheck" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -203,13 +189,7 @@
                   <Component id="moveAllCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="useAlgCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="amplitudeLimiterCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ampLimitText" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ampLimitStepText" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="interpButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="stepSizeText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -436,21 +416,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoReturnButtonActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="amplitudeLimiterCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="ampLim"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="ampLimitText">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="3000"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="ampLimitStepText">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0.001"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

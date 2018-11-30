@@ -488,7 +488,7 @@ public class TransducersPanel extends javax.swing.JPanel {
             --switchOn;
         }
         
-        mf.movePanel.applyVector(0, 0, 0);
+        mf.movePanel.applyDisplacement(0, 0, 0);
         mf.needUpdate();
     }
 

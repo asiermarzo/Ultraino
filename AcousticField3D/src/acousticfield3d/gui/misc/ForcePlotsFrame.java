@@ -145,7 +145,7 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         final int nSteps = Parse.toInt( nPointsText.getText() );
         final float disp = Parse.toFloat( dispText.getText() );
         
-        Entity bead = mf.scene.getFirstWithTag( Entity.TAG_CONTROL_POINT );
+        final Entity bead = mf.movePanel.getBeadEntity();
         if (bead == null){
             return;
         }
@@ -154,33 +154,39 @@ public class ForcePlotsFrame extends javax.swing.JFrame {
         final float particleR = bead.getTransform().getScale().maxComponent() / 2.0f;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("X \t Y \t Z \t ForceX \t ForceY \t ForceZ \t pressureX \t pressureY \t pressureZ \t gorkX \t gorkY \t gorkZ\n");
+        sb.append("X \t Y \t Z \t ForceX \t ForceY \t ForceZ \t pressureX \t pressureY \t pressureZ \t gorkX \t gorkY \t gorkZ \t stiffX \t stiffY \t stiffZ\n");
         for(int i = 0; i < nSteps; ++i){
             final float dispS = ( (i / (float)nSteps) - 0.5f) * disp;
            
-            final Vector3f forceX = CalcField.calcForceAt(pos.x + dispS, pos.y, pos.z, particleR, mf);
-            final Vector3f forceY = CalcField.calcForceAt(pos.x, pos.y + dispS, pos.z, particleR, mf);
-            final Vector3f forceZ = CalcField.calcForceAt(pos.x, pos.y, pos.z + dispS, particleR, mf);
+            final double forceX = CalcField.calcForceAt(pos.x + dispS, pos.y, pos.z, particleR, mf).x;
+            final double forceY = CalcField.calcForceAt(pos.x, pos.y + dispS, pos.z, particleR, mf).y;
+            final double forceZ = CalcField.calcForceAt(pos.x, pos.y, pos.z + dispS, particleR, mf).z;
             final double pressureX = CalcField.calcFieldAt(pos.x + dispS, pos.y, pos.z, mf).length();
             final double pressureY = CalcField.calcFieldAt(pos.x, pos.y + dispS, pos.z, mf).length();
             final double pressureZ = CalcField.calcFieldAt(pos.x, pos.y, pos.z + dispS, mf).length();
             final double gorkX = CalcField.calcGorkovAt(pos.x + dispS, pos.y, pos.z, particleR,mf);
             final double gorkY = CalcField.calcGorkovAt(pos.x, pos.y + dispS, pos.z, particleR,mf);
             final double gorkZ = CalcField.calcGorkovAt(pos.x, pos.y, pos.z + dispS, particleR,mf);
+            final double stiffX = CalcField.calcForceGradients(pos.x + dispS, pos.y, pos.z, particleR,mf).x;
+            final double stiffY = CalcField.calcForceGradients(pos.x, pos.y + dispS, pos.z, particleR,mf).y;
+            final double stiffZ = CalcField.calcForceGradients(pos.x, pos.y, pos.z + dispS, particleR,mf).z;
             
             
             sb.append( (pos.x + dispS) + " \t");
             sb.append( (pos.y + dispS) + " \t");
             sb.append( (pos.z + dispS) + " \t");
-            sb.append(forceX.x + " \t");
-            sb.append(forceY.y + " \t");
-            sb.append(forceZ.z + "\t");
+            sb.append(forceX + " \t");
+            sb.append(forceY + " \t");
+            sb.append(forceZ + "\t");
             sb.append(pressureX + "\t");
             sb.append(pressureY + "\t");
             sb.append(pressureZ + "\t");
             sb.append(gorkX + "\t");
             sb.append(gorkY + "\t");
-            sb.append(gorkZ + "\n");
+            sb.append(gorkZ + "\t");
+            sb.append(stiffX + " \t");
+            sb.append(stiffY + " \t");
+            sb.append(stiffZ + "\n");
         }
         
         TextFrame.showText("Forces", sb.toString(), this);
