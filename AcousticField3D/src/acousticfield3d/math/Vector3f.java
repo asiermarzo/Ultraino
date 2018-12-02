@@ -1309,4 +1309,16 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         z = M.abs(z);
         return this;
     }
+
+    public Vector3f applyCenteredScale(Vector3f center, float scale) {
+        x = center.x + (x - center.x) * scale;
+        y = center.y + (y - center.y) * scale;
+        z = center.z + (z - center.z) * scale;
+        
+        return this;
+    }
+
+    public boolean isZero() {
+        return x == 0f && y == 0f && z == 0f;
+    }
 }

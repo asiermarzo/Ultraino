@@ -441,7 +441,7 @@ public class MovePanel extends javax.swing.JPanel {
         if (e == null){ return;}
         
         final Vector3f t = new Vector3f(x, y, z);
-        t.multLocal( getSpeed() );
+        t.multLocal( getDisplacementStep() );
         
         if (moveAllCheck.isSelected()){
             final ArrayList<Entity> sel = mf.getSelection();
@@ -485,24 +485,27 @@ public class MovePanel extends javax.swing.JPanel {
         mf.needUpdate();
     }
     
-   public void applyScale(final float scale){
+   public void applyScale(final float stepScale){
         final Entity e = getBeadEntity();
         if (e == null || mf.selection.isEmpty() ){ return;}
         
-        final float stepSize = scale * Parse.toFloat( speedText.getText() );
+        final float stepSize =  stepScale  * Parse.toFloat( speedText.getText() );
         final Vector3f sCenter = Scene.calcCenter( mf.selection );
         
         if (moveAllCheck.isSelected()){
             final ArrayList<Entity> sel = mf.getSelection();
+            float maxDist = 0;
             for (Entity ent : sel) {
-                final Vector3f pos = ent.getTransform().getTranslation();
-                //sCenter.y = pos.y;
-                pos.moveTowards(sCenter, stepSize);
+                maxDist = M.max(maxDist, ent.distanceTo( sCenter ));
+            }
+            final float scale = 1 + stepSize/maxDist;
+            for (Entity ent : sel) {
+                ent.getTransform().getTranslation().applyCenteredScale(sCenter, scale);
             }
         }else{
             final Vector3f pos = e.getTransform().getTranslation();
             //sCenter.y = pos.y;
-            pos.moveTowards(sCenter, stepSize);
+            pos.moveTowards(mf.simulation.getSimulationCenter(), stepSize);
         }
         
        
@@ -536,10 +539,15 @@ public class MovePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_backwardsButtonActionPerformed
 
  
-    public float getSpeed(){
+    public float getDisplacementStep(){
         return Parse.toFloat( speedText.getText() );    
     }
+    
+    public float getRotationStep(){
+        return Parse.toFloat( angleText.getText() );    
+    }
 
+    
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
        resetParticlePos();
     }//GEN-LAST:event_resetButtonActionPerformed
@@ -551,6 +559,7 @@ public class MovePanel extends javax.swing.JPanel {
             sel.get(i).getTransform().getTranslation().set( snapBeadPositions.get(i) );
         }
 
+  
         applyDisplacement(0,0,0);
     }
     

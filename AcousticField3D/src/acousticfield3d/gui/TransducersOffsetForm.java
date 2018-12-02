@@ -429,25 +429,29 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
         float vaz = Float.parseFloat( az.getText() );
         float vdz = Float.parseFloat( dz.getText() );
   
-         for( Transducer t : mf.simulation.getTransducers() ){
-            Vector3f angles = t.getTransform().getRotation().toAngles(null).multLocal( M.RAD_TO_DEG);
-            Vector3f target = transNotRot ? t.getTransform().getTranslation() : angles;
-                     
-            if(x){
-                target.x *= vsx;
-                target.x +=  M.randomGaussian(vax, vdx) ;
-            }
-            if(y){
-                target.y *= vsy;
-                target.y +=  M.randomGaussian(vay, vdy) ;
-            }
-            if(z){
-                target.z *= vsz;
-                target.z +=  M.randomGaussian(vaz, vdz) ;
-            }
-            
-            if (!transNotRot){
-                t.getTransform().getRotation().fromAngles(angles.multLocal( M.DEG_TO_RAD ));
+        for (Entity e : mf.selection) {
+            if (e instanceof Transducer) {
+                Transducer t = (Transducer) e;
+
+                Vector3f angles = t.getTransform().getRotation().toAngles(null).multLocal(M.RAD_TO_DEG);
+                Vector3f target = transNotRot ? t.getTransform().getTranslation() : angles;
+
+                if (x) {
+                    target.x *= vsx;
+                    target.x += M.randomGaussian(vax, vdx);
+                }
+                if (y) {
+                    target.y *= vsy;
+                    target.y += M.randomGaussian(vay, vdy);
+                }
+                if (z) {
+                    target.z *= vsz;
+                    target.z += M.randomGaussian(vaz, vdz);
+                }
+
+                if (!transNotRot) {
+                    t.getTransform().getRotation().fromAngles(angles.multLocal(M.DEG_TO_RAD));
+                }
             }
         }
     }
@@ -476,9 +480,12 @@ public class TransducersOffsetForm extends javax.swing.JFrame {
             false
        );
         
-        for( Transducer t : mf.simulation.getTransducers() ){
-            if ( amp ) { t.setAmplitude( t.getAmplitude() + M.randomGaussian(ampAvg, ampStd) ); }
-            if ( phase ) { t.setPhase(t.getPhase() + M.randomGaussian(phaseAvg, phaseStd) ); }
+        for( Entity e : mf.selection ){
+            if (e instanceof Transducer) {
+                Transducer t = (Transducer) e;
+                if ( amp ) { t.setAmplitude( t.getAmplitude() + M.randomGaussian(ampAvg, ampStd) ); }
+                if ( phase ) { t.setPhase(t.getPhase() + M.randomGaussian(phaseAvg, phaseStd) ); }
+            }
         }
         mf.needUpdate();
     }//GEN-LAST:event_setButtonActionPerformed

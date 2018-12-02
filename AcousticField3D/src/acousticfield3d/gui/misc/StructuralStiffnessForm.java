@@ -7,6 +7,7 @@ package acousticfield3d.gui.misc;
 
 import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Scene;
@@ -44,7 +45,7 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         scaleText = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("N Points:");
 
@@ -65,9 +66,9 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
 
         rotText.setText("0 0 0");
 
-        jLabel4.setText("Scale:");
+        jLabel4.setText("Scale(total dist):");
 
-        scaleText.setText("1 1 1");
+        scaleText.setText("0");
         scaleText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleTextActionPerformed(evt);
@@ -88,15 +89,13 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(dispText))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dispText)
                             .addComponent(rotText)
                             .addComponent(scaleText))))
                 .addContainerGap())
@@ -129,39 +128,50 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         final int nPoints = Parse.toInt( nPointsText.getText() );
+        final float dispStep = mf.movePanel.getDisplacementStep();
+        final float rotStep = mf.movePanel.getRotationStep();
+        
         final Vector3f dis = new Vector3f().parse( dispText.getText() );
+        dis.divideLocal(dispStep).divideLocal(nPoints);
         final Vector3f rot = new Vector3f().parse( rotText.getText() );
-        final Vector3f scale = new Vector3f().parse( scaleText.getText() );
+        rot.divideLocal(rotStep).divideLocal(nPoints);
+        final float totalScaleDist = Parse.toFloat( scaleText.getText() ) / dispStep / nPoints;
         
-        final StringBuilder sb = new StringBuilder();
-        
+        final StringBuilder sb = new StringBuilder(); 
         //snap the position of the points
         mf.movePanel.snapBeadPositions();
         for (int i = 0; i < nPoints; i++) {
-            //apply the algorithm
-            mf.movePanel.applyDisplacement(0, 0, 0);
+            //move the particles, apply the algorithm
+            if(! dis.isZero() ){ //move
+                mf.movePanel.applyDisplacement(dis.x, dis.y, dis.z);
+            }else if(! rot.isZero() ){ //rotate
+                mf.movePanel.applyRotation(rot.x, rot.y, rot.z);
+            }else{ //scale
+                mf.movePanel.applyScale(totalScaleDist);
+            }
             
             //calc center of the structure (is it the center of mass??)
             final Vector3f center = Scene.calcCenter( mf.simulation.controlPoints );
             final Vector3f tStiffness = new Vector3f();
             final Vector3f tTorqueStiff = new Vector3f();
             final Vector3f r = new Vector3f();
+            float totalAmp = 0;
             for (MeshEntity point : mf.simulation.controlPoints) {
                 final Vector3f pos = point.getTransform().getTranslation();
                 //calc total stiffness
                 final Vector3f forceGrad = CalcField.calcForceGradients(pos.x, pos.y, pos.z, 
                         point.getTransform().getScale().maxComponent(), mf);
-                tStiffness.addLocal( forceGrad );
+                final float amplitude = CalcField.calcFieldAt(pos, mf).length();
                 
+                totalAmp += amplitude;
+                tStiffness.addLocal( forceGrad );
                 //calc the total torque stiffness
                 pos.subtract( center, r);
                 tTorqueStiff.addLocal( r.crossLocal(forceGrad) );
             }
             //report
-            sb.append(i + "\t" + tStiffness.toStringSimple("\t") + tTorqueStiff.toStringSimple("\t") + "\n");
-            
-            //apply increment
-            //TODO
+            sb.append(i + "\t" + tStiffness.toStringSimple("\t") + "\t" + 
+                    tTorqueStiff.toStringSimple("\t") + "\t" + totalAmp + "\n");
         }
         
         //restore the position of the points

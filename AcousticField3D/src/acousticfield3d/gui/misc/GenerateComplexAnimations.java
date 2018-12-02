@@ -16,11 +16,13 @@ import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.simulation.Animation;
 import acousticfield3d.simulation.ControlPoint;
+import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Color;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
 
 /**
  *
@@ -103,6 +105,9 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         recalcAnimationButton = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         animWithCurrentPointsButton = new javax.swing.JButton();
+        jLabel27 = new javax.swing.JLabel();
+        smoothPhasesButton = new javax.swing.JButton();
+        smoothPhasesText = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -511,6 +516,17 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
             }
         });
 
+        jLabel27.setText("Smooth phases:");
+
+        smoothPhasesButton.setText("OK");
+        smoothPhasesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smoothPhasesButtonActionPerformed(evt);
+            }
+        });
+
+        smoothPhasesText.setText("32");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -522,10 +538,17 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                         .addComponent(jLabel20)
                         .addGap(18, 18, 18)
                         .addComponent(recalcAnimationButton))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel21)
-                        .addGap(18, 18, 18)
-                        .addComponent(animWithCurrentPointsButton)))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel27)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(smoothPhasesText, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(smoothPhasesButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel21)
+                            .addGap(18, 18, 18)
+                            .addComponent(animWithCurrentPointsButton))))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -539,7 +562,12 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(animWithCurrentPointsButton))
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27)
+                    .addComponent(smoothPhasesButton)
+                    .addComponent(smoothPhasesText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("recalc", jPanel4);
@@ -683,7 +711,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private void bounceAndRotateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bounceAndRotateButtonActionPerformed
         final int steps = Parse.toInt( bounceAndRotateStepsText.getText() );
         final Vector3f boundaries = new Vector3f( boundariesText.getText() );
-        final float speed = mf.movePanel.getSpeed();
+        final float speed = mf.movePanel.getDisplacementStep();
         
         final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
         
@@ -939,6 +967,34 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         applyAfterCalc();
     }//GEN-LAST:event_atomButtonActionPerformed
 
+    private void smoothPhasesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smoothPhasesButtonActionPerformed
+        final int smoothSteps = Parse.toInt( smoothPhasesText.getText() );
+        final Animation cAnim = mf.animPanel.getCurrentAnimation();
+        final ArrayList<AnimKeyFrame> keyFrames = cAnim.keyFrames.getElements();
+        for (int i = 1; i < keyFrames.size(); i++) {
+            AnimKeyFrame prev = keyFrames.get(i - 1);
+            AnimKeyFrame next = keyFrames.get(i);
+            float minDist = Float.MAX_VALUE;
+            int minStep = 0;
+            for (int j = 0; j < smoothSteps; j++) {
+                float dist = 0;
+                for (Transducer t : prev.getTransPhases().keySet()){
+                    final float phase1 = prev.getTransPhases().get(t) * M.PI;
+                    final float phase2 = next.getTransPhases().get(t) * M.PI;
+                    dist += M.abs(  M.angleDiff(phase1, phase2 + M.TWO_PI*j/smoothSteps) );
+                }
+                if (dist < minDist){
+                    minStep = j;
+                    minDist = dist;
+                }
+            }
+            for (Transducer t : next.getTransPhases().keySet()){
+                final float phase = next.getTransPhases().get(t) * M.PI;
+                next.getTransPhases().put(t, (phase + M.TWO_PI*minStep/smoothSteps) / M.PI);
+            }
+        }
+    }//GEN-LAST:event_smoothPhasesButtonActionPerformed
+
   
     private void disableCalc() {
         mf.movePanel.setGenerateKeyFrame(false);
@@ -982,6 +1038,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1012,6 +1069,8 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JTextField rxText;
     private javax.swing.JTextField ryText;
     private javax.swing.JTextField rzText;
+    private javax.swing.JButton smoothPhasesButton;
+    private javax.swing.JTextField smoothPhasesText;
     private javax.swing.JTextField stepSizeText;
     private javax.swing.JButton twinButton;
     private javax.swing.JTextField twinTrapsText;

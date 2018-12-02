@@ -21,6 +21,7 @@ import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.ShapePointsFrame;
 import acousticfield3d.gui.misc.SliceExperiments;
 import acousticfield3d.gui.misc.SliderPanel;
+import acousticfield3d.gui.misc.StructuralStiffnessForm;
 import acousticfield3d.gui.misc.SwitchTimer;
 import acousticfield3d.gui.misc.UDPRemoteControl;
 import acousticfield3d.utils.DialogUtils;
@@ -372,6 +373,7 @@ public final class MainForm extends javax.swing.JFrame {
         exportTransPhasePointsMenu = new javax.swing.JMenuItem();
         sliceExpMenu = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        structuralStiffnessMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1372,6 +1374,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem1);
 
+        structuralStiffnessMenu.setText("Structural stiffness");
+        structuralStiffnessMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                structuralStiffnessMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(structuralStiffnessMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -2030,6 +2040,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void pointsShapeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pointsShapeMenuActionPerformed
         showNewFrame( new ShapePointsFrame(this));
     }//GEN-LAST:event_pointsShapeMenuActionPerformed
+
+    private void structuralStiffnessMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_structuralStiffnessMenuActionPerformed
+        showNewFrame( new StructuralStiffnessForm(this));
+    }//GEN-LAST:event_structuralStiffnessMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2139,6 +2153,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem sliceExpMenu;
     private javax.swing.ButtonGroup slicesSource;
     private javax.swing.JLabel sliderFieldLabel;
+    private javax.swing.JMenuItem structuralStiffnessMenu;
     private javax.swing.JTextField sxText;
     private javax.swing.JTextField syText;
     private javax.swing.JTextField szText;

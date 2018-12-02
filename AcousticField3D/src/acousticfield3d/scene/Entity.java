@@ -135,4 +135,8 @@ public class Entity {
     public float distanceTo(final Entity e){
         return getTransform().getTranslation().distance( e.getTransform().getTranslation());
     }
+    
+    public float distanceTo(final Vector3f v){
+        return getTransform().getTranslation().distance( v );
+    }
 }

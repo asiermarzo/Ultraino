@@ -19,7 +19,7 @@ import java.util.List;
 public class SimpleFPGA_128 extends SimpleFPGA{
     @Override
     public int getnTransducers(){
-        return 64;
+        return 64 + 8;
     }
     
     @Override
@@ -29,7 +29,7 @@ public class SimpleFPGA_128 extends SimpleFPGA{
 
     @Override
     public int getSpeed() {
-        return 250000;
+        return 1500000;
     } 
     
     public static void exportAnimationMatlab(final MainForm mf) {
