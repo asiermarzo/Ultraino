@@ -727,7 +727,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
            disableCalc();
 
            center.subtract(cPos, diff);
-           absDiff.set(diff).abs();
+           absDiff.set(diff).localABS();
            
            if (absDiff.x > boundaries.x || absDiff.y > boundaries.y || absDiff.z > boundaries.z){
                rotVec.setRandom();

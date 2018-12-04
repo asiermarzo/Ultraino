@@ -504,8 +504,8 @@ final public class M {
 
     /**
      * Returns Absolute value of a float.
-     * @param fValue The value to abs.
-     * @return The abs of the value.
+     * @param fValue The value to localABS.
+     * @return The localABS of the value.
      * @see java.lang.Math#abs(float)
      */
     public static float abs(float fValue) {

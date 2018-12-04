@@ -1303,7 +1303,7 @@ public final class Vector3f implements Cloneable, java.io.Serializable {
         return this;
     }
 
-    public Vector3f abs() {
+    public Vector3f localABS() {
         x = M.abs(x);
         y = M.abs(y);
         z = M.abs(z);

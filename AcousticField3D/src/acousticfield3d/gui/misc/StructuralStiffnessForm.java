@@ -49,7 +49,7 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
 
         jLabel1.setText("N Points:");
 
-        nPointsText.setText("120");
+        nPointsText.setText("50");
 
         jButton1.setText("Calc");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -152,24 +152,44 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
             
             //calc center of the structure (is it the center of mass??)
             final Vector3f center = Scene.calcCenter( mf.simulation.controlPoints );
+            
+            //calculate the amplitude before adding PI to the top array
+            float totalAmp = 0;
+            for (MeshEntity point : mf.simulation.controlPoints) {
+                final Vector3f pos = point.getTransform().getTranslation();
+                final float amplitude = CalcField.calcFieldAt(pos, mf).length();
+                totalAmp += amplitude;
+            }
+            //add PI to the top array and then calculate force and torque stiffness
+            mf.simulation.addPiToTopTransducers();
             final Vector3f tStiffness = new Vector3f();
             final Vector3f tTorqueStiff = new Vector3f();
             final Vector3f r = new Vector3f();
-            float totalAmp = 0;
+            final Vector3f xStiffness = new Vector3f();
+            final Vector3f yStiffness = new Vector3f();
+            final Vector3f zStiffness = new Vector3f();
             for (MeshEntity point : mf.simulation.controlPoints) {
                 final Vector3f pos = point.getTransform().getTranslation();
                 //calc total stiffness
                 final Vector3f forceGrad = CalcField.calcForceGradients(pos.x, pos.y, pos.z, 
                         point.getTransform().getScale().maxComponent(), mf);
-                final float amplitude = CalcField.calcFieldAt(pos, mf).length();
-                
-                totalAmp += amplitude;
                 tStiffness.addLocal( forceGrad );
+                
+                forceGrad.localABS(); //use always the same sign for the stiffness
+                xStiffness.set(forceGrad.x, 0, 0 );
+                yStiffness.set(0, forceGrad.y, 0 );
+                zStiffness.set(0, 0, forceGrad.z );
                 //calc the total torque stiffness
-                pos.subtract( center, r);
-                tTorqueStiff.addLocal( r.crossLocal(forceGrad) );
+                pos.subtract(center, r); //r is the vector from the center of the structure to the current point
+                
+                r.cross(xStiffness, xStiffness).localABS(); //pseudo-torque for x increments
+                r.cross(yStiffness, yStiffness).localABS(); //pseudo-torque for y increments
+                r.cross(zStiffness, zStiffness).localABS(); //pseudo-torque for z increments
+                tTorqueStiff.addLocal( xStiffness ).addLocal( yStiffness ).addLocal( zStiffness );
             }
+            
             //report
+            tStiffness.negateLocal(); //the stiffness are easier to understand with the negated sign (possitve is converging forces, negative is divergent forces)
             sb.append(i + "\t" + tStiffness.toStringSimple("\t") + "\t" + 
                     tTorqueStiff.toStringSimple("\t") + "\t" + totalAmp + "\n");
         }

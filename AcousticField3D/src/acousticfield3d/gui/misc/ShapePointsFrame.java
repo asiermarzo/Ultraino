@@ -61,7 +61,7 @@ public class ShapePointsFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Separation:");
 
-        sepText.setText("0.05");
+        sepText.setText("0.03");
 
         buttonGroup1.add(circleRadious);
         circleRadious.setSelected(true);
