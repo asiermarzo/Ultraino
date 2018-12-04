@@ -8,6 +8,7 @@ package acousticfield3d.gui.misc;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
+import acousticfield3d.scene.Entity;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
 
@@ -42,6 +43,10 @@ public class ShapePointsFrame extends javax.swing.JFrame {
         cubeRadious = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
         nPointsText = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        area = new javax.swing.JTextArea();
+        clearButton = new javax.swing.JButton();
+        calcDistButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,6 +82,24 @@ public class ShapePointsFrame extends javax.swing.JFrame {
 
         nPointsText.setText("8");
 
+        area.setColumns(20);
+        area.setRows(5);
+        jScrollPane1.setViewportView(area);
+
+        clearButton.setText("Clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+
+        calcDistButton.setText("Calc distances");
+        calcDistButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcDistButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,6 +107,7 @@ public class ShapePointsFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(circleRadious)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -95,14 +119,20 @@ public class ShapePointsFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(sepText))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cubeRadious)
-                            .addComponent(tetraRadious)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addButton)
-                                .addGap(101, 101, 101)
-                                .addComponent(deleteButton)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(tetraRadious)
+                        .addGap(18, 18, 18)
+                        .addComponent(cubeRadious)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(addButton)
+                            .addGap(101, 101, 101)
+                            .addComponent(deleteButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(calcDistButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(clearButton))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -118,13 +148,19 @@ public class ShapePointsFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tetraRadious)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cubeRadious)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tetraRadious)
+                    .addComponent(cubeRadious))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(deleteButton))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clearButton)
+                    .addComponent(calcDistButton))
                 .addContainerGap())
         );
 
@@ -179,15 +215,35 @@ public class ShapePointsFrame extends javax.swing.JFrame {
         mf.needUpdate();
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        area.setText("");
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void calcDistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcDistButtonActionPerformed
+        final ArrayList<Entity> points = mf.selection;
+        for (int i = 0; i < points.size(); i++) {
+            Entity a = points.get(i);
+            for (int j = i+1; j < points.size(); j++) {
+                Entity b = points.get(j);
+                final float dist = a.distanceTo(b);
+                area.append("Distance from " + i + " to " + j + " is " + dist);
+            }
+        }
+    }//GEN-LAST:event_calcDistButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JTextArea area;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton calcDistButton;
     private javax.swing.JRadioButton circleRadious;
+    private javax.swing.JButton clearButton;
     private javax.swing.JRadioButton cubeRadious;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nPointsText;
     private javax.swing.JTextField sepText;
     private javax.swing.JRadioButton tetraRadious;

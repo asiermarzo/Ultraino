@@ -693,7 +693,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         equalizerWeightText.setText("1");
         kickstartCheck.setSelected(false);
         focalKickCheck.setSelected(false);
-        itersMultiFocalKickText.setText("5");
+        itersMultiFocalKickText.setText("10");
         piStartHalfCheck.setSelected(false);
         piStartTop.setSelected(false);
         resurePreCheck.setSelected(false);
@@ -701,7 +701,7 @@ public class AlgorithmsForm extends javax.swing.JFrame implements BFGSProgressLi
         
         final int selectedPreset = presetsCombo.getSelectedIndex();
         if (selectedPreset == 0){ // ITR Focal points
-            stepsText.setText("10");
+            stepsText.setText("50");
             kinoformsCheck.setSelected(true);
         }else if (selectedPreset == 1){ //ITR standing waves
             pressureCheck.setSelected(true);

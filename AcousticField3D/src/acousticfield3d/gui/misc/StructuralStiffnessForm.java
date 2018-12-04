@@ -188,6 +188,9 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
                 tTorqueStiff.addLocal( xStiffness ).addLocal( yStiffness ).addLocal( zStiffness );
             }
             
+            //add PI again on top to return to the previous phases
+            mf.simulation.addPiToTopTransducers(); 
+            
             //report
             tStiffness.negateLocal(); //the stiffness are easier to understand with the negated sign (possitve is converging forces, negative is divergent forces)
             sb.append(i + "\t" + tStiffness.toStringSimple("\t") + "\t" + 
