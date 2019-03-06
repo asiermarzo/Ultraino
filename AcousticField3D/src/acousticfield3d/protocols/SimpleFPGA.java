@@ -15,19 +15,19 @@ import java.util.List;
 public class SimpleFPGA extends DeviceConnection{
           
     public byte getStartPhasesCommand(){
-        return (byte) (0xFF & 255);
-    }
-    
-    public byte getSwapCommand(){
         return (byte) (0xFF & 254);
     }
     
-    public byte getMultiplexCommand(){
+    public byte getSwapCommand(){
         return (byte) (0xFF & 253);
     }
     
-    public byte getStartAmplitudesCommand(){
+    public byte getMultiplexCommand(){
         return (byte) (0xFF & 252);
+    }
+    
+    public byte getStartAmplitudesCommand(){
+        return (byte) (0xFF & 251);
     }
     
     public int getnTransducers(){
@@ -41,7 +41,7 @@ public class SimpleFPGA extends DeviceConnection{
 
     @Override
     public int getSpeed() {
-        return 250000;
+        return 115200;
         //115200
         //250000
     } 

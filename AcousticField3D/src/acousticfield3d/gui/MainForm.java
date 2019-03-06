@@ -1429,7 +1429,12 @@ public final class MainForm extends javax.swing.JFrame {
         float diffY = (y - lastY);
         
         if(lastButton == 1){
+            if (trapsPanel.isDrag()){
+                //if drag is enabled on the calc trap, then we make this drag event into a click event that will calculate a trap that point
+                updateSelection(evt);
+            }
             //zoom( diffY * 1.5f * domainPanel.getGUIGain());
+            
         }else if(lastButton == 3){
             if (cameraLooked){
                 scene.getCamera().moveAzimuthAndInclination(-diffX * rotGain, -diffY * rotGain);

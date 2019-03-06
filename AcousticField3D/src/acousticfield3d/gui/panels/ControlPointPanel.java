@@ -59,6 +59,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
         circleButton = new javax.swing.JButton();
         groundLineCheck = new javax.swing.JCheckBox();
         lineThicknessText = new javax.swing.JTextField();
+        delAutoSendCheck = new javax.swing.JCheckBox();
 
         jButton3.setText("jButton3");
 
@@ -144,42 +145,47 @@ public class ControlPointPanel extends javax.swing.JPanel {
 
         lineThicknessText.setText("0.00025");
 
+        delAutoSendCheck.setText("autoSend");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(delAutoSendCheck))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(cpEnableCheck)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel41)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cpSizeText))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel43)
                         .addGap(7, 7, 7)
                         .addComponent(cpColorText))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(gridWText, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gridHText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gridAddButton))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(mirrorAddButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addComponent(circleButton))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(groundLineCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lineThicknessText))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(cpAddButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cpDelButton))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(placeBeadAtSliceCheck)
                             .addComponent(selectAllButton))
@@ -202,7 +208,9 @@ public class ControlPointPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cpAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cpDelButton))
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(delAutoSendCheck)
+                .addGap(5, 5, 5)
                 .addComponent(selectAllButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(placeBeadAtSliceCheck)
@@ -284,6 +292,12 @@ public class ControlPointPanel extends javax.swing.JPanel {
             }
         }
         mf.clearSelection();
+        
+        if (delAutoSendCheck.isSelected()){
+            selectAll();
+            mf.movePanel.applyDisplacement(0, 0, 0);
+        }
+        
         mf.needUpdate();
     }//GEN-LAST:event_cpDelButtonActionPerformed
 
@@ -445,6 +459,7 @@ public class ControlPointPanel extends javax.swing.JPanel {
     private javax.swing.JButton cpDelButton;
     private javax.swing.JCheckBox cpEnableCheck;
     private javax.swing.JTextField cpSizeText;
+    private javax.swing.JCheckBox delAutoSendCheck;
     private javax.swing.JButton gridAddButton;
     private javax.swing.JTextField gridHText;
     private javax.swing.JTextField gridWText;

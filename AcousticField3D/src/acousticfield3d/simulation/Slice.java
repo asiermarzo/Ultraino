@@ -80,7 +80,7 @@ public class Slice extends MeshEntity{
         if(!selected){
             return c;
         }else{
-            return Color.changeAlpha(c, Color.alpha(c) / 2);
+            return Color.changeAlpha(c, Color.alpha(c) * 3 / 4);
         }
     }
     

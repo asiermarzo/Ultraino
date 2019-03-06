@@ -23,9 +23,13 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="delAutoSendCheck" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cpEnableCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -50,7 +54,7 @@
                       <EmptySpace pref="33" max="32767" attributes="0"/>
                       <Component id="circleButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="groundLineCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lineThicknessText" max="32767" attributes="0"/>
@@ -60,7 +64,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="cpDelButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="placeBeadAtSliceCheck" min="-2" max="-2" attributes="0"/>
                           <Component id="selectAllButton" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -91,7 +95,9 @@
                   <Component id="cpAddButton" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="cpDelButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="delAutoSendCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Component id="selectAllButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="placeBeadAtSliceCheck" min="-2" max="-2" attributes="0"/>
@@ -225,6 +231,11 @@
     <Component class="javax.swing.JTextField" name="lineThicknessText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.00025"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="delAutoSendCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="autoSend"/>
       </Properties>
     </Component>
   </SubComponents>

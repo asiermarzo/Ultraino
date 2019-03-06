@@ -13,6 +13,7 @@ import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Scene;
 import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.TextFrame;
+import java.util.ArrayList;
 
 /**
  *
@@ -44,6 +45,10 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
         rotText = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         scaleText = new javax.swing.JTextField();
+        resetTransPhaseCheck = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
+        stepsText = new javax.swing.JTextField();
+        goSeriesExpsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -75,6 +80,19 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
             }
         });
 
+        resetTransPhaseCheck.setText("reset transducers phases every step");
+
+        jLabel5.setText("steps:");
+
+        stepsText.setText("0,5,10");
+
+        goSeriesExpsButton.setText("Go");
+        goSeriesExpsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goSeriesExpsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,7 +115,16 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dispText)
                             .addComponent(rotText)
-                            .addComponent(scaleText))))
+                            .addComponent(scaleText)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(resetTransPhaseCheck)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stepsText)
+                        .addGap(18, 18, 18)
+                        .addComponent(goSeriesExpsButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,6 +135,8 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(nPointsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addComponent(resetTransPhaseCheck)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -120,7 +149,12 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(scaleText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(stepsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(goSeriesExpsButton))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -130,6 +164,7 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
         final int nPoints = Parse.toInt( nPointsText.getText() );
         final float dispStep = mf.movePanel.getDisplacementStep();
         final float rotStep = mf.movePanel.getRotationStep();
+        final boolean  resetPhases = resetTransPhaseCheck.isSelected();
         
         final Vector3f dis = new Vector3f().parse( dispText.getText() );
         dis.divideLocal(dispStep).divideLocal(nPoints);
@@ -141,6 +176,10 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
         //snap the position of the points
         mf.movePanel.snapBeadPositions();
         for (int i = 0; i < nPoints; i++) {
+            if (resetPhases){
+                mf.simulation.resetTransducers();
+            }
+            
             //move the particles, apply the algorithm
             if(! dis.isZero() ){ //move
                 mf.movePanel.applyDisplacement(dis.x, dis.y, dis.z);
@@ -154,12 +193,13 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
             final Vector3f center = Scene.calcCenter( mf.simulation.controlPoints );
             
             //calculate the amplitude before adding PI to the top array
-            float totalAmp = 0;
+            float totalAmpSqr = 0;
             for (MeshEntity point : mf.simulation.controlPoints) {
                 final Vector3f pos = point.getTransform().getTranslation();
-                final float amplitude = CalcField.calcFieldAt(pos, mf).length();
-                totalAmp += amplitude;
+                final float amp = CalcField.calcFieldAt(pos, mf).length();
+                totalAmpSqr += amp*amp;
             }
+            
             //add PI to the top array and then calculate force and torque stiffness
             mf.simulation.addPiToTopTransducers();
             final Vector3f tStiffness = new Vector3f();
@@ -168,8 +208,10 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
             final Vector3f xStiffness = new Vector3f();
             final Vector3f yStiffness = new Vector3f();
             final Vector3f zStiffness = new Vector3f();
+            
             for (MeshEntity point : mf.simulation.controlPoints) {
                 final Vector3f pos = point.getTransform().getTranslation();
+                
                 //calc total stiffness
                 final Vector3f forceGrad = CalcField.calcForceGradients(pos.x, pos.y, pos.z, 
                         point.getTransform().getScale().maxComponent(), mf);
@@ -179,6 +221,7 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
                 xStiffness.set(forceGrad.x, 0, 0 );
                 yStiffness.set(0, forceGrad.y, 0 );
                 zStiffness.set(0, 0, forceGrad.z );
+                
                 //calc the total torque stiffness
                 pos.subtract(center, r); //r is the vector from the center of the structure to the current point
                 
@@ -193,8 +236,12 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
             
             //report
             tStiffness.negateLocal(); //the stiffness are easier to understand with the negated sign (possitve is converging forces, negative is divergent forces)
-            sb.append(i + "\t" + tStiffness.toStringSimple("\t") + "\t" + 
-                    tTorqueStiff.toStringSimple("\t") + "\t" + totalAmp + "\n");
+            /*sb.append(i + "\t" + tStiffness.toStringSimple("\t") + "\t" + 
+                    tTorqueStiff.toStringSimple("\t") + "\t" + totalAmpSqr + "\n");*/
+            
+            final float minDist = calcMinDist();
+            
+            sb.append(i + "\t" + minDist + "\t" + tStiffness.toStringSimple("\t") + "\t" + totalAmpSqr + "\n");
         }
         
         //restore the position of the points
@@ -207,16 +254,38 @@ public class StructuralStiffnessForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_scaleTextActionPerformed
 
+    private void goSeriesExpsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goSeriesExpsButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_goSeriesExpsButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField dispText;
+    private javax.swing.JButton goSeriesExpsButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField nPointsText;
+    private javax.swing.JCheckBox resetTransPhaseCheck;
     private javax.swing.JTextField rotText;
     private javax.swing.JTextField scaleText;
+    private javax.swing.JTextField stepsText;
     // End of variables declaration//GEN-END:variables
+
+    private float calcMinDist() {
+        final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
+        final int n = points.size();
+        float minDist = Float.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            MeshEntity a = points.get(i);
+            for (int j = i+1; j < n; j++) {
+                MeshEntity b = points.get(j);
+                minDist = M.min(minDist, a.distanceTo(b));
+            }
+        }
+        return minDist;
+    }
 }

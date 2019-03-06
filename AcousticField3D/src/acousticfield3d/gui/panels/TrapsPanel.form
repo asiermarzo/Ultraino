@@ -20,7 +20,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -48,28 +48,31 @@
                   <Component id="xForceText" alignment="0" max="32767" attributes="0"/>
                   <Component id="yForceText" alignment="0" max="32767" attributes="0"/>
                   <Component id="zForceText" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="calcClickCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="sendCheck" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="calcForceCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="calcLaplacianCheck" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="0" pref="19" max="32767" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="focusCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="calcButton" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="calcClickCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="sendCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="35" max="32767" attributes="0"/>
+                      <Component id="dragCheck" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="genAnimCheck" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="calcForceCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="calcLaplacianCheck" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -96,8 +99,11 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="calcClickCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="sendCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dragCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="genAnimCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pressureAText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -227,6 +233,16 @@
     <Component class="javax.swing.JCheckBox" name="sendCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="send"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="dragCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="drag"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="genAnimCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="genAnim"/>
       </Properties>
     </Component>
   </SubComponents>

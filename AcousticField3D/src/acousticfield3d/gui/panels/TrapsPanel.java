@@ -56,6 +56,8 @@ public class TrapsPanel extends javax.swing.JPanel {
         zForceText = new javax.swing.JTextField();
         calcLaplacianCheck = new javax.swing.JCheckBox();
         sendCheck = new javax.swing.JCheckBox();
+        dragCheck = new javax.swing.JCheckBox();
+        genAnimCheck = new javax.swing.JCheckBox();
 
         focusCheck.setSelected(true);
         focusCheck.setText("focus");
@@ -104,6 +106,10 @@ public class TrapsPanel extends javax.swing.JPanel {
 
         sendCheck.setText("send");
 
+        dragCheck.setText("drag");
+
+        genAnimCheck.setText("genAnim");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,20 +139,23 @@ public class TrapsPanel extends javax.swing.JPanel {
                     .addComponent(yForceText)
                     .addComponent(zForceText)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(focusCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(calcButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(calcClickCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sendCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addComponent(dragCheck))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(calcClickCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sendCheck))
+                            .addComponent(genAnimCheck)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(calcForceCheck)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(calcLaplacianCheck)))
-                        .addGap(0, 19, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(focusCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(calcButton)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -168,8 +177,11 @@ public class TrapsPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calcClickCheck)
-                    .addComponent(sendCheck))
-                .addGap(18, 18, 18)
+                    .addComponent(sendCheck)
+                    .addComponent(dragCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(genAnimCheck)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(pressureAText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -250,6 +262,9 @@ public class TrapsPanel extends javax.swing.JPanel {
             if ( sendCheck.isSelected() ){
                 mf.transControlPanel.sendPattern();
             }
+            if ( genAnimCheck.isSelected()){
+                mf.animPanel.addKeyFrame();
+            }
             mf.needUpdate();
         }
         
@@ -283,6 +298,10 @@ public class TrapsPanel extends javax.swing.JPanel {
     
     }
     
+    public boolean isDrag(){
+        return dragCheck.isSelected();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField angleText;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -290,7 +309,9 @@ public class TrapsPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox calcClickCheck;
     private javax.swing.JCheckBox calcForceCheck;
     private javax.swing.JCheckBox calcLaplacianCheck;
+    private javax.swing.JCheckBox dragCheck;
     private javax.swing.JCheckBox focusCheck;
+    private javax.swing.JCheckBox genAnimCheck;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField mText;
     private javax.swing.JRadioButton noneRadio;
