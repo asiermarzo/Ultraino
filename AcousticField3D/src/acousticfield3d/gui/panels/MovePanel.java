@@ -657,7 +657,7 @@ public class MovePanel extends javax.swing.JPanel {
     }
     
     private void snapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapButtonActionPerformed
-        snapBeadPositions();
+        snapParticlesPosition();
     }//GEN-LAST:event_snapButtonActionPerformed
 
     private void neutralButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neutralButtonActionPerformed
@@ -770,7 +770,7 @@ public class MovePanel extends javax.swing.JPanel {
     }
 
 
-    public void snapBeadPositions(){
+    public void snapParticlesPosition(){
         snapBeadPositions.clear();
         for ( Entity e : mf.simulation.controlPoints){
             snapBeadPositions.add( e.getTransform().getTranslation().clone() ); 

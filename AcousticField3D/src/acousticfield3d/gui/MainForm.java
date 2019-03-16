@@ -230,7 +230,7 @@ public final class MainForm extends javax.swing.JFrame {
         
         adjustGUIGainAndCameras();
         
-        movePanel.snapBeadPositions();
+        movePanel.snapParticlesPosition();
         
         needUpdate();
     }

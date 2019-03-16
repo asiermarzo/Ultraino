@@ -373,6 +373,13 @@ public class Scene {
         return min;
     }
     
+    public static Vector3f calcSize(final List<? extends Entity> entities){
+        Vector3f min = new Vector3f();
+        Vector3f max = new Vector3f();
+        calcBoundaries(entities,min,max);
+        return max.subtract(min);
+    }
+    
     public static void calcBoundaries(List<? extends Entity> entities, Vector3f min, Vector3f max){
         min.set(Float.MAX_VALUE);
         max.set(-Float.MAX_VALUE);
