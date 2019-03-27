@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_201" class="java.beans.XMLDecoder">
+ <object class="acousticfield3d.Config" id="Config0">
+  <void class="acousticfield3d.Config" method="getField">
+   <string>frameY</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <int>23</int>
+   </void>
+  </void>
+  <void class="acousticfield3d.Config" method="getField">
+   <string>frameWidth</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <int>1680</int>
+   </void>
+  </void>
+  <void class="acousticfield3d.Config" method="getField">
+   <string>frameHeigh</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <int>1027</int>
+   </void>
+  </void>
+ </object>
+<void class="acousticfield3d.Config" id="Field0" method="getField">
+ <string>guiValues</string>
+ <void id="HashMap0" method="get">
+  <object idref="Config0"/>
+  <void method="put">
+   <string>.holoPatternsForm.moduleText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.algForm.gMinText</string>
+   <string>1E-25</string>
+  </void>
+  <void method="put">
+   <string>.animPanel.repeatWrap</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.presetsCombo</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.zText</string>
+   <string>-0.0100</string>
+  </void>
+  <void method="put">
+   <string>.animPanel.durationText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.gridCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.simForm.mediumSpeedText</string>
+   <string>346.0</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.halfSplitCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.maskDisableCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.autoAddCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.twinRadio</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.phaseNorText</string>
+   <string>0.3</string>
+  </void>
+  <void method="put">
+   <string>.syText</string>
+   <string>0.0030</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.gridHText</string>
+   <string>3</string>
+  </void>
+  <void method="put">
+   <string>.animPanel.stopWrap</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.normAmpCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.xText</string>
+   <string>0.0000</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.yForceText</string>
+   <string>1500</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.wText</string>
+   <string>0.0090</string>
+  </void>
+  <void method="put">
+   <string>.animPanel.pingpongWrap</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.ampText</string>
+   <string>1.0000</string>
+  </void>
+  <void method="put">
+   <string>.algForm.reportCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.cpSizeText</string>
+   <string>0.0015</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.phaseNorFirstCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.wText</string>
+   <string>0.009</string>
+  </void>
+  <void method="put">
+   <string>.algForm.piStartHalfCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.phaseDiscText</string>
+   <string>10</string>
+  </void>
+  <void method="put">
+   <string>.algForm.stepsText</string>
+   <string>10</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.varText</string>
+   <string>0.2</string>
+  </void>
+  <void method="put">
+   <string>.simForm.particleDensityText</string>
+   <string>25.0</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.delAutoSendCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.hexCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.simForm.mediumCombo</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.xForceText</string>
+   <string>1500</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.frText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.hDivText</string>
+   <string>5</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.phaseText</string>
+   <string>0.0000</string>
+  </void>
+  <void method="put">
+   <string>.algForm.resurePreCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.stepSizeText</string>
+   <string>0.0005</string>
+  </void>
+  <void method="put">
+   <string>.algForm.equalizerCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.maskVisibleCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.distancesText</string>
+   <string>10E-3 10E-3 10E-3</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.placeBeadAtSliceCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.simpleGorkovCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.itersMultiFocalKickText</string>
+   <string>10</string>
+  </void>
+  <void method="put">
+   <string>.transControlPanel.pushPullModeCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.sizeText</string>
+   <string>0.01 0.003 0.01</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.orderText</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.laplacianConstantsText</string>
+   <string>1.0 1.0 1.0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.forceCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.gorkovCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.angleText</string>
+   <string>90</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.groundLineCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.maskMaskCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.bottleCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.rtSliceAlphaText</string>
+   <string>1.0</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.phaseDiscCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.calcForceCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.pressureBText</string>
+   <string>1500</string>
+  </void>
+  <void method="put">
+   <string>.algForm.kinoformsCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.ampDiscCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.phaseHCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.posText</string>
+   <string>0.00 0.00 0.00</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.calcClickCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.autoCalcCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.algForm.alphaText</string>
+   <string>1.0</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.repeatCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.dragCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.kickstartBFGSorHoloCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.transControlPanel.durationsText</string>
+   <string>1 0</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.QAmpCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.simForm.particleCombo</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.frText</string>
+   <string>40000.0000</string>
+  </void>
+  <void method="put">
+   <string>.transControlPanel.deviceCombo</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.ryText</string>
+   <string>0.0000</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.autoSendCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.algForm.reportEveryText</string>
+   <string>1000</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.pinText</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.powerText</string>
+   <string>2.4000</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.useAlgCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.zForceText</string>
+   <string>1500</string>
+  </void>
+  <void method="put">
+   <string>.domainPanel.showSimBBCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.helicalCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.rzText</string>
+   <string>0.0000</string>
+  </void>
+  <void method="put">
+   <string>.animPanel.waitText</string>
+   <string>200</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.radialCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.lowPressureKText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.algForm.weightsPText</string>
+   <string>-1 0 -1</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.moveAllCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.transControlPanel.extraNumberText</string>
+   <string>256</string>
+  </void>
+  <void method="put">
+   <string>.algForm.piStartTop</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.angleText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.algForm.maxGLaplacian</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.colAmpMinText</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.yText</string>
+   <string>0.0000</string>
+  </void>
+  <void method="put">
+   <string>.szText</string>
+   <string>0.0100</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.interpolAutoSendCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.onlySelectionCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.repeatWaitText</string>
+   <string>0.0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.powerText</string>
+   <string>2.4</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.colAmpMaxText</string>
+   <string>1500</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.ampDiscText</string>
+   <string>10</string>
+  </void>
+  <void method="put">
+   <string>.miscPanel.colorText</string>
+   <string>255,255,255,255</string>
+  </void>
+  <void method="put">
+   <string>.algForm.divTransCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.centralWText</string>
+   <string>4</string>
+  </void>
+  <void method="put">
+   <string>.algForm.divTransMethodCombo</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.equalizerWeightText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.cpColorText</string>
+   <string>255,255,255,255</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.rtSliceEnableCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.simForm.particleSpeedText</string>
+   <string>2600.0</string>
+  </void>
+  <void method="put">
+   <string>.domainPanel.showCubeCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.rotText</string>
+   <string>0.00 0.00 0.00</string>
+  </void>
+  <void method="put">
+   <string>.sxText</string>
+   <string>0.0100</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.pressureAText</string>
+   <string>500</string>
+  </void>
+  <void method="put">
+   <string>.transducersPanel.showHideTransCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.calcLaplacianCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.spaceText</string>
+   <string>0.01</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.freqText</string>
+   <string>40000</string>
+  </void>
+  <void method="put">
+   <string>.algForm.pressureCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.lineThicknessText</string>
+   <string>0.00025</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.gridWText</string>
+   <string>4</string>
+  </void>
+  <void method="put">
+   <string>.algForm.kickstartCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.gridCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.phaseCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.repeatText</string>
+   <string>10</string>
+  </void>
+  <void method="put">
+   <string>.movePanel.speedText</string>
+   <string>0.001</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.genAnimCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.ampAndPhaseCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.phaseNorValCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.phaseNorNoneCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.circleCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.simForm.mediumDensityText</string>
+   <string>1.2</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.sendCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.noneRadio</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.domainPanel.guiGainText</string>
+   <string>0.003</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.recenterSimCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.offsetText</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.pointsPanel.cpEnableCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.presetsCombo</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.focusCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.rxText</string>
+   <string>0.0000</string>
+  </void>
+  <void method="put">
+   <string>.addTransducersForm.radialCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.algForm.xMinText</string>
+   <string>1E-25</string>
+  </void>
+  <void method="put">
+   <string>.algForm.weightsNText</string>
+   <string>-1 -4 -1</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.stickyCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.holoPatternsForm.phaseNorMinCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.rtSlicePanel.amplitudeCheck</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.algForm.focalKickCheck</string>
+   <string>0</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.mText</string>
+   <string>1</string>
+  </void>
+  <void method="put">
+   <string>.trapsPanel.vortexRadio</string>
+   <string>0</string>
+  </void>
+ </void>
+</void>
+<void idref="HashMap0"/>
+</java>
