@@ -1006,7 +1006,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu8.add(selectTransTopMenu1);
 
-        phaseUpMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
+        phaseUpMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
         phaseUpMenu.setText("phaseUp");
         phaseUpMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1015,7 +1015,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu8.add(phaseUpMenu);
 
-        phaseDownMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, 0));
+        phaseDownMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
         phaseDownMenu.setText("phaseDown");
         phaseDownMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
