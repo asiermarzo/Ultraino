@@ -41,8 +41,10 @@ public class SimpleFPGA extends DeviceConnection{
 
     @Override
     public int getSpeed() {
-        return 115200;
+        return 230400;
         //115200
+        //230400 -- FASTEST POSSIBLE FOR MACOS (java limitation rxtx)
+        //256000
         //250000
     } 
 

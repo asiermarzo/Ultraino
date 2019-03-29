@@ -2,6 +2,20 @@
 <java version="1.8.0_201" class="java.beans.XMLDecoder">
  <object class="acousticfield3d.Config" id="Config0">
   <void class="acousticfield3d.Config" method="getField">
+   <string>lastPath</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <string>/Users/bob/Documents/Bristol BIG/acousticFieldSim</string>
+   </void>
+  </void>
+  <void class="acousticfield3d.Config" method="getField">
+   <string>lastSimFile</string>
+   <void method="set">
+    <object idref="Config0"/>
+    <string>/Users/bob/Documents/Bristol BIG/acousticFieldSim/sonicSurface4p6+dev.xml.gz</string>
+   </void>
+  </void>
+  <void class="acousticfield3d.Config" method="getField">
    <string>frameY</string>
    <void method="set">
     <object idref="Config0"/>
@@ -37,7 +51,7 @@
   </void>
   <void method="put">
    <string>.animPanel.repeatWrap</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.algForm.presetsCombo</string>
@@ -45,7 +59,7 @@
   </void>
   <void method="put">
    <string>.zText</string>
-   <string>-0.0100</string>
+   <string>0.0787</string>
   </void>
   <void method="put">
    <string>.animPanel.durationText</string>
@@ -69,11 +83,11 @@
   </void>
   <void method="put">
    <string>.movePanel.autoAddCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.trapsPanel.twinRadio</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.holoPatternsForm.phaseNorText</string>
@@ -97,7 +111,7 @@
   </void>
   <void method="put">
    <string>.xText</string>
-   <string>0.0000</string>
+   <string>-0.0367</string>
   </void>
   <void method="put">
    <string>.trapsPanel.yForceText</string>
@@ -109,7 +123,7 @@
   </void>
   <void method="put">
    <string>.animPanel.pingpongWrap</string>
-   <string>1</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.transducersPanel.ampText</string>
@@ -141,7 +155,7 @@
   </void>
   <void method="put">
    <string>.algForm.stepsText</string>
-   <string>10</string>
+   <string>50</string>
   </void>
   <void method="put">
    <string>.holoPatternsForm.varText</string>
@@ -177,7 +191,7 @@
   </void>
   <void method="put">
    <string>.transducersPanel.phaseText</string>
-   <string>0.0000</string>
+   <string>0.9468</string>
   </void>
   <void method="put">
    <string>.algForm.resurePreCheck</string>
@@ -201,7 +215,7 @@
   </void>
   <void method="put">
    <string>.pointsPanel.placeBeadAtSliceCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.algForm.simpleGorkovCheck</string>
@@ -221,7 +235,7 @@
   </void>
   <void method="put">
    <string>.transducersPanel.orderText</string>
-   <string>0</string>
+   <string>64</string>
   </void>
   <void method="put">
    <string>.algForm.laplacianConstantsText</string>
@@ -329,7 +343,7 @@
   </void>
   <void method="put">
    <string>.ryText</string>
-   <string>0.0000</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.movePanel.autoSendCheck</string>
@@ -349,7 +363,7 @@
   </void>
   <void method="put">
    <string>.movePanel.useAlgCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.trapsPanel.zForceText</string>
@@ -385,7 +399,7 @@
   </void>
   <void method="put">
    <string>.movePanel.moveAllCheck</string>
-   <string>0</string>
+   <string>1</string>
   </void>
   <void method="put">
    <string>.transControlPanel.extraNumberText</string>
@@ -565,7 +579,7 @@
   </void>
   <void method="put">
    <string>.trapsPanel.noneRadio</string>
-   <string>1</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.domainPanel.guiGainText</string>
@@ -593,7 +607,7 @@
   </void>
   <void method="put">
    <string>.rxText</string>
-   <string>0.0000</string>
+   <string>0</string>
   </void>
   <void method="put">
    <string>.addTransducersForm.radialCheck</string>
