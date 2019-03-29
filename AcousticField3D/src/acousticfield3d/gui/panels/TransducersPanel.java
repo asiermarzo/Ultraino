@@ -81,6 +81,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         pinButton = new javax.swing.JButton();
 
         wText.setText("0");
+        wText.setToolTipText("apperture of the transducer - diameter of the emitting piston");
         wText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 wTextFocusGained(evt);
@@ -97,6 +98,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         jLabel8.setText("FR");
 
         frText.setText("0");
+        frText.setToolTipText("frequency");
         frText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 frTextFocusGained(evt);
@@ -111,6 +113,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         jLabel9.setText("A");
 
         ampText.setText("0");
+        ampText.setToolTipText("relative emission amplitude - from 0 to 1 (0 is off, 1 is on)");
         ampText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 ampTextFocusGained(evt);
@@ -125,6 +128,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         jLabel10.setText("PH");
 
         phaseText.setText("0");
+        phaseText.setToolTipText("phase - it is in radians/PI (to change soon...)");
         phaseText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 phaseTextFocusGained(evt);
@@ -144,6 +148,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         });
 
         showHideTransCheck.setText("Show");
+        showHideTransCheck.setToolTipText("shows/hides the transducers");
         showHideTransCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showHideTransCheckActionPerformed(evt);
@@ -151,6 +156,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         });
 
         phaseHCheck.setText("Grey");
+        phaseHCheck.setToolTipText("uses greyscale instead of hue to represent the transducer's phase");
         phaseHCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 phaseHCheckActionPerformed(evt);
@@ -160,6 +166,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         jLabel11.setText("P");
 
         powerText.setText("0");
+        powerText.setToolTipText("power - pascals at 1m with a 15Vpp excitation signal");
         powerText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 powerTextFocusGained(evt);
@@ -172,6 +179,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         });
 
         labelButton.setText("Order");
+        labelButton.setToolTipText("assigns the order to the selected transducers");
         labelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 labelButtonActionPerformed(evt);
@@ -179,8 +187,10 @@ public class TransducersPanel extends javax.swing.JPanel {
         });
 
         orderText.setText("0");
+        orderText.setToolTipText("start number for the order");
 
         pinText.setText("0");
+        pinText.setToolTipText("start number for the pin");
         pinText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pinTextActionPerformed(evt);
@@ -188,6 +198,7 @@ public class TransducersPanel extends javax.swing.JPanel {
         });
 
         pinButton.setText("Pin");
+        pinButton.setToolTipText("assigns the pins to the selected transducers - related to hardware channels");
         pinButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pinButtonActionPerformed(evt);

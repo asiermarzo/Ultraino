@@ -46,6 +46,7 @@ public class DomainPanel extends javax.swing.JPanel {
         jLabel18.setText("Domain size:");
 
         adjustButton.setText("Adjust");
+        adjustButton.setToolTipText("adjust the camera speed and similar");
         adjustButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adjustButtonActionPerformed(evt);
@@ -58,6 +59,7 @@ public class DomainPanel extends javax.swing.JPanel {
 
         showSimBBCheck.setSelected(true);
         showSimBBCheck.setText("ShowBB");
+        showSimBBCheck.setToolTipText("shows the bounding box of the simulation");
         showSimBBCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showSimBBCheckActionPerformed(evt);
@@ -65,6 +67,7 @@ public class DomainPanel extends javax.swing.JPanel {
         });
 
         showCubeCheck.setText("show cube");
+        showCubeCheck.setToolTipText("shows an auxiliary cube");
         showCubeCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showCubeCheckActionPerformed(evt);
@@ -72,6 +75,7 @@ public class DomainPanel extends javax.swing.JPanel {
         });
 
         simEqCubeButton.setText("sim = cube");
+        simEqCubeButton.setToolTipText("makes the domain the size of the cube");
         simEqCubeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simEqCubeButtonActionPerformed(evt);
@@ -79,6 +83,7 @@ public class DomainPanel extends javax.swing.JPanel {
         });
 
         cubeEqSimButton.setText("cube = sim");
+        cubeEqSimButton.setToolTipText("makes the cube the size of the simulation");
         cubeEqSimButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cubeEqSimButtonActionPerformed(evt);

@@ -78,6 +78,7 @@
     <Component class="javax.swing.JButton" name="adjustButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Adjust"/>
+        <Property name="toolTipText" type="java.lang.String" value="adjust the camera speed and similar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adjustButtonActionPerformed"/>
@@ -97,6 +98,7 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="ShowBB"/>
+        <Property name="toolTipText" type="java.lang.String" value="shows the bounding box of the simulation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showSimBBCheckActionPerformed"/>
@@ -105,6 +107,7 @@
     <Component class="javax.swing.JCheckBox" name="showCubeCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="show cube"/>
+        <Property name="toolTipText" type="java.lang.String" value="shows an auxiliary cube"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showCubeCheckActionPerformed"/>
@@ -113,6 +116,7 @@
     <Component class="javax.swing.JButton" name="simEqCubeButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="sim = cube"/>
+        <Property name="toolTipText" type="java.lang.String" value="makes the domain the size of the cube"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="simEqCubeButtonActionPerformed"/>
@@ -121,6 +125,7 @@
     <Component class="javax.swing.JButton" name="cubeEqSimButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="cube = sim"/>
+        <Property name="toolTipText" type="java.lang.String" value="makes the cube the size of the simulation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cubeEqSimButtonActionPerformed"/>

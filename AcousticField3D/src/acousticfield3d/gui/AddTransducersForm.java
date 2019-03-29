@@ -88,6 +88,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
         });
 
         spaceText.setText("0.01");
+        spaceText.setToolTipText("separation between transducer centers");
 
         jLabel5.setText("Separation:");
 
@@ -109,42 +110,53 @@ public class AddTransducersForm extends javax.swing.JFrame {
         jLabel3.setText("Position:");
 
         posText.setText("0.00 0.00 0.00");
+        posText.setToolTipText("central position");
 
         jLabel4.setText("Rotation");
 
         rotText.setText("0.00 0.00 0.00");
+        rotText.setToolTipText("global rotation");
 
         jLabel6.setText("Size:");
 
         sizeText.setText("0.01 0.003 0.01");
+        sizeText.setToolTipText("transducer size");
 
         jLabel7.setText("Aperture (diam):");
 
         wText.setText("0.009");
+        wText.setToolTipText("diameter of the emitter piston");
 
         powerText.setText("2.4");
+        powerText.setToolTipText("emission power - pascals at 1 m with a 15Vpp excitation signal");
 
         jLabel9.setText("Freq:");
 
         freqText.setText("40000");
+        freqText.setToolTipText("frequency");
 
         arrangementGroup.add(gridCheck);
         gridCheck.setSelected(true);
         gridCheck.setText("grid");
+        gridCheck.setToolTipText("regular square grid");
 
         arrangementGroup.add(hexCheck);
         hexCheck.setText("hex");
+        hexCheck.setToolTipText("with hexagonal packing");
 
         arrangementGroup.add(radialCheck);
         radialCheck.setText("radial");
+        radialCheck.setToolTipText("lines of (columns) transducers arranged in a circle");
 
         arrangementGroup.add(circleCheck);
         circleCheck.setText("circle");
+        circleCheck.setToolTipText("just a circle of columns transducers");
 
         jLabel11.setText("Power:");
 
         recenterSimCheck.setSelected(true);
         recenterSimCheck.setText("recenter sim");
+        recenterSimCheck.setToolTipText("recenters the simulation after adding the transducer");
 
         jLabel8.setText("presets:");
 

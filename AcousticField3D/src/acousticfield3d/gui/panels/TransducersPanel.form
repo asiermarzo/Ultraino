@@ -128,6 +128,7 @@
     <Component class="javax.swing.JTextField" name="wText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="apperture of the transducer - diameter of the emitting piston"/>
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="wTextFocusGained"/>
@@ -147,6 +148,7 @@
     <Component class="javax.swing.JTextField" name="frText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="frequency"/>
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="frTextFocusGained"/>
@@ -161,6 +163,7 @@
     <Component class="javax.swing.JTextField" name="ampText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="relative emission amplitude - from 0 to 1 (0 is off, 1 is on)"/>
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="ampTextFocusGained"/>
@@ -175,6 +178,7 @@
     <Component class="javax.swing.JTextField" name="phaseText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="phase - it is in radians/PI (to change soon...)"/>
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="phaseTextFocusGained"/>
@@ -192,6 +196,7 @@
     <Component class="javax.swing.JCheckBox" name="showHideTransCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="Show"/>
+        <Property name="toolTipText" type="java.lang.String" value="shows/hides the transducers"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showHideTransCheckActionPerformed"/>
@@ -200,6 +205,7 @@
     <Component class="javax.swing.JCheckBox" name="phaseHCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="Grey"/>
+        <Property name="toolTipText" type="java.lang.String" value="uses greyscale instead of hue to represent the transducer&apos;s phase"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phaseHCheckActionPerformed"/>
@@ -213,6 +219,7 @@
     <Component class="javax.swing.JTextField" name="powerText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="power - pascals at 1m with a 15Vpp excitation signal"/>
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="powerTextFocusGained"/>
@@ -222,6 +229,7 @@
     <Component class="javax.swing.JButton" name="labelButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Order"/>
+        <Property name="toolTipText" type="java.lang.String" value="assigns the order to the selected transducers"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="labelButtonActionPerformed"/>
@@ -230,11 +238,13 @@
     <Component class="javax.swing.JTextField" name="orderText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="start number for the order"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="pinText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="start number for the pin"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pinTextActionPerformed"/>
@@ -243,6 +253,7 @@
     <Component class="javax.swing.JButton" name="pinButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pin"/>
+        <Property name="toolTipText" type="java.lang.String" value="assigns the pins to the selected transducers - related to hardware channels"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pinButtonActionPerformed"/>

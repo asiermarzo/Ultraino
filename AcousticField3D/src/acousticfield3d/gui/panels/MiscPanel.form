@@ -148,6 +148,7 @@
               <ComponentRef name="maskGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="mask"/>
+            <Property name="toolTipText" type="java.lang.String" value="Make them mask the other objects, useful for augmented reality"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maskMaskCheckActionPerformed"/>
@@ -160,6 +161,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="disable"/>
+            <Property name="toolTipText" type="java.lang.String" value="the aux objects are not visible"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maskDisableCheckActionPerformed"/>
@@ -171,6 +173,7 @@
               <ComponentRef name="maskGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="visible"/>
+            <Property name="toolTipText" type="java.lang.String" value="make them visible"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maskVisibleCheckActionPerformed"/>
@@ -179,6 +182,7 @@
         <Component class="javax.swing.JButton" name="maskAddCubeButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cube"/>
+            <Property name="toolTipText" type="java.lang.String" value="add a cube"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maskAddCubeButtonActionPerformed"/>
@@ -187,6 +191,7 @@
         <Component class="javax.swing.JButton" name="maskDelButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Del"/>
+            <Property name="toolTipText" type="java.lang.String" value="deletes the select objects"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maskDelButtonActionPerformed"/>
@@ -195,6 +200,7 @@
         <Component class="javax.swing.JButton" name="maskAddSphereButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sphe"/>
+            <Property name="toolTipText" type="java.lang.String" value="add a sphere"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maskAddSphereButtonActionPerformed"/>
@@ -203,6 +209,7 @@
         <Component class="javax.swing.JTextField" name="colorText">
           <Properties>
             <Property name="text" type="java.lang.String" value="255,255,255,255"/>
+            <Property name="toolTipText" type="java.lang.String" value="Color RGBA"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorTextActionPerformed"/>
@@ -212,12 +219,14 @@
     </Container>
     <Component class="javax.swing.JCheckBox" name="phaseDiscCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Phase discretization (pi):"/>
+        <Property name="text" type="java.lang.String" value="Phase discretization:"/>
+        <Property name="toolTipText" type="java.lang.String" value="enables phase discretization"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="phaseDiscText">
       <Properties>
         <Property name="text" type="java.lang.String" value="10"/>
+        <Property name="toolTipText" type="java.lang.String" value="number of phase levels"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="reloadShadersButton">
@@ -231,21 +240,24 @@
     <Component class="javax.swing.JCheckBox" name="ampDiscCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="Amp discretization:"/>
+        <Property name="toolTipText" type="java.lang.String" value="enables amplitude discretization"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="ampDiscText">
       <Properties>
         <Property name="text" type="java.lang.String" value="10"/>
+        <Property name="toolTipText" type="java.lang.String" value="different levels of amplitude"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="hdiv (w):"/>
+        <Property name="text" type="java.lang.String" value="hdiv:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="hDivText">
       <Properties>
         <Property name="text" type="java.lang.String" value="5"/>
+        <Property name="toolTipText" type="java.lang.String" value="distance between points for stencil approximations wavelength/thisNumber"/>
       </Properties>
     </Component>
   </SubComponents>

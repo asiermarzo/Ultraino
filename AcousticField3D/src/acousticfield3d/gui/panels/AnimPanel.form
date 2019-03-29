@@ -20,51 +20,45 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="waitText" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="49" pref="49" max="-2" attributes="0"/>
+                              <Component id="durationText" min="-2" pref="68" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="49" pref="49" max="-2" attributes="0"/>
-                                  <Component id="durationText" min="-2" pref="68" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="stopWrap" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="repeatWrap" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="pingpongWrap" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="prevButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="nextButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                          <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="stopWrap" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="repeatWrap" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="pingpongWrap" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="prevButton" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="playToggle" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                       <Component id="currentFrameText" min="-2" pref="57" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="stopButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="nextButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stopButton" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="playSlider" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="playSlider" pref="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="addAnim" min="-2" pref="43" max="-2" attributes="0"/>
@@ -73,20 +67,23 @@
                                   </Group>
                                   <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="addStatus" min="-2" pref="43" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="snapStatus" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="delStatus" min="-2" pref="40" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="waitText" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -99,7 +96,6 @@
                   <Component id="addAnim" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="delAnim" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="addStatus" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="snapStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="delStatus" alignment="3" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -147,7 +143,7 @@
     <Component class="javax.swing.JButton" name="addAnim">
       <Properties>
         <Property name="text" type="java.lang.String" value="+"/>
-        <Property name="toolTipText" type="java.lang.String" value="Create animation"/>
+        <Property name="toolTipText" type="java.lang.String" value="Add animation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addAnimActionPerformed"/>
@@ -185,24 +181,16 @@
     <Component class="javax.swing.JButton" name="addStatus">
       <Properties>
         <Property name="text" type="java.lang.String" value="+"/>
-        <Property name="toolTipText" type="java.lang.String" value="add point"/>
+        <Property name="toolTipText" type="java.lang.String" value="add keyframe"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addStatusActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="snapStatus">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Snap"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="snapStatusActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="delStatus">
       <Properties>
         <Property name="text" type="java.lang.String" value="-"/>
-        <Property name="toolTipText" type="java.lang.String" value="remove point"/>
+        <Property name="toolTipText" type="java.lang.String" value="remove keyframe"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="delStatusActionPerformed"/>
@@ -233,6 +221,7 @@
           <ComponentRef name="wraperGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="stop"/>
+        <Property name="toolTipText" type="java.lang.String" value="stops when the animation reaches the end"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="repeatWrap">
@@ -241,6 +230,7 @@
           <ComponentRef name="wraperGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="repeat"/>
+        <Property name="toolTipText" type="java.lang.String" value="repeats from the beginning when the animation reaches the end"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="pingpongWrap">
@@ -250,11 +240,13 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="pingpong"/>
+        <Property name="toolTipText" type="java.lang.String" value="repeat animation in pingpong"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="stopButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Stop"/>
+        <Property name="toolTipText" type="java.lang.String" value="stop current animation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopButtonActionPerformed"/>
@@ -264,7 +256,7 @@
       <Properties>
         <Property name="mnemonic" type="int" value="97"/>
         <Property name="text" type="java.lang.String" value="Play"/>
-        <Property name="toolTipText" type="java.lang.String" value="play animations"/>
+        <Property name="toolTipText" type="java.lang.String" value="play current animation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playToggleActionPerformed"/>
@@ -287,6 +279,7 @@
     <Component class="javax.swing.JTextField" name="durationText">
       <Properties>
         <Property name="text" type="java.lang.String" value="1"/>
+        <Property name="toolTipText" type="java.lang.String" value="durations in periods of the point (only for some boards)"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="durationTextActionPerformed"/>
@@ -300,11 +293,13 @@
     <Component class="javax.swing.JTextField" name="waitText">
       <Properties>
         <Property name="text" type="java.lang.String" value="200"/>
+        <Property name="toolTipText" type="java.lang.String" value="milliseconds to wait between keyframes"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="prevButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Prev"/>
+        <Property name="toolTipText" type="java.lang.String" value="previous keyframe"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prevButtonActionPerformed"/>
@@ -313,6 +308,7 @@
     <Component class="javax.swing.JButton" name="nextButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Next"/>
+        <Property name="toolTipText" type="java.lang.String" value="next keyframe"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
@@ -322,6 +318,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="current frame"/>
       </Properties>
     </Component>
   </SubComponents>
