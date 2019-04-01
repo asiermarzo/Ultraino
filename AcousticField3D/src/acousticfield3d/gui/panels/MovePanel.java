@@ -6,7 +6,6 @@
 
 package acousticfield3d.gui.panels;
 
-import acousticfield3d.algorithms.CalcField;
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Vector3f;
@@ -17,7 +16,6 @@ import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.utils.Parse;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -45,9 +43,13 @@ public class MovePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
+        snapButton = new javax.swing.JButton();
+        resetButton = new javax.swing.JButton();
+        doCalcCheck = new javax.swing.JCheckBox();
+        sendToDevicesCheck = new javax.swing.JCheckBox();
+        addKeyFrameCheck = new javax.swing.JCheckBox();
+        moveAllCheck = new javax.swing.JCheckBox();
         beadNSpinner = new javax.swing.JSpinner();
-        autoCalcCheck = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         speedText = new javax.swing.JTextField();
         leftButton = new javax.swing.JButton();
@@ -56,11 +58,6 @@ public class MovePanel extends javax.swing.JPanel {
         downButton = new javax.swing.JButton();
         forwardButton = new javax.swing.JButton();
         backwardsButton = new javax.swing.JButton();
-        autoSendCheck = new javax.swing.JCheckBox();
-        resetButton = new javax.swing.JButton();
-        snapButton = new javax.swing.JButton();
-        autoAddCheck = new javax.swing.JCheckBox();
-        moveAllCheck = new javax.swing.JCheckBox();
         neutralButton = new javax.swing.JButton();
         useAlgCheck = new javax.swing.JCheckBox();
         rXPButton = new javax.swing.JButton();
@@ -76,95 +73,109 @@ public class MovePanel extends javax.swing.JPanel {
         gatherButton = new javax.swing.JButton();
         expandButton = new javax.swing.JButton();
         autoReturnButton = new javax.swing.JButton();
-        interpolAutoSendCheck = new javax.swing.JCheckBox();
         repeatCheck = new javax.swing.JCheckBox();
         repeatText = new javax.swing.JTextField();
         repeatWaitText = new javax.swing.JTextField();
 
-        jLabel2.setText("N:");
-
-        beadNSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
-
-        autoCalcCheck.setSelected(true);
-        autoCalcCheck.setText("calc");
-
-        jLabel3.setText("Step size:");
-
-        speedText.setText("0.001");
-
-        leftButton.setText("L");
-        leftButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leftButtonActionPerformed(evt);
-            }
-        });
-
-        upButton.setText("U");
-        upButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upButtonActionPerformed(evt);
-            }
-        });
-
-        rightButton.setText("R");
-        rightButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rightButtonActionPerformed(evt);
-            }
-        });
-
-        downButton.setText("D");
-        downButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                downButtonActionPerformed(evt);
-            }
-        });
-
-        forwardButton.setText("F");
-        forwardButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forwardButtonActionPerformed(evt);
-            }
-        });
-
-        backwardsButton.setText("B");
-        backwardsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backwardsButtonActionPerformed(evt);
-            }
-        });
-
-        autoSendCheck.setSelected(true);
-        autoSendCheck.setText("send");
-
-        resetButton.setText("R");
-        resetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetButtonActionPerformed(evt);
-            }
-        });
-
-        snapButton.setText("S");
+        snapButton.setText("Snap");
+        snapButton.setToolTipText("stores the current position of the particles");
         snapButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 snapButtonActionPerformed(evt);
             }
         });
 
-        autoAddCheck.setText("genAnim");
+        resetButton.setText("Reset");
+        resetButton.setToolTipText("resets the particles position the the snapped position");
+        resetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetButtonActionPerformed(evt);
+            }
+        });
+
+        doCalcCheck.setSelected(true);
+        doCalcCheck.setText("calc");
+        doCalcCheck.setToolTipText("autocalculates the traps after every movement");
+
+        sendToDevicesCheck.setSelected(true);
+        sendToDevicesCheck.setText("send");
+        sendToDevicesCheck.setToolTipText("sends to the devices after every movement");
+
+        addKeyFrameCheck.setText("add keyframe");
+        addKeyFrameCheck.setToolTipText("adds a new keyframe the current animation after every movement");
 
         moveAllCheck.setText("Move All");
+        moveAllCheck.setToolTipText("move all the selected particles or only one");
+
+        beadNSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        beadNSpinner.setToolTipText("if moveAll is not selected then the Nth particle is moved");
+
+        jLabel3.setText("Step size:");
+
+        speedText.setText("0.001");
+        speedText.setToolTipText("step size of the movements and scaling");
+
+        leftButton.setText("←");
+        leftButton.setToolTipText("move selected points left");
+        leftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftButtonActionPerformed(evt);
+            }
+        });
+
+        upButton.setText("↑");
+        upButton.setToolTipText("move selected points up");
+        upButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                upButtonActionPerformed(evt);
+            }
+        });
+
+        rightButton.setText("→");
+        rightButton.setToolTipText("move selected points right");
+        rightButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightButtonActionPerformed(evt);
+            }
+        });
+
+        downButton.setText("↓");
+        downButton.setToolTipText("move selected points down");
+        downButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downButtonActionPerformed(evt);
+            }
+        });
+
+        forwardButton.setText("↗");
+        forwardButton.setToolTipText("move selected points forward");
+        forwardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forwardButtonActionPerformed(evt);
+            }
+        });
+
+        backwardsButton.setText("↖");
+        backwardsButton.setToolTipText("move selected points back");
+        backwardsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backwardsButtonActionPerformed(evt);
+            }
+        });
 
         neutralButton.setText("0");
+        neutralButton.setToolTipText("No movement - just for recal & send");
         neutralButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 neutralButtonActionPerformed(evt);
             }
         });
 
-        useAlgCheck.setText("useAlg");
+        useAlgCheck.setText("traps with complex algorithm");
+        useAlgCheck.setToolTipText("calculates the traps with the algorithms from Optimizers - otherwise it uses the simple algorithm indicated in the tabs Traps");
 
         rXPButton.setText("Rx+");
+        rXPButton.setToolTipText("rotate group of particles along X, center is the center of the group of particles");
         rXPButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rXPButtonActionPerformed(evt);
@@ -209,8 +220,10 @@ public class MovePanel extends javax.swing.JPanel {
         jLabel1.setText("angle:");
 
         angleText.setText("1");
+        angleText.setToolTipText("step angle in degrees");
 
-        interpButton.setText("Int");
+        interpButton.setText("Inter");
+        interpButton.setToolTipText("moves step by step the particles from the previous keyframe to the current position");
         interpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 interpButtonActionPerformed(evt);
@@ -218,8 +231,10 @@ public class MovePanel extends javax.swing.JPanel {
         });
 
         stepSizeText.setText("0.0005");
+        stepSizeText.setToolTipText("maximum particle distance between interpolated steps");
 
         gatherButton.setText(">");
+        gatherButton.setToolTipText("gather");
         gatherButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gatherButtonActionPerformed(evt);
@@ -227,26 +242,29 @@ public class MovePanel extends javax.swing.JPanel {
         });
 
         expandButton.setText("<");
+        expandButton.setToolTipText("expand");
         expandButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 expandButtonActionPerformed(evt);
             }
         });
 
-        autoReturnButton.setText("AutoR");
+        autoReturnButton.setText("Return");
+        autoReturnButton.setToolTipText("is like interPolating to the snap position");
         autoReturnButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 autoReturnButtonActionPerformed(evt);
             }
         });
 
-        interpolAutoSendCheck.setText("autoSend");
-
         repeatCheck.setText("repeat");
+        repeatCheck.setToolTipText("any movement, rotation or scale will be repeat n times");
 
         repeatText.setText("10");
+        repeatText.setToolTipText("number of times to repeat the move action");
 
-        repeatWaitText.setText("0.0");
+        repeatWaitText.setText("0");
+        repeatWaitText.setToolTipText("ms seconds to wait between repeated actions");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -255,131 +273,99 @@ public class MovePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(leftButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(10, 10, 10))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(neutralButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(gatherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(upButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(rightButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(2, 2, 2))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(downButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(expandButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(forwardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(4, 4, 4))
-                                    .addComponent(backwardsButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(snapButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(resetButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(beadNSpinner)
-                        .addGap(18, 18, 18)
-                        .addComponent(autoCalcCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(autoSendCheck))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(autoAddCheck)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(speedText))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(autoReturnButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(moveAllCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(useAlgCheck))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(interpolAutoSendCheck)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(speedText))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(leftButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(backwardsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(expandButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
+                                    .addComponent(downButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(angleText))
+                                    .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(interpButton)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(rXNButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(rXPButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(rYNButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(rYPButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(upButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(rZPButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(rZNButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(forwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(neutralButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(gatherButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(repeatCheck)
+                        .addComponent(moveAllCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(beadNSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(useAlgCheck)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(doCalcCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(repeatText, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(sendToDevicesCheck)
+                        .addGap(18, 18, 18)
+                        .addComponent(addKeyFrameCheck))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(repeatCheck)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(repeatText, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(repeatWaitText))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(angleText))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(rXNButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(rXPButton))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(rYNButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(rYPButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(rZPButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(rZNButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(interpButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(snapButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(repeatWaitText)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resetButton)
+                            .addComponent(autoReturnButton))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(beadNSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(autoCalcCheck)
-                    .addComponent(autoSendCheck))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(autoAddCheck)
-                    .addComponent(jLabel3)
-                    .addComponent(speedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(leftButton)
                     .addComponent(upButton)
-                    .addComponent(rightButton)
-                    .addComponent(forwardButton))
+                    .addComponent(forwardButton)
+                    .addComponent(backwardsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(downButton)
-                    .addComponent(backwardsButton)
-                    .addComponent(gatherButton)
-                    .addComponent(expandButton))
+                    .addComponent(leftButton)
+                    .addComponent(rightButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(resetButton)
-                    .addComponent(snapButton)
-                    .addComponent(neutralButton))
+                    .addComponent(expandButton)
+                    .addComponent(neutralButton)
+                    .addComponent(gatherButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(angleText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
+                    .addComponent(speedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rXPButton)
@@ -390,10 +376,21 @@ public class MovePanel extends javax.swing.JPanel {
                     .addComponent(rXNButton)
                     .addComponent(rYNButton)
                     .addComponent(rZNButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(angleText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(moveAllCheck)
-                    .addComponent(useAlgCheck))
+                    .addComponent(beadNSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(useAlgCheck)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(doCalcCheck)
+                    .addComponent(sendToDevicesCheck)
+                    .addComponent(addKeyFrameCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(repeatCheck)
@@ -405,8 +402,10 @@ public class MovePanel extends javax.swing.JPanel {
                     .addComponent(stepSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(autoReturnButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(interpolAutoSendCheck)
-                .addGap(10, 10, 10))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(resetButton)
+                    .addComponent(snapButton))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -426,9 +425,9 @@ public class MovePanel extends javax.swing.JPanel {
     }
     
     public void doAutoCalcAndSend(){
-        final boolean autoCalc = autoCalcCheck.isSelected();
-        final boolean autoAddKeyFrame = autoAddCheck.isSelected();
-        final boolean autoSend = autoSendCheck.isSelected();
+        final boolean autoCalc = doCalcCheck.isSelected();
+        final boolean autoAddKeyFrame = addKeyFrameCheck.isSelected();
+        final boolean autoSend = sendToDevicesCheck.isSelected();
 
         if (autoCalc) {
 
@@ -464,6 +463,7 @@ public class MovePanel extends javax.swing.JPanel {
         }        
         return sel.get( n );
     }
+    
     public void applyDisplacementRepeat(float x, float y, float z){
         if (! repeatCheck.isSelected()){
             applyDisplacement(x,y,z);
@@ -691,7 +691,7 @@ public class MovePanel extends javax.swing.JPanel {
     
     
     private void interpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpButtonActionPerformed
-        final boolean generateAnimation = ! interpolAutoSendCheck.isSelected();
+        final boolean generateAnimation = addKeyFrameCheck.isSelected();
         final float stepSize = Parse.toFloat( stepSizeText.getText() );
         final AnimKeyFrame lastKey = mf.animPanel.currentAnimation.lastKeyFrame();
         final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
@@ -795,38 +795,35 @@ public class MovePanel extends javax.swing.JPanel {
     }
     
     public void setGenerateKeyFrame(final boolean enabled){
-        autoAddCheck.setSelected(enabled);
+        addKeyFrameCheck.setSelected(enabled);
     }
     
     public void setCalculate(final boolean enabled){
-        autoCalcCheck.setSelected(enabled);
+        doCalcCheck.setSelected(enabled);
     }
     
     public boolean isGenerateKeyFrame(){
-        return autoAddCheck.isSelected();
+        return addKeyFrameCheck.isSelected();
     }
     
     public boolean isCalculate(){
-        return autoCalcCheck.isSelected();
+        return doCalcCheck.isSelected();
     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox addKeyFrameCheck;
     private javax.swing.JTextField angleText;
-    private javax.swing.JCheckBox autoAddCheck;
-    private javax.swing.JCheckBox autoCalcCheck;
     private javax.swing.JButton autoReturnButton;
-    private javax.swing.JCheckBox autoSendCheck;
     private javax.swing.JButton backwardsButton;
     private javax.swing.JSpinner beadNSpinner;
+    private javax.swing.JCheckBox doCalcCheck;
     private javax.swing.JButton downButton;
     private javax.swing.JButton expandButton;
     private javax.swing.JButton forwardButton;
     private javax.swing.JButton gatherButton;
     private javax.swing.JButton interpButton;
-    private javax.swing.JCheckBox interpolAutoSendCheck;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton leftButton;
     private javax.swing.JCheckBox moveAllCheck;
@@ -842,6 +839,7 @@ public class MovePanel extends javax.swing.JPanel {
     private javax.swing.JTextField repeatWaitText;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton rightButton;
+    private javax.swing.JCheckBox sendToDevicesCheck;
     private javax.swing.JButton snapButton;
     private javax.swing.JTextField speedText;
     private javax.swing.JTextField stepSizeText;

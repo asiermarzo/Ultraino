@@ -48,9 +48,6 @@ public class MiscPanel extends javax.swing.JPanel {
         return phaseDiscText;
     }
     
- 
-    
-    
     public int getPhaseDiscretization(){
         return Parse.toInt( phaseDiscText.getText() );
     }
@@ -90,6 +87,7 @@ public class MiscPanel extends javax.swing.JPanel {
 
         maskGroup.add(maskMaskCheck);
         maskMaskCheck.setText("mask");
+        maskMaskCheck.setToolTipText("Make them mask the other objects, useful for augmented reality");
         maskMaskCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maskMaskCheckActionPerformed(evt);
@@ -99,6 +97,7 @@ public class MiscPanel extends javax.swing.JPanel {
         maskGroup.add(maskDisableCheck);
         maskDisableCheck.setSelected(true);
         maskDisableCheck.setText("disable");
+        maskDisableCheck.setToolTipText("the aux objects are not visible");
         maskDisableCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maskDisableCheckActionPerformed(evt);
@@ -107,6 +106,7 @@ public class MiscPanel extends javax.swing.JPanel {
 
         maskGroup.add(maskVisibleCheck);
         maskVisibleCheck.setText("visible");
+        maskVisibleCheck.setToolTipText("make them visible");
         maskVisibleCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maskVisibleCheckActionPerformed(evt);
@@ -114,6 +114,7 @@ public class MiscPanel extends javax.swing.JPanel {
         });
 
         maskAddCubeButton.setText("Cube");
+        maskAddCubeButton.setToolTipText("add a cube");
         maskAddCubeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maskAddCubeButtonActionPerformed(evt);
@@ -121,6 +122,7 @@ public class MiscPanel extends javax.swing.JPanel {
         });
 
         maskDelButton.setText("Del");
+        maskDelButton.setToolTipText("deletes the select objects");
         maskDelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maskDelButtonActionPerformed(evt);
@@ -128,6 +130,7 @@ public class MiscPanel extends javax.swing.JPanel {
         });
 
         maskAddSphereButton.setText("Sphe");
+        maskAddSphereButton.setToolTipText("add a sphere");
         maskAddSphereButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maskAddSphereButtonActionPerformed(evt);
@@ -135,6 +138,7 @@ public class MiscPanel extends javax.swing.JPanel {
         });
 
         colorText.setText("255,255,255,255");
+        colorText.setToolTipText("Color RGBA");
         colorText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorTextActionPerformed(evt);
@@ -184,9 +188,11 @@ public class MiscPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        phaseDiscCheck.setText("Phase discretization (pi):");
+        phaseDiscCheck.setText("Phase discretization:");
+        phaseDiscCheck.setToolTipText("enables phase discretization");
 
         phaseDiscText.setText("10");
+        phaseDiscText.setToolTipText("number of phase levels");
 
         reloadShadersButton.setText("ReloadShaders");
         reloadShadersButton.addActionListener(new java.awt.event.ActionListener() {
@@ -196,12 +202,15 @@ public class MiscPanel extends javax.swing.JPanel {
         });
 
         ampDiscCheck.setText("Amp discretization:");
+        ampDiscCheck.setToolTipText("enables amplitude discretization");
 
         ampDiscText.setText("10");
+        ampDiscText.setToolTipText("different levels of amplitude");
 
-        jLabel2.setText("hdiv (w):");
+        jLabel2.setText("hdiv:");
 
         hDivText.setText("5");
+        hDivText.setToolTipText("distance between points for stencil approximations wavelength/thisNumber");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

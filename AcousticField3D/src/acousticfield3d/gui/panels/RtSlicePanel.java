@@ -12,11 +12,9 @@ import acousticfield3d.scene.Entity;
 import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Resources;
 import acousticfield3d.scene.Scene;
-import acousticfield3d.shapes.Quad;
 import acousticfield3d.simulation.Slice;
 import acousticfield3d.utils.Color;
 import acousticfield3d.utils.Parse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,14 +61,16 @@ public class RtSlicePanel extends javax.swing.JPanel {
         stickyCheck = new javax.swing.JCheckBox();
         QAmpCheck = new javax.swing.JRadioButton();
 
-        sliceAddButton.setText("Add");
+        sliceAddButton.setText("+");
+        sliceAddButton.setToolTipText("Adds a Slice");
         sliceAddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sliceAddButtonActionPerformed(evt);
             }
         });
 
-        sliceDelButton.setText("Del");
+        sliceDelButton.setText("-");
+        sliceDelButton.setToolTipText("Deletes the selected slices");
         sliceDelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sliceDelButtonActionPerformed(evt);
@@ -80,6 +80,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         jLabel11.setText("AmpCol:");
 
         colAmpMinText.setText("0");
+        colAmpMinText.setToolTipText("to adjust color map - minimum pascals value");
         colAmpMinText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colAmpMinTextActionPerformed(evt);
@@ -89,6 +90,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         jLabel32.setText("Alpha:");
 
         rtSliceAlphaText.setText("1.0");
+        rtSliceAlphaText.setToolTipText("transparency of the slices");
         rtSliceAlphaText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rtSliceAlphaTextActionPerformed(evt);
@@ -97,6 +99,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
 
         rtSliceEnableCheck.setSelected(true);
         rtSliceEnableCheck.setText("enable");
+        rtSliceEnableCheck.setToolTipText("enables or disables the visualization of the slices");
         rtSliceEnableCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rtSliceEnableCheckActionPerformed(evt);
@@ -104,6 +107,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         });
 
         colAmpMaxText.setText("1500");
+        colAmpMaxText.setToolTipText("maximum pascals");
         colAmpMaxText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colAmpMaxTextActionPerformed(evt);
@@ -113,6 +117,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         buttonGroup1.add(amplitudeCheck);
         amplitudeCheck.setSelected(true);
         amplitudeCheck.setText("Amplitude");
+        amplitudeCheck.setToolTipText("show the amplitude");
         amplitudeCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 amplitudeCheckActionPerformed(evt);
@@ -121,6 +126,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
 
         buttonGroup1.add(phaseCheck);
         phaseCheck.setText("Phase");
+        phaseCheck.setToolTipText("shows the phase");
         phaseCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 phaseCheckActionPerformed(evt);
@@ -129,6 +135,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
 
         buttonGroup1.add(ampAndPhaseCheck);
         ampAndPhaseCheck.setText("Amp & Phase");
+        ampAndPhaseCheck.setToolTipText("shows the amplitude and the phase together");
         ampAndPhaseCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ampAndPhaseCheckActionPerformed(evt);
@@ -136,6 +143,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         });
 
         followButton.setText("FollowBag");
+        followButton.setToolTipText("makes the slice follows what is in the bag");
         followButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 followButtonActionPerformed(evt);
@@ -143,6 +151,7 @@ public class RtSlicePanel extends javax.swing.JPanel {
         });
 
         clearFollowButton.setText("Clear");
+        clearFollowButton.setToolTipText("clears the following constrains");
         clearFollowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearFollowButtonActionPerformed(evt);
@@ -150,9 +159,11 @@ public class RtSlicePanel extends javax.swing.JPanel {
         });
 
         stickyCheck.setText("sticky");
+        stickyCheck.setToolTipText("makes the follow sticky - still needs to check what it means : )");
 
         buttonGroup1.add(QAmpCheck);
         QAmpCheck.setText("QAmp");
+        QAmpCheck.setToolTipText("shows the amplitude - works for a larger number of transducers but they cannot have orientation or non-binary amplitudes");
         QAmpCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QAmpCheckActionPerformed(evt);

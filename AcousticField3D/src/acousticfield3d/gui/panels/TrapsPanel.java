@@ -61,22 +61,29 @@ public class TrapsPanel extends javax.swing.JPanel {
 
         focusCheck.setSelected(true);
         focusCheck.setText("focus");
+        focusCheck.setToolTipText("focus on the point");
 
         buttonGroup1.add(twinRadio);
         twinRadio.setText("twin");
+        twinRadio.setToolTipText("twin trap");
 
         angleText.setText("90");
+        angleText.setToolTipText("angle of the twin trap");
 
         buttonGroup1.add(vortexRadio);
         vortexRadio.setText("vortex");
+        vortexRadio.setToolTipText("vortex trap");
 
         mText.setText("1");
+        mText.setToolTipText("topological charge");
 
         buttonGroup1.add(noneRadio);
         noneRadio.setSelected(true);
         noneRadio.setText("none");
+        noneRadio.setToolTipText("no extra signature for the focus");
 
         calcButton.setText("Calc");
+        calcButton.setToolTipText("calculates the trap");
         calcButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 calcButtonActionPerformed(evt);
@@ -84,17 +91,22 @@ public class TrapsPanel extends javax.swing.JPanel {
         });
 
         calcClickCheck.setText("calc");
+        calcClickCheck.setToolTipText("calculate new traps when clicking on a slice");
 
         jLabel3.setText("Pressure");
 
         pressureAText.setText("500");
+        pressureAText.setToolTipText("pressure at the click position");
 
         pressureBText.setText("1500");
+        pressureBText.setToolTipText("set this number as you wish, it is for getting percentages on the left text");
 
         pressureDivText.setEditable(false);
         pressureDivText.setText("3");
+        pressureDivText.setToolTipText("proportion between the pressures");
 
         calcForceCheck.setText("calc force");
+        calcForceCheck.setToolTipText("calculates forces as well as pressure");
 
         xForceText.setText("1500");
 
@@ -103,12 +115,16 @@ public class TrapsPanel extends javax.swing.JPanel {
         zForceText.setText("1500");
 
         calcLaplacianCheck.setText("calc lap");
+        calcLaplacianCheck.setToolTipText("calculates laplacians as well as pressures");
 
         sendCheck.setText("send");
+        sendCheck.setToolTipText("sends the phases to the devices when clicking on a slice");
 
         dragCheck.setText("drag");
+        dragCheck.setToolTipText("calculates & send when dragging the mouse on a slice");
 
-        genAnimCheck.setText("genAnim");
+        genAnimCheck.setText("add key frame");
+        genAnimCheck.setToolTipText("adds a key frame when clicking on a slice");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

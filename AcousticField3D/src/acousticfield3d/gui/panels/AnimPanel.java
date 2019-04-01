@@ -90,7 +90,6 @@ public class AnimPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         animationList = new javax.swing.JList();
         addStatus = new javax.swing.JButton();
-        snapStatus = new javax.swing.JButton();
         delStatus = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         statusList = new javax.swing.JList();
@@ -108,14 +107,16 @@ public class AnimPanel extends javax.swing.JPanel {
         nextButton = new javax.swing.JButton();
         currentFrameText = new javax.swing.JLabel();
 
-        addAnim.setText("A");
+        addAnim.setText("+");
+        addAnim.setToolTipText("Add animation");
         addAnim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addAnimActionPerformed(evt);
             }
         });
 
-        delAnim.setText("D");
+        delAnim.setText("-");
+        delAnim.setToolTipText("remove animation");
         delAnim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delAnimActionPerformed(evt);
@@ -135,21 +136,16 @@ public class AnimPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(animationList);
 
-        addStatus.setText("A");
+        addStatus.setText("+");
+        addStatus.setToolTipText("add keyframe");
         addStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addStatusActionPerformed(evt);
             }
         });
 
-        snapStatus.setText("S");
-        snapStatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                snapStatusActionPerformed(evt);
-            }
-        });
-
-        delStatus.setText("D");
+        delStatus.setText("-");
+        delStatus.setToolTipText("remove keyframe");
         delStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delStatusActionPerformed(evt);
@@ -166,15 +162,19 @@ public class AnimPanel extends javax.swing.JPanel {
 
         wraperGroup.add(stopWrap);
         stopWrap.setText("stop");
+        stopWrap.setToolTipText("stops when the animation reaches the end");
 
         wraperGroup.add(repeatWrap);
         repeatWrap.setText("repeat");
+        repeatWrap.setToolTipText("repeats from the beginning when the animation reaches the end");
 
         wraperGroup.add(pingpongWrap);
         pingpongWrap.setSelected(true);
         pingpongWrap.setText("pingpong");
+        pingpongWrap.setToolTipText("repeat animation in pingpong");
 
         stopButton.setText("Stop");
+        stopButton.setToolTipText("stop current animation");
         stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopButtonActionPerformed(evt);
@@ -183,6 +183,7 @@ public class AnimPanel extends javax.swing.JPanel {
 
         playToggle.setMnemonic('a');
         playToggle.setText("Play");
+        playToggle.setToolTipText("play current animation");
         playToggle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playToggleActionPerformed(evt);
@@ -200,6 +201,7 @@ public class AnimPanel extends javax.swing.JPanel {
         jLabel13.setText("Periods:");
 
         durationText.setText("1");
+        durationText.setToolTipText("durations in periods of the point (only for some boards)");
         durationText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 durationTextActionPerformed(evt);
@@ -209,8 +211,10 @@ public class AnimPanel extends javax.swing.JPanel {
         jLabel1.setText("Wait:");
 
         waitText.setText("200");
+        waitText.setToolTipText("milliseconds to wait between keyframes");
 
         prevButton.setText("Prev");
+        prevButton.setToolTipText("previous keyframe");
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevButtonActionPerformed(evt);
@@ -218,6 +222,7 @@ public class AnimPanel extends javax.swing.JPanel {
         });
 
         nextButton.setText("Next");
+        nextButton.setToolTipText("next keyframe");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -226,6 +231,7 @@ public class AnimPanel extends javax.swing.JPanel {
 
         currentFrameText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         currentFrameText.setText("0");
+        currentFrameText.setToolTipText("current frame");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -234,56 +240,50 @@ public class AnimPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addAnim)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(delAnim)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(snapStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(delStatus))
+                        .addComponent(durationText, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(playSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(stopWrap)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(repeatWrap)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pingpongWrap))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(prevButton, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(stopWrap)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(repeatWrap)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(pingpongWrap))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(durationText, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(playToggle)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(stopButton)))
-                        .addGap(10, 10, 10))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(prevButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(currentFrameText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nextButton)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(playToggle)
+                                        .addGap(6, 6, 6)
+                                        .addComponent(currentFrameText, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(nextButton, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(stopButton, javax.swing.GroupLayout.Alignment.LEADING))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(playSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(addAnim, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(delAnim, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(addStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(delStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(waitText)
-                        .addContainerGap())))
+                        .addComponent(waitText)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,34 +292,32 @@ public class AnimPanel extends javax.swing.JPanel {
                     .addComponent(addAnim)
                     .addComponent(delAnim)
                     .addComponent(addStatus)
-                    .addComponent(snapStatus)
-                    .addComponent(delStatus))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(delStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(durationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(durationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pingpongWrap, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(stopWrap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(repeatWrap)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(playSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(prevButton)
-                    .addComponent(nextButton)
-                    .addComponent(currentFrameText))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(nextButton))
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stopButton)
-                    .addComponent(playToggle))
+                    .addComponent(currentFrameText)
+                    .addComponent(playToggle)
+                    .addComponent(stopButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -421,15 +419,6 @@ public class AnimPanel extends javax.swing.JPanel {
         return akf;
     }
     
-    private void snapStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapStatusActionPerformed
-        int[] selected = statusList.getSelectedIndices();
-        for(int i : selected){
-            AnimKeyFrame akf = currentAnimation.keyFrames.getAt(i);
-            akf.setDuration( Parse.toFloat(durationText.getText()));
-            akf.snap(mf.simulation);
-        }
-    }//GEN-LAST:event_snapStatusActionPerformed
-
    
     private void delStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delStatusActionPerformed
         int[] selected = statusList.getSelectedIndices();
@@ -618,7 +607,6 @@ public class AnimPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton playToggle;
     private javax.swing.JButton prevButton;
     private javax.swing.JRadioButton repeatWrap;
-    private javax.swing.JButton snapStatus;
     private javax.swing.JList statusList;
     private javax.swing.JButton stopButton;
     private javax.swing.JRadioButton stopWrap;

@@ -113,7 +113,8 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="sliceAddButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Add"/>
+        <Property name="text" type="java.lang.String" value="+"/>
+        <Property name="toolTipText" type="java.lang.String" value="Adds a Slice"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sliceAddButtonActionPerformed"/>
@@ -121,7 +122,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="sliceDelButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Del"/>
+        <Property name="text" type="java.lang.String" value="-"/>
+        <Property name="toolTipText" type="java.lang.String" value="Deletes the selected slices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sliceDelButtonActionPerformed"/>
@@ -135,6 +137,7 @@
     <Component class="javax.swing.JTextField" name="colAmpMinText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="toolTipText" type="java.lang.String" value="to adjust color map - minimum pascals value"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colAmpMinTextActionPerformed"/>
@@ -148,6 +151,7 @@
     <Component class="javax.swing.JTextField" name="rtSliceAlphaText">
       <Properties>
         <Property name="text" type="java.lang.String" value="1.0"/>
+        <Property name="toolTipText" type="java.lang.String" value="transparency of the slices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rtSliceAlphaTextActionPerformed"/>
@@ -157,6 +161,7 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="enable"/>
+        <Property name="toolTipText" type="java.lang.String" value="enables or disables the visualization of the slices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rtSliceEnableCheckActionPerformed"/>
@@ -165,6 +170,7 @@
     <Component class="javax.swing.JTextField" name="colAmpMaxText">
       <Properties>
         <Property name="text" type="java.lang.String" value="1500"/>
+        <Property name="toolTipText" type="java.lang.String" value="maximum pascals"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colAmpMaxTextActionPerformed"/>
@@ -177,6 +183,7 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Amplitude"/>
+        <Property name="toolTipText" type="java.lang.String" value="show the amplitude"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="amplitudeCheckActionPerformed"/>
@@ -188,6 +195,7 @@
           <ComponentRef name="buttonGroup1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Phase"/>
+        <Property name="toolTipText" type="java.lang.String" value="shows the phase"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phaseCheckActionPerformed"/>
@@ -199,6 +207,7 @@
           <ComponentRef name="buttonGroup1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Amp &amp; Phase"/>
+        <Property name="toolTipText" type="java.lang.String" value="shows the amplitude and the phase together"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ampAndPhaseCheckActionPerformed"/>
@@ -207,6 +216,7 @@
     <Component class="javax.swing.JButton" name="followButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="FollowBag"/>
+        <Property name="toolTipText" type="java.lang.String" value="makes the slice follows what is in the bag"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="followButtonActionPerformed"/>
@@ -215,6 +225,7 @@
     <Component class="javax.swing.JButton" name="clearFollowButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Clear"/>
+        <Property name="toolTipText" type="java.lang.String" value="clears the following constrains"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearFollowButtonActionPerformed"/>
@@ -223,6 +234,7 @@
     <Component class="javax.swing.JCheckBox" name="stickyCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="sticky"/>
+        <Property name="toolTipText" type="java.lang.String" value="makes the follow sticky - still needs to check what it means : )"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="QAmpCheck">
@@ -231,6 +243,7 @@
           <ComponentRef name="buttonGroup1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="QAmp"/>
+        <Property name="toolTipText" type="java.lang.String" value="shows the amplitude - works for a larger number of transducers but they cannot have orientation or non-binary amplitudes"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="QAmpCheckActionPerformed"/>

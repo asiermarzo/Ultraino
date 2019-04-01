@@ -26,23 +26,19 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="delAutoSendCheck" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cpEnableCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel41" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cpSizeText" max="32767" attributes="0"/>
+                      <Component id="cpSizeText" pref="70" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel43" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Component id="cpColorText" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="gridWText" min="-2" pref="42" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="gridHText" max="32767" attributes="0"/>
@@ -50,24 +46,21 @@
                       <Component id="gridAddButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="mirrorAddButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="33" max="32767" attributes="0"/>
-                      <Component id="circleButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <Component id="groundLineCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lineThicknessText" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="cpAddButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="cpDelButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="placeBeadAtSliceCheck" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="placeBeadAtSliceCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="selectAllButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="cpAddButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="cpDelButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="delAutoSendCheck" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -94,19 +87,13 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cpAddButton" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="cpDelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="delAutoSendCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="delAutoSendCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="selectAllButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="placeBeadAtSliceCheck" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="mirrorAddButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="circleButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="gridWText" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="gridHText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -126,6 +113,7 @@
     <Component class="javax.swing.JCheckBox" name="cpEnableCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="enable"/>
+        <Property name="toolTipText" type="java.lang.String" value="enables/disables the control points"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cpEnableCheckActionPerformed"/>
@@ -139,6 +127,7 @@
     <Component class="javax.swing.JTextField" name="cpSizeText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.0015"/>
+        <Property name="toolTipText" type="java.lang.String" value="size of the created control points"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cpSizeTextActionPerformed"/>
@@ -152,6 +141,7 @@
     <Component class="javax.swing.JTextField" name="cpColorText">
       <Properties>
         <Property name="text" type="java.lang.String" value="255,255,255,255"/>
+        <Property name="toolTipText" type="java.lang.String" value="color RGBA"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cpColorTextActionPerformed"/>
@@ -159,7 +149,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="cpAddButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Add"/>
+        <Property name="text" type="java.lang.String" value="+"/>
+        <Property name="toolTipText" type="java.lang.String" value="add control point"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cpAddButtonActionPerformed"/>
@@ -167,7 +158,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="cpDelButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Del"/>
+        <Property name="text" type="java.lang.String" value="-"/>
+        <Property name="toolTipText" type="java.lang.String" value="delete control point"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cpDelButtonActionPerformed"/>
@@ -176,22 +168,16 @@
     <Component class="javax.swing.JCheckBox" name="placeBeadAtSliceCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="PlaceBeadAtSlice"/>
+        <Property name="toolTipText" type="java.lang.String" value="when cliking on a slice it will add a control point there"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="selectAllButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Select All"/>
+        <Property name="toolTipText" type="java.lang.String" value="select all the control points"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectAllButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="mirrorAddButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="MirrorAdd"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mirrorAddButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="gridWText">
@@ -207,22 +193,16 @@
     <Component class="javax.swing.JButton" name="gridAddButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="gridAdd"/>
+        <Property name="toolTipText" type="java.lang.String" value="adds a grid of particles"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gridAddButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="circleButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Circle"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="circleButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JCheckBox" name="groundLineCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="groundLine"/>
+        <Property name="text" type="java.lang.String" value="lines"/>
+        <Property name="toolTipText" type="java.lang.String" value="adds ground lines of the specified thickness"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="groundLineCheckActionPerformed"/>
@@ -235,7 +215,8 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="delAutoSendCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="autoSend"/>
+        <Property name="text" type="java.lang.String" value="send"/>
+        <Property name="toolTipText" type="java.lang.String" value="auto calc and send when deleting a point"/>
       </Properties>
     </Component>
   </SubComponents>

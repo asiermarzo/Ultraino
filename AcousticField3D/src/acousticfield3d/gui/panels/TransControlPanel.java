@@ -56,10 +56,6 @@ public class TransControlPanel extends javax.swing.JPanel {
         deviceCombo = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         phaseSpinner = new javax.swing.JSpinner();
-        onButton = new javax.swing.JButton();
-        offButton = new javax.swing.JButton();
-        phaseUpButton = new javax.swing.JButton();
-        phaseDownButton = new javax.swing.JButton();
         durationsText = new javax.swing.JTextField();
         durationsButton = new javax.swing.JButton();
         connectExtraButton = new javax.swing.JButton();
@@ -68,6 +64,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         pushPullModeCheck = new javax.swing.JCheckBox();
 
         sendButton.setText("Send");
+        sendButton.setToolTipText("send the current transducer's phases and amps to the connected devices");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sendButtonActionPerformed(evt);
@@ -75,6 +72,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         initSerialButton.setText("Connect");
+        initSerialButton.setToolTipText("connects to a device");
         initSerialButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 initSerialButtonActionPerformed(evt);
@@ -82,6 +80,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         stopSerialButton.setText("Disconnect");
+        stopSerialButton.setToolTipText("disconnects from all the devices");
         stopSerialButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopSerialButtonActionPerformed(evt);
@@ -89,6 +88,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         switchButton.setText("Switch");
+        switchButton.setToolTipText("just send the switch buffer command to the devices");
         switchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 switchButtonActionPerformed(evt);
@@ -96,6 +96,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         sendAnimButton.setText("Seq");
+        sendAnimButton.setToolTipText("sends an animation the current devices - not supported by all");
         sendAnimButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sendAnimButtonActionPerformed(evt);
@@ -104,47 +105,23 @@ public class TransControlPanel extends javax.swing.JPanel {
 
         deviceCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MEGA", "SimpleFPGA", "Nano8", "MEGA_Anim", "Nano16", "SimpleFPGA 128" }));
         deviceCombo.setSelectedIndex(1);
+        deviceCombo.setToolTipText("select the protocol");
 
         jLabel1.setText("Phase");
 
         phaseSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        phaseSpinner.setToolTipText("current phase - in divisions");
         phaseSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 phaseSpinnerStateChanged(evt);
             }
         });
 
-        onButton.setText("On");
-        onButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onButtonActionPerformed(evt);
-            }
-        });
-
-        offButton.setText("Off");
-        offButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                offButtonActionPerformed(evt);
-            }
-        });
-
-        phaseUpButton.setText("+");
-        phaseUpButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phaseUpButtonActionPerformed(evt);
-            }
-        });
-
-        phaseDownButton.setText("-");
-        phaseDownButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phaseDownButtonActionPerformed(evt);
-            }
-        });
-
         durationsText.setText("1 0");
+        durationsText.setToolTipText("periods sequence to be sent");
 
         durationsButton.setText("Durations");
+        durationsButton.setToolTipText("sends the durations - not supported by all the devices");
         durationsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 durationsButtonActionPerformed(evt);
@@ -152,6 +129,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         connectExtraButton.setText("Con Extra");
+        connectExtraButton.setToolTipText("connects to an extra device");
         connectExtraButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 connectExtraButtonActionPerformed(evt);
@@ -159,8 +137,10 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         extraNumberText.setText("256");
+        extraNumberText.setToolTipText("after which transducer does the new device starts");
 
         multiplexButton.setText("Mult");
+        multiplexButton.setToolTipText("tells the device to multiplex between buffers - not supported by all devices");
         multiplexButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 multiplexButtonActionPerformed(evt);
@@ -168,6 +148,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         });
 
         pushPullModeCheck.setText("push/pull mode");
+        pushPullModeCheck.setToolTipText("this mode will use 2 channels for every transducer and drive the second pair out of phase - this is used to achieve double the voltage peak to peak");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -176,22 +157,7 @@ public class TransControlPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pushPullModeCheck)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(deviceCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(phaseSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(phaseUpButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(onButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(offButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                        .addComponent(phaseDownButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(sendAnimButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -212,8 +178,15 @@ public class TransControlPanel extends javax.swing.JPanel {
                             .addComponent(durationsButton, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(initSerialButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(stopSerialButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(stopSerialButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pushPullModeCheck)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(phaseSpinner)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -246,13 +219,7 @@ public class TransControlPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(phaseSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(phaseUpButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(onButton)
-                    .addComponent(offButton)
-                    .addComponent(phaseDownButton))
+                    .addComponent(phaseSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -312,22 +279,6 @@ public class TransControlPanel extends javax.swing.JPanel {
             device.sendToogleQuickMultiplexMode();
         }
     }//GEN-LAST:event_multiplexButtonActionPerformed
-
-    private void phaseDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseDownButtonActionPerformed
-        addPhaseSteps(-1);
-    }//GEN-LAST:event_phaseDownButtonActionPerformed
-
-    private void phaseUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phaseUpButtonActionPerformed
-        addPhaseSteps(1);
-    }//GEN-LAST:event_phaseUpButtonActionPerformed
-
-    private void offButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offButtonActionPerformed
-        mf.transducersPanel.setTransAmp( 0 );
-    }//GEN-LAST:event_offButtonActionPerformed
-
-    private void onButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonActionPerformed
-        mf.transducersPanel.setTransAmp( 1 );
-    }//GEN-LAST:event_onButtonActionPerformed
 
 
     private DeviceConnection getDeviceConnection(int port){
@@ -495,11 +446,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     private javax.swing.JButton initSerialButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton multiplexButton;
-    private javax.swing.JButton offButton;
-    private javax.swing.JButton onButton;
-    private javax.swing.JButton phaseDownButton;
     private javax.swing.JSpinner phaseSpinner;
-    private javax.swing.JButton phaseUpButton;
     private javax.swing.JCheckBox pushPullModeCheck;
     private javax.swing.JButton sendAnimButton;
     private javax.swing.JButton sendButton;

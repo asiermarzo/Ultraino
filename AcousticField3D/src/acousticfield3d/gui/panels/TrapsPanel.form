@@ -134,6 +134,7 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="focus"/>
+        <Property name="toolTipText" type="java.lang.String" value="focus on the point"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="twinRadio">
@@ -142,11 +143,13 @@
           <ComponentRef name="buttonGroup1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="twin"/>
+        <Property name="toolTipText" type="java.lang.String" value="twin trap"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="angleText">
       <Properties>
         <Property name="text" type="java.lang.String" value="90"/>
+        <Property name="toolTipText" type="java.lang.String" value="angle of the twin trap"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="vortexRadio">
@@ -155,11 +158,13 @@
           <ComponentRef name="buttonGroup1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="vortex"/>
+        <Property name="toolTipText" type="java.lang.String" value="vortex trap"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="mText">
       <Properties>
         <Property name="text" type="java.lang.String" value="1"/>
+        <Property name="toolTipText" type="java.lang.String" value="topological charge"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="noneRadio">
@@ -169,11 +174,13 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="none"/>
+        <Property name="toolTipText" type="java.lang.String" value="no extra signature for the focus"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="calcButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Calc"/>
+        <Property name="toolTipText" type="java.lang.String" value="calculates the trap"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="calcButtonActionPerformed"/>
@@ -182,6 +189,7 @@
     <Component class="javax.swing.JCheckBox" name="calcClickCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="calc"/>
+        <Property name="toolTipText" type="java.lang.String" value="calculate new traps when clicking on a slice"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -192,22 +200,26 @@
     <Component class="javax.swing.JTextField" name="pressureAText">
       <Properties>
         <Property name="text" type="java.lang.String" value="500"/>
+        <Property name="toolTipText" type="java.lang.String" value="pressure at the click position"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="pressureBText">
       <Properties>
         <Property name="text" type="java.lang.String" value="1500"/>
+        <Property name="toolTipText" type="java.lang.String" value="set this number as you wish, it is for getting percentages on the left text"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="pressureDivText">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="3"/>
+        <Property name="toolTipText" type="java.lang.String" value="proportion between the pressures"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="calcForceCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="calc force"/>
+        <Property name="toolTipText" type="java.lang.String" value="calculates forces as well as pressure"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="xForceText">
@@ -228,21 +240,25 @@
     <Component class="javax.swing.JCheckBox" name="calcLaplacianCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="calc lap"/>
+        <Property name="toolTipText" type="java.lang.String" value="calculates laplacians as well as pressures"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="sendCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="send"/>
+        <Property name="toolTipText" type="java.lang.String" value="sends the phases to the devices when clicking on a slice"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="dragCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="drag"/>
+        <Property name="toolTipText" type="java.lang.String" value="calculates &amp; send when dragging the mouse on a slice"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="genAnimCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="genAnim"/>
+        <Property name="text" type="java.lang.String" value="add key frame"/>
+        <Property name="toolTipText" type="java.lang.String" value="adds a key frame when clicking on a slice"/>
       </Properties>
     </Component>
   </SubComponents>

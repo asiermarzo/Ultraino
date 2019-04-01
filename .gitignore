@@ -1,2 +1,4 @@
 /AcousticField3D/nbproject/private/
 /AcousticField3D/build/
+config.ini.xml
+*.log

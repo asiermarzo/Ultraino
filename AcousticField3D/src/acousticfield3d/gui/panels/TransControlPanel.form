@@ -19,25 +19,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="pushPullModeCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
                   <Component id="deviceCombo" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="phaseSpinner" min="-2" pref="64" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="phaseUpButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="onButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="offButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="29" max="32767" attributes="0"/>
-                      <Component id="phaseDownButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="sendAnimButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
@@ -64,8 +46,17 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="initSerialButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="10" max="32767" attributes="0"/>
                       <Component id="stopSerialButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="pushPullModeCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="phaseSpinner" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -108,13 +99,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="phaseSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="phaseUpButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="onButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="offButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="phaseDownButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -125,6 +109,7 @@
     <Component class="javax.swing.JButton" name="sendButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Send"/>
+        <Property name="toolTipText" type="java.lang.String" value="send the current transducer&apos;s phases and amps to the connected devices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendButtonActionPerformed"/>
@@ -133,6 +118,7 @@
     <Component class="javax.swing.JButton" name="initSerialButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Connect"/>
+        <Property name="toolTipText" type="java.lang.String" value="connects to a device"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="initSerialButtonActionPerformed"/>
@@ -141,6 +127,7 @@
     <Component class="javax.swing.JButton" name="stopSerialButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Disconnect"/>
+        <Property name="toolTipText" type="java.lang.String" value="disconnects from all the devices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopSerialButtonActionPerformed"/>
@@ -149,6 +136,7 @@
     <Component class="javax.swing.JButton" name="switchButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Switch"/>
+        <Property name="toolTipText" type="java.lang.String" value="just send the switch buffer command to the devices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="switchButtonActionPerformed"/>
@@ -157,6 +145,7 @@
     <Component class="javax.swing.JButton" name="sendAnimButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Seq"/>
+        <Property name="toolTipText" type="java.lang.String" value="sends an animation the current devices - not supported by all"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendAnimButtonActionPerformed"/>
@@ -175,6 +164,7 @@
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" value="1"/>
+        <Property name="toolTipText" type="java.lang.String" value="select the protocol"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
@@ -187,51 +177,22 @@
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="current phase - in divisions"/>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="phaseSpinnerStateChanged"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="onButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="On"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="offButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Off"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="offButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="phaseUpButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="+"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phaseUpButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="phaseDownButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="-"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phaseDownButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JTextField" name="durationsText">
       <Properties>
         <Property name="text" type="java.lang.String" value="1 0"/>
+        <Property name="toolTipText" type="java.lang.String" value="periods sequence to be sent"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="durationsButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Durations"/>
+        <Property name="toolTipText" type="java.lang.String" value="sends the durations - not supported by all the devices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="durationsButtonActionPerformed"/>
@@ -240,6 +201,7 @@
     <Component class="javax.swing.JButton" name="connectExtraButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Con Extra"/>
+        <Property name="toolTipText" type="java.lang.String" value="connects to an extra device"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectExtraButtonActionPerformed"/>
@@ -248,11 +210,13 @@
     <Component class="javax.swing.JTextField" name="extraNumberText">
       <Properties>
         <Property name="text" type="java.lang.String" value="256"/>
+        <Property name="toolTipText" type="java.lang.String" value="after which transducer does the new device starts"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="multiplexButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Mult"/>
+        <Property name="toolTipText" type="java.lang.String" value="tells the device to multiplex between buffers - not supported by all devices"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="multiplexButtonActionPerformed"/>
@@ -261,6 +225,7 @@
     <Component class="javax.swing.JCheckBox" name="pushPullModeCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="push/pull mode"/>
+        <Property name="toolTipText" type="java.lang.String" value="this mode will use 2 channels for every transducer and drive the second pair out of phase - this is used to achieve double the voltage peak to peak"/>
       </Properties>
     </Component>
   </SubComponents>

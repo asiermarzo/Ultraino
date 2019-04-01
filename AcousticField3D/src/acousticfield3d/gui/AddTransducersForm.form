@@ -176,6 +176,7 @@
     <Component class="javax.swing.JTextField" name="spaceText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.01"/>
+        <Property name="toolTipText" type="java.lang.String" value="separation between transducer centers"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
@@ -223,6 +224,7 @@
     <Component class="javax.swing.JTextField" name="posText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.00 0.00 0.00"/>
+        <Property name="toolTipText" type="java.lang.String" value="central position"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -233,6 +235,7 @@
     <Component class="javax.swing.JTextField" name="rotText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.00 0.00 0.00"/>
+        <Property name="toolTipText" type="java.lang.String" value="global rotation"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
@@ -243,6 +246,7 @@
     <Component class="javax.swing.JTextField" name="sizeText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.01 0.003 0.01"/>
+        <Property name="toolTipText" type="java.lang.String" value="transducer size"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -253,11 +257,13 @@
     <Component class="javax.swing.JTextField" name="wText">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.009"/>
+        <Property name="toolTipText" type="java.lang.String" value="diameter of the emitter piston"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="powerText">
       <Properties>
         <Property name="text" type="java.lang.String" value="2.4"/>
+        <Property name="toolTipText" type="java.lang.String" value="emission power - pascals at 1 m with a 15Vpp excitation signal"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
@@ -268,6 +274,7 @@
     <Component class="javax.swing.JTextField" name="freqText">
       <Properties>
         <Property name="text" type="java.lang.String" value="40000"/>
+        <Property name="toolTipText" type="java.lang.String" value="frequency"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="gridCheck">
@@ -277,6 +284,7 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="grid"/>
+        <Property name="toolTipText" type="java.lang.String" value="regular square grid"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="hexCheck">
@@ -285,6 +293,7 @@
           <ComponentRef name="arrangementGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="hex"/>
+        <Property name="toolTipText" type="java.lang.String" value="with hexagonal packing"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="radialCheck">
@@ -293,6 +302,7 @@
           <ComponentRef name="arrangementGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="radial"/>
+        <Property name="toolTipText" type="java.lang.String" value="lines of (columns) transducers arranged in a circle"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="circleCheck">
@@ -301,6 +311,7 @@
           <ComponentRef name="arrangementGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="circle"/>
+        <Property name="toolTipText" type="java.lang.String" value="just a circle of columns transducers"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel11">
@@ -312,6 +323,7 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="recenter sim"/>
+        <Property name="toolTipText" type="java.lang.String" value="recenters the simulation after adding the transducer"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
