@@ -6,11 +6,11 @@ These are provided as stl files which can be opened by probably all 3D printer s
 ## Laser cutting files (.ai)
 These are provided in Adobe Illustrator format (.ai). Inkscape is recommneded to open these or Adobe Illustrator CS2 is now avaialble as free software although its very old.
 
-# Simulation Files (.xml.gz)
+## Simulation Files (.xml.gz)
 The simulation files are gun-zipped xml files and have the extension .xml.gz - they are used in the Acoustic Field Simulator software which is also in this repository. 
 
 
-## Parts List
+# Parts List
 * 20-core ribbon cable [from UK Farnell](http://uk.farnell.com/3m/3302-20/ribbon-cable-20core-28awg-per/dp/1207420)
 * 3-way pcb connector
   * uk rs-components 506-7014
