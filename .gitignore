@@ -3,4 +3,4 @@
 /AcousticFieldSim/nbproject/private
 config.ini.xml
 *.log
-.DS_Store
+*.DS_Store
