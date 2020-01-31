@@ -330,6 +330,8 @@ public class AddTransducersForm extends javax.swing.JFrame {
                     }  
                 }
                 
+                mf.updateBoundaries();
+                mf.adjustGUIGainAndCameras();
             } catch (IOException ex) {
                 Logger.getLogger(AddTransducersForm.class.getName()).log(Level.SEVERE, null, ex);
             }
