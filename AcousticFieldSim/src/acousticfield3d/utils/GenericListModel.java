@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package acousticfield3d.utils;
 
 import java.util.ArrayList;
@@ -31,14 +27,12 @@ public class GenericListModel<E> extends AbstractListModel {
         return elements;
     }
 
-    public void setElements(ArrayList<E> e) {
-        synchronized(this){
-            clear();
-            int size = e.size();
-            if (size > 0) {
-                elements.addAll(e);
-                fireIntervalAdded(this, 0, size - 1);
-            }
+    public synchronized void setElements(ArrayList<E> e) {
+        clear();
+        int size = e.size();
+        if (size > 0) {
+            elements.addAll(e);
+            fireIntervalAdded(this, 0, size - 1);
         }
     }
 
@@ -75,6 +69,9 @@ public class GenericListModel<E> extends AbstractListModel {
     }
 
     public synchronized void delete(int[] indices) {
+        if (indices == null)
+            return;
+        
         Arrays.sort(indices);
         int offset = 0;
         for (int i : indices) {
@@ -134,6 +131,9 @@ public class GenericListModel<E> extends AbstractListModel {
     }
 
     public synchronized void upElement(int index) {
+        if (index == -1)
+            return;
+        
         E element = getAt(index);
         if (index > 0) {
             E aux = elements.get(index - 1);
