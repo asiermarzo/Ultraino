@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package acousticfield3d.algorithms;
 
 import acousticfield3d.gui.MainForm;
 import acousticfield3d.math.M;
-import acousticfield3d.math.TempVars;
 import acousticfield3d.math.Vector2f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.simulation.Simulation;

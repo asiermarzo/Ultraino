@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package acousticfield3d.protocols;
 
 import acousticfield3d.simulation.Transducer;
@@ -30,6 +25,18 @@ public class SimpleFPGA extends DeviceConnection{
         return (byte) (0xFF & 251);
     }
     
+    public byte getOnClocksCommand(){
+        return (byte) (0xFF & 151);
+    }
+    
+    public byte getOffClocksCommand(){
+        return (byte) (0xFF & 150);
+    }
+    
+    public byte getEnableboardCommand(){
+        return (byte) (0xFF & 192); // 192 enables all boards, +1 for board 1, +2 for board 2
+    }
+    
     public int getnTransducers(){
         return 256;
     }
@@ -41,11 +48,11 @@ public class SimpleFPGA extends DeviceConnection{
 
     @Override
     public int getSpeed() {
-        return 230400;
+        //return 2000000;
         //115200
         //230400 -- FASTEST POSSIBLE FOR MACOS (java limitation rxtx)
-        //256000
         //250000
+        return 200000;
     } 
 
     @Override
@@ -59,19 +66,20 @@ public class SimpleFPGA extends DeviceConnection{
     public void sendPattern(final List<Transducer> transducers) {
        if(serial == null){
             return;
-        }
+       }
        
        final int nTrans = getnTransducers();
        final byte[] phaseDataPlusHeader = new byte[nTrans + 1];
        final byte[] ampDataPlusHeader = new byte[nTrans + 1];
-        //Arrays.fill(data, PHASE_OFF);
        final int divs = getDivs();
       
        final byte PHASE_OFF = (byte) (0xFF & getDivs());
+       //Arrays.fill(data, PHASE_OFF);
        boolean ampModulationNeeded = false;
        
         phaseDataPlusHeader[0] = getStartPhasesCommand(); 
         ampDataPlusHeader[0] = getStartAmplitudesCommand();
+        
         for (Transducer t : transducers) {
             final int n = t.getOrderNumber() - number;
             //final int n = t.getDriverPinNumber();
@@ -95,6 +103,7 @@ public class SimpleFPGA extends DeviceConnection{
        }
        serial.flush();
     }
+    
     
     @Override
     public void sendToogleQuickMultiplexMode(){

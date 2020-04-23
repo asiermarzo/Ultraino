@@ -42,7 +42,7 @@ import java.util.Random;
  */
 final public class M {
 
-    
+  
     public M() {}
     
     /** A "close to zero" double epsilon value for use*/
@@ -892,7 +892,7 @@ final public class M {
         return (input < min) ? min : (input > max) ? max : input;
     }
     
-    
+  
     public static int iclamp(int input, int min, int max) {
         return (input < min) ? min : (input > max) ? max : input;
     }

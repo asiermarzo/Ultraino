@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * TextFrame.java
- *
- * Created on 08-jun-2011, 10:51:16
- */
-
 package acousticfield3d.utils;
 
 import java.awt.Component;

@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package acousticfield3d.protocols;
 
 import acousticfield3d.simulation.AnimKeyFrame;
-import acousticfield3d.simulation.TransState;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.uartComm.SerialComms;
-import java.util.Collection;
 import java.util.List;
 
 /**

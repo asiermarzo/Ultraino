@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package acousticfield3d.gui.panels;
 
 import acousticfield3d.gui.MainForm;
@@ -11,6 +5,7 @@ import acousticfield3d.protocols.ArduinoMEGA64;
 import acousticfield3d.protocols.ArduinoMEGA64_Anim;
 import acousticfield3d.protocols.ArduinoNano;
 import acousticfield3d.protocols.ArduinoNano16;
+import acousticfield3d.protocols.ChainedFPGA;
 import acousticfield3d.protocols.DeviceConnection;
 import acousticfield3d.protocols.SimpleFPGA;
 import acousticfield3d.protocols.SimpleFPGA_128;
@@ -103,8 +98,7 @@ public class TransControlPanel extends javax.swing.JPanel {
             }
         });
 
-        deviceCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MEGA", "SimpleFPGA", "Nano8", "MEGA_Anim", "Nano16", "SimpleFPGA 128" }));
-        deviceCombo.setSelectedIndex(1);
+        deviceCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MEGA", "SimpleFPGA", "Nano8", "MEGA_Anim", "Nano16", "SimpleFPGA 128", "Chained FPGA" }));
         deviceCombo.setToolTipText("select the protocol");
 
         jLabel1.setText("Phase");
@@ -284,6 +278,7 @@ public class TransControlPanel extends javax.swing.JPanel {
     private DeviceConnection getDeviceConnection(int port){
         final int index = deviceCombo.getSelectedIndex();
         DeviceConnection dc;
+        
         if (index == 0){ //  ArduinoMEGA64
             dc = new ArduinoMEGA64(); 
         }else if (index == 1){ //  SimpleFPGA
@@ -296,9 +291,12 @@ public class TransControlPanel extends javax.swing.JPanel {
             dc = new ArduinoNano16();
         }else if (index == 5){ // Simple FPGA 128
             dc = new SimpleFPGA_128();
+        }else if (index == 6){ //chained FPGA
+            dc = new ChainedFPGA();
         }else{
             dc = new DeviceConnection();
         }
+        
         dc.connect( port ); //pop the GUI for selecting the port
         return dc;
     }
@@ -360,25 +358,28 @@ public class TransControlPanel extends javax.swing.JPanel {
     }
     
     public void sendPattern(final boolean swapBuffers){
-        if (device != null){
-            if( ! extraDevices.isEmpty() ){
-                device.sendPattern( getTransducers() );
-                for(DeviceConnection dc : extraDevices){
-                    dc.sendPattern( getTransducers() );
-                }
-                if (swapBuffers){
-                    device.switchBuffers();
-                    for(DeviceConnection dc : extraDevices){
-                        dc.switchBuffers();
-                    }
-                }
-            }else{
-                device.sendPattern( getTransducers() );
-                if (swapBuffers){
-                    device.switchBuffers();
+        if (device == null){
+            return;
+        }        
+        
+        if (!extraDevices.isEmpty()) {
+            device.sendPattern(getTransducers());
+            for (DeviceConnection dc : extraDevices) {
+                dc.sendPattern(getTransducers());
+            }
+            if (swapBuffers) {
+                device.switchBuffers();
+                for (DeviceConnection dc : extraDevices) {
+                    dc.switchBuffers();
                 }
             }
+        } else {
+            device.sendPattern(getTransducers());
+            if (swapBuffers) {
+                device.switchBuffers();
+            }
         }
+             
     }
     
     public void sendAnimFrame(int frame) {

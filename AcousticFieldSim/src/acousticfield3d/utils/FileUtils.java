@@ -1,6 +1,3 @@
-/* Asier Marzo 2014
- */
-
 package acousticfield3d.utils;
 
 import java.awt.Component;

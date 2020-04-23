@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package acousticfield3d.scene;
 
 import acousticfield3d.math.Frustrum;
 import acousticfield3d.math.M;
-import acousticfield3d.math.Matrix3f;
 import acousticfield3d.math.Matrix4f;
 import acousticfield3d.math.Quaternion;
 import acousticfield3d.math.Ray;
-import acousticfield3d.math.Transform;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.utils.Color;

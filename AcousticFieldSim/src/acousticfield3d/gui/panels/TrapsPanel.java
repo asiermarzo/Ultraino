@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package acousticfield3d.gui.panels;
 
 import acousticfield3d.algorithms.CalcField;
@@ -14,6 +9,7 @@ import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.simulation.Trap;
 import acousticfield3d.utils.Parse;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -306,6 +302,15 @@ public class TrapsPanel extends javax.swing.JPanel {
     }
     
     public void reportGorkovs() {
+//        for (Transducer t : mf.simulation.transducers){
+//            if (t.getOrderNumber() >= 256){
+//                t.setOrderNumber( t.getOrderNumber() - 256);
+//            }else{
+//                t.setOrderNumber( t.getOrderNumber() + 256);
+//            }
+//        }
+//        mf.simulation.transducers.sort( Comparator.comparing( Transducer::getOrderNumber ) );
+        
         for(Entity e : mf.simulation.controlPoints){
             final Vector3f pos = e.getTransform().getTranslation();
             final double g = CalcField.calcGorkovAt(pos.x, pos.y, pos.z, 0.0005f, mf);

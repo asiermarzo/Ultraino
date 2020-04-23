@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package acousticfield3d.simulation;
 
 import acousticfield3d.math.Quaternion;
@@ -266,24 +260,12 @@ public class Simulation {
     }
     
     public void sortTransducers(){
-        Collections.sort(transducers, new Comparator<Transducer>() {
-            @Override
-            public int compare(Transducer o1, Transducer o2) {
-                return Integer.compare( o1.getOrderNumber(), o2.getOrderNumber());
-            }
-        });
+        transducers.sort( Comparator.comparing( Transducer::getOrderNumber ) );
     }
     
     public void sortAnimations(){
-        Collections.sort(animations.getElements(), new Comparator<Animation>() {
-            @Override
-            public int compare(Animation o1, Animation o2) {
-                return Integer.compare(o1.getNumber(), o2.getNumber());
-            }
-        });
-        for(Animation a : animations.getElements()){
-            a.sortKeyFrames();
-        }
+        animations.getElements().sort( Comparator.comparing( Animation::getNumber ) );
+        animations.getElements().forEach( Animation::sortKeyFrames );
     }
    
      public void copyToCube(MeshEntity cube){

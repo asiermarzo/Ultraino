@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package acousticfield3d.gui;
 
 
@@ -17,6 +11,7 @@ import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.GenerateComplexAnimations;
+import acousticfield3d.gui.misc.MoveOnTimerForm;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.ShapePointsFrame;
 import acousticfield3d.gui.misc.SliceExperiments;
@@ -53,7 +48,6 @@ import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
 import acousticfield3d.utils.SimpleGUIPersistence;
 import acousticfield3d.utils.StringFormats;
-import acousticfield3d.workers.UpdateThread;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -70,7 +64,6 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
@@ -93,7 +86,6 @@ public final class MainForm extends javax.swing.JFrame {
     public Simulation simulation;
     
     final BehavioursThread animationThread;
-    public final UpdateThread updateThread;
     
     final SliderPanel sliderPanel;
     public final GLJPanel gljpanel;
@@ -181,11 +173,9 @@ public final class MainForm extends javax.swing.JFrame {
         initSimulation();
         
         animationThread = new BehavioursThread(scene, this);
-        updateThread = new UpdateThread(this);
     }
     
     public void init(){
-        updateThread.start();
         //animationThread.start();
     }
 
@@ -374,6 +364,7 @@ public final class MainForm extends javax.swing.JFrame {
         sliceExpMenu = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         structuralStiffnessMenu = new javax.swing.JMenuItem();
+        moveOnTimerMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1382,6 +1373,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(structuralStiffnessMenu);
 
+        moveOnTimerMenu.setText("MoveOnTimer");
+        moveOnTimerMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveOnTimerMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(moveOnTimerMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -2049,6 +2048,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void structuralStiffnessMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_structuralStiffnessMenuActionPerformed
         showNewFrame( new StructuralStiffnessForm(this));
     }//GEN-LAST:event_structuralStiffnessMenuActionPerformed
+
+    private void moveOnTimerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveOnTimerMenuActionPerformed
+        showNewFrame( new MoveOnTimerForm(this) );
+    }//GEN-LAST:event_moveOnTimerMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2118,6 +2121,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem matlabFieldMenu;
     private javax.swing.JMenuItem matlabPhasesMenu;
     private javax.swing.JMenuItem mergePointsMenu;
+    private javax.swing.JMenuItem moveOnTimerMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
     private javax.swing.JMenuItem optimizerMenu;
     private javax.swing.JMenuItem originCamMenu;

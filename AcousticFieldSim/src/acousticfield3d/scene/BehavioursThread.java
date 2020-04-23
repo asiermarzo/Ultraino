@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package acousticfield3d.scene;
 
 import acousticfield3d.gui.MainForm;
@@ -13,8 +7,8 @@ import acousticfield3d.gui.MainForm;
  * @author Asier
  */
 public class BehavioursThread extends Thread{
-    private MainForm form;
-    private Scene scene;
+    private final MainForm form;
+    private final Scene scene;
     float fps;
     
     public BehavioursThread(Scene scene, MainForm form) {

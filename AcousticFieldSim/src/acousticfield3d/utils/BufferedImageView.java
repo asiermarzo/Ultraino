@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * BufferedImageView.java
- *
- * Created on 11-jun-2011, 13:35:32
- */
-
 package acousticfield3d.utils;
 
 import java.awt.Component;
