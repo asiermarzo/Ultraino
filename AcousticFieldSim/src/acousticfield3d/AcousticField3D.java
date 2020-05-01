@@ -46,41 +46,45 @@ public class AcousticField3D {
             config = (Config) FileUtils.readObject( new File( MainForm.CONFIG_PATH ));
         } catch (Exception ex) {
         }
-        
-        final MainForm t = new MainForm(config);
         if (config != null ){
             if(config.lastPath != null){
                 FileUtils.setLastIndicatedPath( new File( config.lastPath ) );
                 FileUtils.setLastChooserPath(new File( config.lastPath ) );
             }   
         }
-        SimpleGUIPersistence.applyValuesTo(config.getGuiValues(), "", t);
-        t.init();
         
-        t.setVisible(true);
-        if (config.frameWidth == 0 || config.frameHeigh == 0){
-            t.setLocationRelativeTo(null);
-        }else{
-            t.setLocation( config.frameX, config.frameY);
-            t.setSize( config.frameWidth, config.frameHeigh);
-        }
+        final Config fConfig = config;
         
-        if (args.length > 0){
-            for(String s : args){
-                char firstChar = s.charAt(0);
-                s = s.substring(1);
-                
-                if(firstChar == 's'){ //autoload simulation s file
-                    t.loadSimulation( s );
-                }else if(firstChar == 'c'){ //auto connect c number
-                    final int portNumber = Parse.toInt( s );
-                    t.transControlPanel.initComm(portNumber);
-                }else if(firstChar == 'b'){ //autoselect first bead b
-                    t.movePanel.selectFirstBead();
-                }
-               
+        java.awt.EventQueue.invokeLater(() -> {
+            final MainForm t = new MainForm(fConfig);
+            SimpleGUIPersistence.applyValuesTo(fConfig.getGuiValues(), "", t);
+            t.init();
+            t.setVisible(true);
+
+            if (fConfig.frameWidth == 0 || fConfig.frameHeigh == 0) {
+                t.setLocationRelativeTo(null);
+            } else {
+                t.setLocation(fConfig.frameX, fConfig.frameY);
+                t.setSize(fConfig.frameWidth, fConfig.frameHeigh);
             }
-        }
+
+            if (args.length > 0) {
+                for (String s : args) {
+                    char firstChar = s.charAt(0);
+                    s = s.substring(1);
+
+                    if (firstChar == 's') { //autoload simulation s file
+                        t.loadSimulation(s);
+                    } else if (firstChar == 'c') { //auto connect c number
+                        final int portNumber = Parse.toInt(s);
+                        t.transControlPanel.initComm(portNumber);
+                    } else if (firstChar == 'b') { //autoselect first bead b
+                        t.movePanel.selectFirstBead();
+                    }
+
+                }
+            }
+        });
     }
     
 }
