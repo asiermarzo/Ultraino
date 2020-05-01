@@ -8,7 +8,7 @@ import javax.swing.AbstractListModel;
  *
  * @author Asier
  */
-public class GenericListModel<E> extends AbstractListModel {
+public class GenericListModel<E extends Object> extends AbstractListModel<E> {
     private final ArrayList<E> elements;
 
     public GenericListModel() {
@@ -109,9 +109,9 @@ public class GenericListModel<E> extends AbstractListModel {
     }
 
     @Override
-    public Object getElementAt(int index) {
+    public E getElementAt(int index) {
         E element = elements.get(index);
-        return element.toString();
+        return element;
     }
 
     public synchronized void copyFrom(GenericListModel<E> other) {

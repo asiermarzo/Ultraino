@@ -71,9 +71,9 @@ public class Network {
     }
 
     public List<String> getPortList() {
-        Enumeration<CommPortIdentifier> portList;
+        
         ArrayList<String> portVect = new ArrayList<String>();
-        portList = CommPortIdentifier.getPortIdentifiers();
+        Enumeration<CommPortIdentifier> portList = CommPortIdentifier.getPortIdentifiers();
 
         CommPortIdentifier portId;
         while (portList.hasMoreElements()) {

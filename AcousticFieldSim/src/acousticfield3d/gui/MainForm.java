@@ -694,7 +694,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(saveSimMenu);
 
-        saveSameFileMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveSameFileMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveSameFileMenu.setText("Save");
         saveSameFileMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -703,7 +703,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(saveSameFileMenu);
 
-        loadLastMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        loadLastMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         loadLastMenu.setText("Load last");
         loadLastMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -915,7 +915,7 @@ public final class MainForm extends javax.swing.JFrame {
 
         jMenu4.setText("Transducers");
 
-        selectAllTransducersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        selectAllTransducersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         selectAllTransducersMenu.setText("Select all");
         selectAllTransducersMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2261,7 +2261,7 @@ public final class MainForm extends javax.swing.JFrame {
         }
 
         
-        if ((evt.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
+        if ((evt.getModifiersEx() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
            if(selection.contains(e)){
                 selection.remove(e);
                 e.selected = false;

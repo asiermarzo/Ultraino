@@ -40,7 +40,7 @@ vec2 fieldAt(vec3 point){
         }
         
         float ampDirAtt = amplitudeConstant * directivity / dist;
-        float kdPlusPhase = k * dist + tSpecs[i].x;
+        float kdPlusPhase = k * dist + tSpecs[i];
    
         field.x += ampDirAtt * cos(kdPlusPhase);
         field.y += ampDirAtt * sin(kdPlusPhase);

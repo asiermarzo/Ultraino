@@ -13,12 +13,12 @@ public class GenericTableModel<E> extends AbstractTableModel{
     private GenericTableModelElement<E> tableAccessor;
 
     public GenericTableModel() {
-        elements = new ArrayList<E>();
+        elements = new ArrayList<>();
     }
 
     public GenericTableModel(GenericTableModelElement<E> gtm) {
         tableAccessor = gtm;
-        elements = new ArrayList();
+        elements = new ArrayList<>();
     }
 
     public ArrayList<E> getElements() {
