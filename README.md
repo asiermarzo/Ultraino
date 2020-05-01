@@ -9,8 +9,10 @@ Acoustic Field simulation for phased-array controllers. The content of the folde
 
 # How to Run the Software
 * Download the source as a zip file or checkout the repository.
-* Be sure that you have installed Java Development Kit 1.8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html 
+
+* Be sure that you have installed JDK 11 https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 * Install Netbeans Integrated Development Environment (you can also use Eclipse if you want). The Java SE pack is enough https://netbeans.org/downloads/
+
 * Import the Source code in Netbeans. Run Netbeans, File->Open Project, Select the folder with the sourcecode.
 * Click Run. You can click Run->Run project. It will take some time the first time since it needs to compile the sourcecode.
 
