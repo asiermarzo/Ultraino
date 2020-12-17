@@ -299,11 +299,11 @@ public class AddTransducersForm extends javax.swing.JFrame {
                     if (len >= 3){
                         Transducer t = createTransducer();
 
-                        t.getTransform().getTranslation().parse(s[0], s[2], s[1]).multLocal(1, -1, 1);
+                        t.getTransform().getTranslation().parse(s[0], s[2], s[1]).multLocal(1, 1, -1);
                         
                         if (len >= 6){
-                            final Vector3f normal = new Vector3f(s[3], s[5], s[4]).multLocal(1, -1, 1);
-                            t.getTransform().getRotation().fromAngles(normal);
+                            final Vector3f normal = new Vector3f(s[3], s[5], s[4]).multLocal(1, 1, -1);
+                            t.pointToTarget(normal.addLocal( t.getTransform().getTranslation()) );
                         }
                         if (len >= 9){
                             t.setPower( Parse.toFloat( s[6]) );
