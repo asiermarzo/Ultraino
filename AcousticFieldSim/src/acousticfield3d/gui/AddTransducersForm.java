@@ -292,6 +292,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
             try {
                 String[] lines = FileUtils.getLinesFromFile( new File(file) );
                 
+                int nTransducer = 0;
                 for(String l : lines){
                     String[] s = l.trim().split(",");
                     final int len = s.length;
@@ -317,6 +318,10 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
                             t.setPhase(Parse.toFloat(  s[13] ) / M.PI );
                         }
+                        
+                        t.setDriverPinNumber(nTransducer);
+                        t.setOrderNumber(nTransducer);
+                        nTransducer += 1;
                         
                         mf.scene.getEntities().add(t);
                         mf.simulation.transducers.add(t);
