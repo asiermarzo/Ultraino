@@ -5,7 +5,7 @@ inline bool _dataAvailable() {return _rx_buffer_head != _rx_buffer_tail; }
 inline byte _peekData() { return _rx_buffer[_rx_buffer_tail]; }
 inline void _discardByte() { _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE; }
 
-*** If you are using an IDE >1.6.X you will need to compile with -O3 (optimization speed)
+*** If you are using an IDE >1.6.X you will need to compile with -O3 (optimization speed), in some cases this does not work and you are forced to compile with 1.6. The binaries are also avaialable.
 
 */
 
