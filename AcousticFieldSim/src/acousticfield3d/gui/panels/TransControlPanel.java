@@ -14,6 +14,7 @@ import acousticfield3d.simulation.AnimKeyFrame;
 import acousticfield3d.simulation.Simulation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.Parse;
+import acousticfield3d.utils.uartComm.SerialComms;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -298,33 +299,33 @@ public class TransControlPanel extends javax.swing.JPanel {
         }
         
         dc.connect( port ); //pop the GUI for selecting the port
+        
         return dc;
     }
     
     public void initComm(int port){
-        stopComm();
-        device = getDeviceConnection(port);
+        if (port == -1){
+            stopComm();
+            port = SerialComms.listAndSelectPortIndex();
+            if (port != -1){
+                device = getDeviceConnection(port);
+            }
+        }
     }
     
     
     
     public void stopComm(){
         if (device != null){
-            disconnectDevice(device);
+            device.disconnect();
             device = null;
         }
         for( DeviceConnection dc : extraDevices){
-            disconnectDevice(dc);
+            dc.disconnect();
         }
         extraDevices.clear();
     }
     
-    private void disconnectDevice(final DeviceConnection dc) {
-        try {
-            device.disconnect();
-        } catch (Exception ex) {
-        }
-    }
     
     public void sendPattern(){
         sendPattern(true);

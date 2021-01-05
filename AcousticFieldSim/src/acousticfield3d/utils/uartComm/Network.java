@@ -5,7 +5,7 @@
 
 package acousticfield3d.utils.uartComm;
 
-import gnu.io.*;
+import com.fazecast.jSerialComm.SerialPort;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,12 +44,6 @@ public class Network {
      *
      * @param contact Link to the instance of the class implementing
      * {@link net.NetworkIface}.
-     *
-     * @param divider A small <b>int</b> representing the number to be used to
-     * distinguish between two consecutive packages. It can take a value between
-     * 0 and 255. Note that data is only sent to
-     * {@link net.NetworkIface#parseInput(int, int, int[])} once the following
-     * {@link #divider} could be identified.
      */
     public Network(int id, NetworkInterface contact) {
         this.contact = contact;
@@ -70,23 +63,13 @@ public class Network {
         this(0, contact);
     }
 
-    public List<String> getPortList() {
-        
-        ArrayList<String> portVect = new ArrayList<String>();
-        Enumeration<CommPortIdentifier> portList = CommPortIdentifier.getPortIdentifiers();
-
-        CommPortIdentifier portId;
-        while (portList.hasMoreElements()) {
-            portId = (CommPortIdentifier) portList.nextElement();
-            if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                portVect.add(portId.getName());
-            }
+    public static List<String> getPortList() {
+        ArrayList<String> portVect = new ArrayList<>();
+        SerialPort[] ports = SerialPort.getCommPorts();
+                
+        for (SerialPort port : ports){
+            portVect.add( port.getSystemPortName() );
         }
-        contact.writeLog(id, "found the following ports:");
-        for (int i = 0; i < portVect.size(); i++) {
-            contact.writeLog(id, ("   " + (String) portVect.get(i)));
-        }
-
         return portVect;
     }
 
@@ -118,43 +101,31 @@ public class Network {
      * <b>false</b> otherwise.
      */
     public boolean connect(String portName, int speed) {
-        CommPortIdentifier portIdentifier;
-        boolean conn = false;
+       boolean conn = false;
         try {
-            portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
-            if (portIdentifier.isCurrentlyOwned()) {
-                contact.writeLog(id, "Error: Port is currently in use");
-            } else {
-                serialPort = (SerialPort) portIdentifier.open("RTBug_network",
-                        2000);
-                serialPort.setSerialPortParams(speed, SerialPort.DATABITS_8,
-                        SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serialPort = SerialPort.getCommPort(portName);
 
-                inputStream = serialPort.getInputStream();
-                outputStream = serialPort.getOutputStream();
-                bufInputStream = new BufferedInputStream(inputStream);
-                bufOutputStream = new BufferedOutputStream(outputStream);
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
+            serialPort.setComPortParameters(speed, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
+            
+            serialPort.openPort();
+            
+            inputStream = serialPort.getInputStream();
+            outputStream = serialPort.getOutputStream();
+            bufInputStream = new BufferedInputStream(inputStream);
+            bufOutputStream = new BufferedOutputStream(outputStream);
 
-                reader = (new Thread(new SerialReader(bufInputStream)));
-                end = false;
-                reader.start();
-                connected = true;
-                contact.writeLog(id, "connection on " + portName + " established");
-                conn = true;
-            }
-        } catch (NoSuchPortException e) {
-            contact.writeLog(id, "the connection could not be made");
-            e.printStackTrace();
-        } catch (PortInUseException e) {
-            contact.writeLog(id, "the connection could not be made");
-            e.printStackTrace();
-        } catch (UnsupportedCommOperationException e) {
-            contact.writeLog(id, "the connection could not be made");
-            e.printStackTrace();
-        } catch (IOException e) {
+            reader = (new Thread(new SerialReader(bufInputStream)));
+            end = false;
+            reader.start();
+            connected = true;
+            contact.writeLog(id, "connection on " + portName + " established");
+            conn = true;
+        } catch (Exception e) {
             contact.writeLog(id, "the connection could not be made");
             e.printStackTrace();
         }
+        
         return conn;
     }
 
@@ -167,9 +138,7 @@ public class Network {
      *
      */
     private class SerialReader implements Runnable {
-
         InputStream in;
-
         public SerialReader(InputStream in) {
             this.in = in;
         }
@@ -197,8 +166,7 @@ public class Network {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                
-                serialPort.close();
+                serialPort.closePort();
                 connected = false;
                 contact.networkDisconnected(id);
                 contact.writeLog(id, "connection has been interrupted");
@@ -218,12 +186,14 @@ public class Network {
         end = true;
         try {
             if (reader != null){
+                reader.interrupt();
                 reader.join();
             }
         } catch (InterruptedException e1) {
             e1.printStackTrace();
             disconn = false;
         }
+        
         try {
             bufInputStream.close();
             bufOutputStream.close();
@@ -233,7 +203,8 @@ public class Network {
             e.printStackTrace();
             disconn = false;
         }
-        serialPort.close();
+        
+        serialPort.closePort();
         connected = false;
         contact.networkDisconnected(id);
         contact.writeLog(id, "connection disconnected");
@@ -248,8 +219,7 @@ public class Network {
         return connected;
     }
 
-    
-
+   
     public void writeByte(final int b){
         if (isConnected()) {
             try {

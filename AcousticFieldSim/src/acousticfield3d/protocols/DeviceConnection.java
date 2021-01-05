@@ -18,7 +18,6 @@ public class DeviceConnection implements SerialComms.Listener{
     }
     
     public void connect(int port){
-        disconnect();
         serial = new SerialComms(port, getSpeed(), this);
     }
     
@@ -32,24 +31,18 @@ public class DeviceConnection implements SerialComms.Listener{
     
     public void disconnect(){
         if (serial != null) {
-            try {
-                serial.disconnect();
-            } catch (Exception e) {
-            }
+            serial.disconnect();
             serial = null;
         }
     }
 	
-    
-    public void setFrequency(float frequency){}
+    public void sendPattern(final List<Transducer> transducers){}
     public void switchBuffers(){}
     
     public void sendDurations(final int[] durations){}
-    
-    public void sendPattern(final List<Transducer> transducers){}
-    
     public void sendAnim(final List<AnimKeyFrame> keyFrames){}
   
+    public void setFrequency(float frequency){}
     public void sendToogleQuickMultiplexMode(){}
     
     public byte[] calcSignals01(final int nTrans, final List<Transducer> transducers){
