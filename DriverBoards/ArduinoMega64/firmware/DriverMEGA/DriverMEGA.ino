@@ -1,9 +1,12 @@
-/*Please do not forget to In the public interface of Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.h
-add the following inline functions
+/* To compile this file correctly you will need to:
 
+*** add the following inline functions in the public interface (after "public:") of Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.h
 inline bool _dataAvailable() {return _rx_buffer_head != _rx_buffer_tail; }
 inline byte _peekData() { return _rx_buffer[_rx_buffer_tail]; }
 inline void _discardByte() { _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE; }
+
+*** If you are using an IDE >1.6.X you will need to compile with -O3 (optimization speed)
+
 */
 
 #include <avr/sleep.h>
