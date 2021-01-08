@@ -63,6 +63,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
+import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -2230,11 +2231,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void updateSelection(MouseEvent evt) {
         final int x = evt.getX(); 
         final int y = evt.getY();
-        int tags = Entity.TAG_NONE;
+
+        final Component comp = mainTabPanel.getSelectedComponent(); 
+        int tags = addTagsForSelectionFilter(Entity.TAG_NONE);
         
-        final Component comp = mainTabPanel.getSelectedComponent();
-        
-        tags = addTagsForSelectionFilter(tags);
         if (comp == pointsPanel && pointsPanel.isClickAndPlace()){     
             final MeshEntity e = clickRaySelectEntity(x, y, Entity.TAG_SLICE);
             if (e != null) {
@@ -2260,8 +2260,11 @@ public final class MainForm extends javax.swing.JFrame {
             return;
         }
 
+        final boolean controlPressed = 
+                (evt.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK ||
+            (evt.getModifiersEx() & InputEvent.META_DOWN_MASK) == InputEvent.META_DOWN_MASK;
         
-        if ((evt.getModifiersEx() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
+        if ( controlPressed ) {
            if(selection.contains(e)){
                 selection.remove(e);
                 e.selected = false;

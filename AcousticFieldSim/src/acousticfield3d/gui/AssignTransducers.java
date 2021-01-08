@@ -505,6 +505,7 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
         float maxAmp = -1; int pin = -1; float phase = 0;
         int startingPin = Parse.toInt( targetTransText.getText() ) - 1;
         startingPin = M.iclamp(startingPin, 0, nTrans-1);
+        boolean successReadingSamples = false;
         for(int j = 0; j < nTrans; ++j){ //iterate over the transducers
             int i = (startingPin + j) % nTrans;
             if (assignedPins.containsKey(i) ){
@@ -516,9 +517,9 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
             fakeTransducers.get(i).setAmplitude(0);
             
             Thread.sleep( MILLI_WAIT_FOR_DRIVER );
-            final boolean success = readSamples();
-            if (!success){
-                amplitudeText.setText( "timeout waiting for samples!!!");
+            successReadingSamples = readSamples();
+            if (!successReadingSamples){
+                break;
             }
             final Vector2f ampAndPhase = extractAmpAndPhase(samples);
             if (ampAndPhase.x > maxAmp){
@@ -536,6 +537,11 @@ public class AssignTransducers extends javax.swing.JFrame implements SerialComms
         targetTransText.setText( pin + "");
         amplitudeText.setText( maxAmp + "");
         phaseText.setText( phase + "");
+        
+        //timeout from reading
+        if(!successReadingSamples){
+            phaseText.setText( "timeout!!!");
+        }
         
         //thresold checking
         boolean minAmpReached = true;
