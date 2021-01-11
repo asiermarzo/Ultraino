@@ -1,6 +1,8 @@
 package acousticfield3d.gui.panels;
 
 import acousticfield3d.gui.MainForm;
+import acousticfield3d.math.M;
+import acousticfield3d.math.Vector3f;
 import acousticfield3d.protocols.ArduinoMEGA64;
 import acousticfield3d.protocols.ArduinoMEGA64_Anim;
 import acousticfield3d.protocols.ArduinoNano;
@@ -413,31 +415,7 @@ public class TransControlPanel extends javax.swing.JPanel {
         }
     }
 
-    public void offNextOnTransducerMenuActionPerformed() {                                                        
-        final List<Entity> selection = mf.getSelection();
-        final Simulation simulation = mf.getSimulation();
-        
-        if (selection.isEmpty()){
-            return;
-        }
-        Entity e = selection.get(0);
-        if (! (e instanceof Transducer)){
-            return;
-        }
-        Transducer t = (Transducer)e;
-        mf.transducersPanel.setTransAmp( 0.0f );
-        int indexTrans = mf.simulation.getTransducers().indexOf( t );
-        if(indexTrans == -1){
-            return;
-        }
-        
-        mf.clearSelection();
-        if (indexTrans < simulation.getTransducers().size() - 1 ){
-            selection.add( simulation.getTransducers().get( indexTrans + 1));
-            mf.transducersPanel.setTransAmp( 1.0f );
-        }
-        
-    }  
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectExtraButton;
@@ -502,6 +480,81 @@ public class TransControlPanel extends javax.swing.JPanel {
 
     public void phasePi() {
         mf.transducersPanel.setTransPhase( "a" + 1 );
+    }
+
+    private int getNextTransducerAndSwitchOffCurent() {
+        final List<Entity> selection = mf.getSelection();
+
+        if (selection.isEmpty()) {
+            return -1;
+        }
+        Entity e = selection.get(0);
+        if (!(e instanceof Transducer)) {
+            return -1;
+        }
+        Transducer t = (Transducer) e;
+        mf.transducersPanel.setTransAmp(0.0f);
+        int indexTrans = mf.simulation.getTransducers().indexOf(t);
+        mf.clearSelection();
+        return indexTrans;
+
+    }
+    
+    public void offNextOnTransducerMenuActionPerformed() {
+        final int indexTrans = getNextTransducerAndSwitchOffCurent();
+
+        final Simulation simulation = mf.getSimulation();
+        final List<Entity> selection = mf.getSelection();
+        if (indexTrans < simulation.getTransducers().size() - 1) {
+            selection.add(simulation.getTransducers().get(indexTrans + 1));
+            mf.transducersPanel.setTransAmp(1.0f);
+        }
+    }
+        
+    public void offNextOnSpaceTransducerMenuActionPerformed() { //TOHACK improve the code in this crap
+        final int indexTrans = getNextTransducerAndSwitchOffCurent();
+        if (indexTrans == -1){
+            return;
+        }
+        final Transducer cTrans = mf.getSimulation().getTransducers().get(indexTrans);
+        final Vector3f cPos = cTrans.getTransform().getTranslation();
+        
+        //get in target the transducer to the right of cTrans, i.e. zDistance less than 1mm and closest x to the right
+        Transducer target = null;
+        float distanceToTheRight = Float.MAX_VALUE;
+        for (Transducer t : mf.getSimulation().getTransducers()){ 
+            final Vector3f pos = t.getTransform().getTranslation();
+            if (t != cTrans && M.abs( pos.z - cPos.z) < 0.001f){ //not the same and z distance less than 1mm
+                final float distX = pos.x - cPos.x;
+                if (distX > 0 && distX < distanceToTheRight){
+                    distanceToTheRight = distX;
+                    target = t;
+                }
+            }
+        }
+        if(target != null){
+            mf.addToSelection(target);
+            mf.transducersPanel.setTransAmp( 1.0f );
+        }else{ //select the one above to the most left
+            target = null;
+            float xValue = Float.MAX_VALUE;
+            for (Transducer t : mf.getSimulation().getTransducers()){ 
+                final Vector3f pos = t.getTransform().getTranslation();
+                final float zDist =  cPos.z - pos.z;
+                if (t != cTrans && zDist > 0.001f && zDist < 0.015f){  //minimum X, zDistance > 0.001 but minimum
+                    final float posX = pos.x;
+                    if (posX < xValue){
+                        xValue = posX;
+                        target = t;
+                    }
+                }
+            }
+            
+            if (target != null){
+                mf.addToSelection(target);
+                mf.transducersPanel.setTransAmp( 1.0f );
+            }
+        }
     }
     
 }

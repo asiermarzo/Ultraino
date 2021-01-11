@@ -223,16 +223,21 @@ public class TrapsPanel extends javax.swing.JPanel {
     
     private void calcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcButtonActionPerformed
         Entity cp = Scene.getFirstWithTag( mf.getSelection(), Entity.TAG_CONTROL_POINT );
-        
         if (cp == null){
             return;
         }
-        
         applyOnPosition( cp.getTransform().getTranslation() );
-        
         mf.needUpdate();
     }//GEN-LAST:event_calcButtonActionPerformed
 
+    
+    public void doCalcButton(){
+        calcButtonActionPerformed(null);
+    }
+    
+    public void setTwinTrapAngle(float angle){
+        angleText.setText( angle + "");
+    }
     
     
 

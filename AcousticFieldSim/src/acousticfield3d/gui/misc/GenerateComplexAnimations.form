@@ -327,7 +327,7 @@
                                   </Group>
                                   <Component id="jLabel22" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="57" max="32767" attributes="0"/>
+                              <EmptySpace pref="175" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -524,21 +524,20 @@
                           <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="twinTrapsText" min="-2" pref="47" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="twinButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="twinTrapAngularSpeedText" min="-2" pref="47" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="quickSwapText" min="-2" pref="95" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="quickSwapButton" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="quickSwapButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="twinButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="simpleTwinTrapButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="311" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -550,17 +549,21 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="twinTrapsText" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="twinButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="twinTrapAngularSpeedText" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="twinButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="simpleTwinTrapButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="quickSwapText" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="quickSwapButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="quickSwapButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -577,14 +580,14 @@
                 <Property name="text" type="java.lang.String" value="Twin-traps:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="twinTrapsText">
+            <Component class="javax.swing.JTextField" name="twinTrapAngularSpeedText">
               <Properties>
                 <Property name="text" type="java.lang.String" value="4"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="twinButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ok"/>
+                <Property name="text" type="java.lang.String" value="With colored control points"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="twinButtonActionPerformed"/>
@@ -592,7 +595,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="quickSwapButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Play"/>
+                <Property name="text" type="java.lang.String" value="For double Buffered Devices"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quickSwapButtonActionPerformed"/>
@@ -605,13 +608,21 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
               <Properties>
-                <Property name="text" type="java.lang.String" value="speed:"/>
+                <Property name="text" type="java.lang.String" value="angular step:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
                 <Property name="text" type="java.lang.String" value="wait time(ms):"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="simpleTwinTrapButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="With simple Twin Trap"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="simpleTwinTrapButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -650,7 +661,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="157" max="32767" attributes="0"/>
+                      <EmptySpace pref="275" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -749,7 +760,7 @@
                               <Component id="atomButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="49" max="32767" attributes="0"/>
+                      <EmptySpace pref="167" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

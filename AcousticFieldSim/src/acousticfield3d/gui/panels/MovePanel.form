@@ -19,98 +19,112 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="speedText" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="leftButton" max="32767" attributes="0"/>
-                              <Component id="backwardsButton" alignment="0" max="32767" attributes="0"/>
-                              <Component id="expandButton" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="downButton" min="-2" pref="43" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="rightButton" min="-2" pref="43" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="upButton" min="-2" pref="43" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="forwardButton" min="-2" pref="43" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="neutralButton" min="-2" pref="43" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="gatherButton" min="-2" pref="43" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="moveAllCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="beadNSpinner" min="-2" pref="54" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="useAlgCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="doCalcCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="sendToDevicesCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="addKeyFrameCheck" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="repeatCheck" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="repeatText" min="-2" pref="38" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="repeatWaitText" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="angleText" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="rXNButton" max="32767" attributes="0"/>
-                              <Component id="rXPButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="rYNButton" alignment="1" max="32767" attributes="0"/>
-                              <Component id="rYPButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="rZPButton" max="32767" attributes="0"/>
-                              <Component id="rZNButton" min="-2" pref="53" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="moveAllCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="beadNSpinner" min="-2" pref="54" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="useAlgCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="snapButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="interpButton" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="stepSizeText" min="-2" pref="51" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="autoReturnButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="resetButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="repeatCheck" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="repeatText" min="-2" pref="38" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="repeatWaitText" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="doCalcCheck" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="sendToDevicesCheck" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="addKeyFrameCheck" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="angleText" max="32767" attributes="0"/>
+                          </Group>
                           <Group type="102" attributes="0">
-                              <Component id="interpButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="stepSizeText" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="speedText" min="-2" pref="133" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="rXNButton" max="32767" attributes="0"/>
+                                          <Component id="rXPButton" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="rYNButton" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="rYPButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="rZPButton" max="32767" attributes="0"/>
+                                          <Component id="rZNButton" min="-2" pref="53" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="backwardsButton" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="leftButton" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="expandButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Component id="upButton" min="-2" pref="47" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="forwardButton" min="-2" pref="43" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="neutralButton" min="-2" pref="43" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="gatherButton" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="downButton" min="-2" pref="47" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="rightButton" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="snapButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="resetButton" min="-2" max="-2" attributes="0"/>
-                          <Component id="autoReturnButton" min="-2" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -175,6 +189,7 @@
                   <Component id="repeatCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="repeatText" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="repeatWaitText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="6" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -227,7 +242,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="addKeyFrameCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="add keyframe"/>
+        <Property name="text" type="java.lang.String" value="add to anim"/>
         <Property name="toolTipText" type="java.lang.String" value="adds a new keyframe the current animation after every movement"/>
       </Properties>
     </Component>
@@ -258,7 +273,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="leftButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x2190;"/>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X-"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points left"/>
       </Properties>
       <Events>
@@ -267,7 +285,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="upButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x2191;"/>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Y+"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points up"/>
       </Properties>
       <Events>
@@ -276,7 +297,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="rightButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x2192;"/>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X+"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points right"/>
       </Properties>
       <Events>
@@ -285,7 +309,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="downButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x2193;"/>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Y-"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points down"/>
       </Properties>
       <Events>
@@ -294,7 +321,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="forwardButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x2197;"/>
+        <Property name="text" type="java.lang.String" value="Z-"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points forward"/>
       </Properties>
       <Events>
@@ -303,7 +330,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="backwardsButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x2196;"/>
+        <Property name="text" type="java.lang.String" value="Z+"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points back"/>
       </Properties>
       <Events>
@@ -321,7 +348,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="useAlgCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="traps with complex algorithm"/>
+        <Property name="text" type="java.lang.String" value="use complex traps"/>
         <Property name="toolTipText" type="java.lang.String" value="calculates the traps with the algorithms from Optimizers - otherwise it uses the simple algorithm indicated in the tabs Traps"/>
       </Properties>
     </Component>
@@ -402,7 +429,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="gatherButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&gt;"/>
+        <Property name="text" type="java.lang.String" value="S+"/>
         <Property name="toolTipText" type="java.lang.String" value="gather"/>
       </Properties>
       <Events>
@@ -411,7 +438,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="expandButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;"/>
+        <Property name="text" type="java.lang.String" value="S-"/>
         <Property name="toolTipText" type="java.lang.String" value="expand"/>
       </Properties>
       <Events>
@@ -443,6 +470,11 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
         <Property name="toolTipText" type="java.lang.String" value="ms seconds to wait between repeated actions"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="wait(ms)"/>
       </Properties>
     </Component>
   </SubComponents>

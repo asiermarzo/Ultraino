@@ -88,12 +88,13 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         quickSwapText = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        twinTrapsText = new javax.swing.JTextField();
+        twinTrapAngularSpeedText = new javax.swing.JTextField();
         twinButton = new javax.swing.JButton();
         quickSwapButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        simpleTwinTrapButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         recalcAnimationButton = new javax.swing.JButton();
@@ -378,7 +379,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(matrixButton))))
                             .addComponent(jLabel22))
-                        .addContainerGap(57, Short.MAX_VALUE))))
+                        .addContainerGap(175, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,16 +426,16 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         jLabel9.setText("Twin-traps:");
 
-        twinTrapsText.setText("4");
+        twinTrapAngularSpeedText.setText("4");
 
-        twinButton.setText("Ok");
+        twinButton.setText("With colored control points");
         twinButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 twinButtonActionPerformed(evt);
             }
         });
 
-        quickSwapButton.setText("Play");
+        quickSwapButton.setText("For double Buffered Devices");
         quickSwapButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quickSwapButtonActionPerformed(evt);
@@ -443,9 +444,16 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         jLabel11.setText("Play animation as quick Swaps");
 
-        jLabel10.setText("speed:");
+        jLabel10.setText("angular step:");
 
         jLabel12.setText("wait time(ms):");
+
+        simpleTwinTrapButton.setText("With simple Twin Trap");
+        simpleTwinTrapButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpleTwinTrapButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -457,18 +465,17 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(twinTrapsText, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(twinButton))
+                        .addComponent(twinTrapAngularSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel11)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(quickSwapButton)))
-                .addContainerGap())
+                        .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(quickSwapButton)
+                    .addComponent(twinButton)
+                    .addComponent(simpleTwinTrapButton))
+                .addGap(311, 311, 311))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,15 +485,19 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(twinTrapsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(twinButton))
-                .addGap(18, 18, 18)
+                    .addComponent(twinTrapAngularSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(twinButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(simpleTwinTrapButton)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(quickSwapButton))
+                    .addComponent(quickSwapText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(quickSwapButton)
                 .addContainerGap())
         );
 
@@ -543,7 +554,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                             .addComponent(jLabel21)
                             .addGap(18, 18, 18)
                             .addComponent(animWithCurrentPointsButton))))
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(275, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -593,7 +604,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
                         .addComponent(atomText, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(atomButton)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -744,7 +755,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     }//GEN-LAST:event_bounceAndRotateButtonActionPerformed
 
     private void twinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twinButtonActionPerformed
-        final int speed = Parse.toInt( twinTrapsText.getText() );
+        final int speed = Parse.toInt( twinTrapAngularSpeedText.getText() );
         final ArrayList<MeshEntity> points = mf.simulation.controlPoints;
         final ArrayList<Entity> selected = mf.selection;
         final int nPoints = points.size();
@@ -752,9 +763,6 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         for(MeshEntity e : points){
             colors.add( e.getColor() );
         }
-        
-        final int steps = 256 / speed;
-        
         for(int i = 0; i < 256; i+=speed){
             disableCalc();
 
@@ -779,6 +787,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         mf.movePanel.setCalculate(true);
     }//GEN-LAST:event_twinButtonActionPerformed
 
+    
     private void quickSwapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickSwapButtonActionPerformed
         final int msWait = Parse.toInt( quickSwapText.getText() );
         final Animation anim = mf.animPanel.getCurrentAnimation();
@@ -863,7 +872,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
       //first step, parse the variables from text into floats
       final float height = Parse.toFloat(circleHeightText.getText());
       final float width = Parse.toFloat(circleWidthText.getText());
-      final float stepSize = Parse.toFloat(stepSizeText.getText());
+      final float stepSize = Parse.toFloat(circleStepSizeText.getText());
       
       //calculating the circunference        
       final float p=M.TWO_PI*M.sqrt((width*width+height*height)/2);
@@ -989,6 +998,14 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_smoothPhasesButtonActionPerformed
 
+    private void simpleTwinTrapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpleTwinTrapButtonActionPerformed
+        final int angularSpeed = Parse.toInt( twinTrapAngularSpeedText.getText() );
+        for(float cAngle = 0; cAngle < 360; cAngle+=angularSpeed){
+            mf.trapsPanel.setTwinTrapAngle( cAngle );
+            mf.trapsPanel.doCalcButton();
+        }
+    }//GEN-LAST:event_simpleTwinTrapButtonActionPerformed
+
   
     private void disableCalc() {
         mf.movePanel.setGenerateKeyFrame(false);
@@ -1063,11 +1080,12 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
     private javax.swing.JTextField rxText;
     private javax.swing.JTextField ryText;
     private javax.swing.JTextField rzText;
+    private javax.swing.JButton simpleTwinTrapButton;
     private javax.swing.JButton smoothPhasesButton;
     private javax.swing.JTextField smoothPhasesText;
     private javax.swing.JTextField stepSizeText;
     private javax.swing.JButton twinButton;
-    private javax.swing.JTextField twinTrapsText;
+    private javax.swing.JTextField twinTrapAngularSpeedText;
     // End of variables declaration//GEN-END:variables
 
     private void applyAfterCalc() {

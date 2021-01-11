@@ -315,6 +315,7 @@ public final class MainForm extends javax.swing.JFrame {
         transSetAmp0Menu = new javax.swing.JMenuItem();
         transSetAmp1Menu = new javax.swing.JMenuItem();
         offNextOnTransducerMenu = new javax.swing.JMenuItem();
+        offNextOnRealMenu = new javax.swing.JMenuItem();
         selectTransTopMenu = new javax.swing.JMenuItem();
         selectTransTopMenu1 = new javax.swing.JMenuItem();
         phaseUpMenu = new javax.swing.JMenuItem();
@@ -979,6 +980,15 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu8.add(offNextOnTransducerMenu);
+
+        offNextOnRealMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, 0));
+        offNextOnRealMenu.setText("offNextOnReal");
+        offNextOnRealMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                offNextOnRealMenuActionPerformed(evt);
+            }
+        });
+        jMenu8.add(offNextOnRealMenu);
 
         selectTransTopMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
         selectTransTopMenu.setText("Select top");
@@ -2053,6 +2063,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void moveOnTimerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveOnTimerMenuActionPerformed
         showNewFrame( new MoveOnTimerForm(this) );
     }//GEN-LAST:event_moveOnTimerMenuActionPerformed
+
+    private void offNextOnRealMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offNextOnRealMenuActionPerformed
+        transControlPanel.offNextOnSpaceTransducerMenuActionPerformed();
+    }//GEN-LAST:event_offNextOnRealMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2123,6 +2137,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem matlabPhasesMenu;
     private javax.swing.JMenuItem mergePointsMenu;
     private javax.swing.JMenuItem moveOnTimerMenu;
+    private javax.swing.JMenuItem offNextOnRealMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
     private javax.swing.JMenuItem optimizerMenu;
     private javax.swing.JMenuItem originCamMenu;
