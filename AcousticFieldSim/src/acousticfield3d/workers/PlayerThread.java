@@ -50,16 +50,6 @@ public class PlayerThread extends Thread{
         stepTime( 1.0f );
     }
     
-    /*
-    public void applyAtPercetange(float p){
-        Animation anim = form.currentAnimation;
-        if(anim != null){
-            float duration = anim.getDuration();
-            anim.applyAtTime(duration * p);
-        }
-    }
-    */
-    
     public void applyFrame(int frame) {
         Animation anim = form.currentAnimation;
         if(anim != null){
@@ -124,7 +114,7 @@ public class PlayerThread extends Thread{
                             stopReproduction();
                             form.setPlaying(false);
                         }else if(form.isWrapRepeat()){
-                            currentTime -= duration;
+                            currentTime -= duration+1;
                         }
                     }
                 }

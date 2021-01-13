@@ -416,8 +416,10 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("X");
 
+        jLabel6.setForeground(new java.awt.Color(0, 153, 0));
         jLabel6.setText("RY");
 
         rxText.setText("0");
@@ -432,8 +434,10 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setForeground(new java.awt.Color(0, 0, 204));
         jLabel5.setText("RZ");
 
+        jLabel2.setForeground(new java.awt.Color(0, 153, 0));
         jLabel2.setText("Y");
 
         syText.setText("0");
@@ -448,6 +452,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel21.setForeground(new java.awt.Color(0, 0, 204));
         jLabel21.setText("SZ:");
 
         xText.setText("0");
@@ -462,6 +467,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel15.setForeground(new java.awt.Color(255, 0, 0));
         jLabel15.setText("SX:");
 
         szText.setText("0");
@@ -488,6 +494,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         jLabel4.setText("RX");
 
         sxText.setText("0");
@@ -514,6 +521,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setForeground(new java.awt.Color(0, 0, 204));
         jLabel3.setText("Z");
 
         zText.setText("0");
@@ -528,6 +536,7 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel16.setForeground(new java.awt.Color(51, 204, 0));
         jLabel16.setText("SY:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -750,7 +759,7 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu5.add(simEditParamMenu);
 
-        simulationResizeMenu.setText("Resize");
+        simulationResizeMenu.setText("Update bounds");
         simulationResizeMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simulationResizeMenuActionPerformed(evt);

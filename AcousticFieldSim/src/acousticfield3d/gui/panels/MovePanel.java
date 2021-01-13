@@ -117,6 +117,7 @@ public class MovePanel extends javax.swing.JPanel {
         speedText.setToolTipText("step size of the movements and scaling");
 
         leftButton.setBackground(new java.awt.Color(153, 153, 153));
+        leftButton.setForeground(new java.awt.Color(204, 0, 51));
         leftButton.setText("X-");
         leftButton.setToolTipText("move selected points left");
         leftButton.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +127,7 @@ public class MovePanel extends javax.swing.JPanel {
         });
 
         upButton.setBackground(new java.awt.Color(153, 153, 153));
+        upButton.setForeground(new java.awt.Color(0, 153, 0));
         upButton.setText("Y+");
         upButton.setToolTipText("move selected points up");
         upButton.addActionListener(new java.awt.event.ActionListener() {
@@ -135,6 +137,7 @@ public class MovePanel extends javax.swing.JPanel {
         });
 
         rightButton.setBackground(new java.awt.Color(153, 153, 153));
+        rightButton.setForeground(new java.awt.Color(204, 0, 51));
         rightButton.setText("X+");
         rightButton.setToolTipText("move selected points right");
         rightButton.addActionListener(new java.awt.event.ActionListener() {
@@ -144,6 +147,7 @@ public class MovePanel extends javax.swing.JPanel {
         });
 
         downButton.setBackground(new java.awt.Color(153, 153, 153));
+        downButton.setForeground(new java.awt.Color(0, 153, 0));
         downButton.setText("Y-");
         downButton.setToolTipText("move selected points down");
         downButton.addActionListener(new java.awt.event.ActionListener() {
@@ -152,6 +156,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        forwardButton.setForeground(new java.awt.Color(51, 102, 255));
         forwardButton.setText("Z-");
         forwardButton.setToolTipText("move selected points forward");
         forwardButton.addActionListener(new java.awt.event.ActionListener() {
@@ -160,6 +165,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        backwardsButton.setForeground(new java.awt.Color(51, 102, 255));
         backwardsButton.setText("Z+");
         backwardsButton.setToolTipText("move selected points back");
         backwardsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +185,7 @@ public class MovePanel extends javax.swing.JPanel {
         useAlgCheck.setText("use complex traps");
         useAlgCheck.setToolTipText("calculates the traps with the algorithms from Optimizers - otherwise it uses the simple algorithm indicated in the tabs Traps");
 
+        rXPButton.setForeground(new java.awt.Color(204, 0, 51));
         rXPButton.setText("Rx+");
         rXPButton.setToolTipText("rotate group of particles along X, center is the center of the group of particles");
         rXPButton.addActionListener(new java.awt.event.ActionListener() {
@@ -187,6 +194,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        rYPButton.setForeground(new java.awt.Color(0, 153, 0));
         rYPButton.setText("Ry+");
         rYPButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +202,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        rZPButton.setForeground(new java.awt.Color(51, 102, 255));
         rZPButton.setText("Rz+");
         rZPButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +210,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        rZNButton.setForeground(new java.awt.Color(51, 102, 255));
         rZNButton.setText("Rz-");
         rZNButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,6 +218,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        rYNButton.setForeground(new java.awt.Color(0, 153, 0));
         rYNButton.setText("Ry-");
         rYNButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +226,7 @@ public class MovePanel extends javax.swing.JPanel {
             }
         });
 
+        rXNButton.setForeground(new java.awt.Color(204, 0, 51));
         rXNButton.setText("Rx-");
         rXNButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

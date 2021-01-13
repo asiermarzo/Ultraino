@@ -278,43 +278,43 @@ public class Scene {
     public void updateBoundaryBoxes(Simulation simulation){
         removeWithTag(entities, Entity.TAG_SIMULATION_BOUNDINGS);
         
-        MeshEntity me;
         final float boxWidth = simulation.getMinSize() / 16.0f;
-        Vector3f min = simulation.getBoundaryMin();
-        Vector3f max = simulation.getBoundaryMax();
+        final Vector3f min = simulation.getBoundaryMin();
+        final Vector3f max = simulation.getBoundaryMax();
+        final Vector3f mid = max.add(min).divideLocal(2);
         final float simWidth = max.y - min.y;
-        final float midY = (max.y + min.y) / 2.0f;
         
         final int barColor = Color.WHITE;
         
-        me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(barColor);
-        me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
-        me.getTransform().getTranslation().set(min.x, midY, min.z);
-        me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
-        entities.add(me);
+        final List<MeshEntity> bb = new ArrayList<>();
+        for (int i = 0; i < 4+3; i++) {
+            final MeshEntity me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
+            me.setColor(barColor);
+            me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
+            me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
+            entities.add(me);
+            bb.add(me);
+        }
         
-        me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(barColor);
-        me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
-        me.getTransform().getTranslation().set(min.x, midY, max.z);
-        me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
-        entities.add(me);
-        
-        me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(barColor);
-        me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
-        me.getTransform().getTranslation().set(max.x, midY, min.z);
-        me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
-        entities.add(me);
-        
-        me = new MeshEntity(Resources.MESH_BOX, null, Resources.SHADER_SOLID);
-        me.setColor(barColor);
-        me.tag = Entity.TAG_SIMULATION_BOUNDINGS;
-        me.getTransform().getTranslation().set(max.x, midY, max.z);
-        me.getTransform().getScale().set(boxWidth,simWidth,boxWidth);
-        entities.add(me);
-        
+        //bounding box bars
+        bb.get(0).getTransform().getTranslation().set(min.x, mid.y, min.z);
+        bb.get(1).getTransform().getTranslation().set(min.x, mid.y, max.z);
+        bb.get(2).getTransform().getTranslation().set(max.x, mid.y, min.z);
+        bb.get(3).getTransform().getTranslation().set(max.x, mid.y, max.z);
+
+        //axes lines
+        //x
+        bb.get(4).getTransform().getTranslation().set( simWidth/4.0f, 0, 0);
+        bb.get(4).getTransform().getScale().set( simWidth/2.0f ,boxWidth,boxWidth);
+        bb.get(4).setColor( Color.RED );
+        //y
+        bb.get(5).getTransform().getTranslation().set(0,simWidth/4.0f,0);
+        bb.get(5).getTransform().getScale().set(boxWidth,simWidth/2.0f,boxWidth);
+        bb.get(5).setColor( Color.GREEN );
+        //z
+        bb.get(6).getTransform().getTranslation().set(0,0,simWidth/4.0f);
+        bb.get(6).getTransform().getScale().set(boxWidth,boxWidth,simWidth/2.0f);
+        bb.get(6).setColor( Color.BLUE );
     }
 
 

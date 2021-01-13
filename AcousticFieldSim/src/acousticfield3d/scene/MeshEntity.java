@@ -71,6 +71,7 @@ public class MeshEntity extends Entity{
         return p.distance( r.origin );
     }
     
+    //TODO, needed for selecting with bounding rect
     public boolean boxInside(final Frustrum frustrum){
        /* Mesh m = Resources.get().getMesh(mesh);
         if(m == null) { return false; }

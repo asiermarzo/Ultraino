@@ -276,6 +276,9 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="99" type="rgb"/>
         </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="0" red="cc" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="X-"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points left"/>
       </Properties>
@@ -287,6 +290,9 @@
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Y+"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points up"/>
@@ -300,6 +306,9 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="99" type="rgb"/>
         </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="0" red="cc" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="X+"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points right"/>
       </Properties>
@@ -312,6 +321,9 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="99" type="rgb"/>
         </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Y-"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points down"/>
       </Properties>
@@ -321,6 +333,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="forwardButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="66" red="33" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Z-"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points forward"/>
       </Properties>
@@ -330,6 +345,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="backwardsButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="66" red="33" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Z+"/>
         <Property name="toolTipText" type="java.lang.String" value="move selected points back"/>
       </Properties>
@@ -354,6 +372,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="rXPButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="0" red="cc" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Rx+"/>
         <Property name="toolTipText" type="java.lang.String" value="rotate group of particles along X, center is the center of the group of particles"/>
       </Properties>
@@ -363,6 +384,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="rYPButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Ry+"/>
       </Properties>
       <Events>
@@ -371,6 +395,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="rZPButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="66" red="33" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Rz+"/>
       </Properties>
       <Events>
@@ -379,6 +406,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="rZNButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="66" red="33" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Rz-"/>
       </Properties>
       <Events>
@@ -387,6 +417,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="rYNButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="99" red="0" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Ry-"/>
       </Properties>
       <Events>
@@ -395,6 +428,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="rXNButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="0" red="cc" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Rx-"/>
       </Properties>
       <Events>
