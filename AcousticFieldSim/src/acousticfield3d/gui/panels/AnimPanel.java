@@ -419,9 +419,10 @@ public class AnimPanel extends javax.swing.JPanel {
         if (evt.getClickCount() == 2){
             int selected = statusList.getSelectedIndex();
             if(selected != -1){
+                player.setCurrentFrame ( selected );
                 player.applyFrame(selected);
-                mf.transControlPanel.sendPattern();
                 
+                mf.transControlPanel.sendPattern();
                 mf.needUpdate();
             }
         }

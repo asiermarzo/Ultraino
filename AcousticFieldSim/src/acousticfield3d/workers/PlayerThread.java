@@ -153,4 +153,11 @@ public class PlayerThread extends Thread{
         }
     }
 
+    public void setCurrentFrame(int selected) {
+        currentTime = selected;
+        final Animation anim = form.currentAnimation;
+        final float duration = anim.getDuration();
+        updateTimeIndicator(duration);
+    }
+
 }
