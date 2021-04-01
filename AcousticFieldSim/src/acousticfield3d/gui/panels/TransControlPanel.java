@@ -347,8 +347,8 @@ public class TransControlPanel extends javax.swing.JPanel {
                 t2.setAmplitude( t.getAmplitude() );
                 t1.setPhase( t.getPhase() );
                 t2.setPhase( t.getPhase() + 1 ); //PI out of phase for the push/pull driving
-                t1.setDriverPinNumber( t1.getDriverPinNumber() * 2);
-                t2.setDriverPinNumber( t1.getDriverPinNumber() * 2 + 1);
+                t1.setDriverPinNumber( t.getDriverPinNumber() * 2);
+                t2.setDriverPinNumber( t.getDriverPinNumber() * 2 + 1);
                 t1.setNumber( t1.getDriverPinNumber() );
                 t2.setNumber( t2.getDriverPinNumber() );
                 pushPullTrans.add(t1);
@@ -365,7 +365,7 @@ public class TransControlPanel extends javax.swing.JPanel {
             return;
         }        
         
-        if (!extraDevices.isEmpty()) {
+        if (! extraDevices.isEmpty()) {
             device.sendPattern(getTransducers());
             for (DeviceConnection dc : extraDevices) {
                 dc.sendPattern(getTransducers());

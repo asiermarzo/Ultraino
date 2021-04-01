@@ -1907,7 +1907,7 @@ public final class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_ImportAmpPhasesMenuActionPerformed
 
     private void auxKeyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auxKeyMenuActionPerformed
-        trapsPanel.reportGorkovs();
+        //trapsPanel.reportGorkovs();
     }//GEN-LAST:event_auxKeyMenuActionPerformed
 
     private void exportNano8MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportNano8MenuActionPerformed

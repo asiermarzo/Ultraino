@@ -9,6 +9,7 @@ import acousticfield3d.simulation.Animation;
 import acousticfield3d.simulation.Transducer;
 import acousticfield3d.utils.StringFormats;
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
 import javax.swing.JTextField;
 
 /**
