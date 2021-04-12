@@ -347,6 +347,8 @@ public class TransControlPanel extends javax.swing.JPanel {
                 t2.setAmplitude( t.getAmplitude() );
                 t1.setPhase( t.getPhase() );
                 t2.setPhase( t.getPhase() + 1 ); //PI out of phase for the push/pull driving
+                t1.setPhaseCorrection( t.getPhaseCorrection() );
+                t2.setPhaseCorrection(  t.getPhaseCorrection() );
                 t1.setDriverPinNumber( t.getDriverPinNumber() * 2);
                 t2.setDriverPinNumber( t.getDriverPinNumber() * 2 + 1);
                 t1.setNumber( t1.getDriverPinNumber() );
