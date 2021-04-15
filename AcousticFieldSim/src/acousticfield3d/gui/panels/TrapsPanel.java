@@ -227,6 +227,11 @@ public class TrapsPanel extends javax.swing.JPanel {
             return;
         }
         applyOnPosition( cp.getTransform().getTranslation() );
+        
+        if (genAnimCheck.isSelected()) {
+            mf.animPanel.addKeyFrame();
+        }
+        
         mf.needUpdate();
     }//GEN-LAST:event_calcButtonActionPerformed
 

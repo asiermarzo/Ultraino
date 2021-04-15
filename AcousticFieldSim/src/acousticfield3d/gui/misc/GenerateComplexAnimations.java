@@ -285,7 +285,7 @@ public class GenerateComplexAnimations extends javax.swing.JFrame {
 
         jLabel19.setText("stepSize:");
 
-        circleHeightText.setText("0.01");
+        circleHeightText.setText("0.02");
 
         circleXYButton.setText("XZ");
         circleXYButton.addActionListener(new java.awt.event.ActionListener() {
