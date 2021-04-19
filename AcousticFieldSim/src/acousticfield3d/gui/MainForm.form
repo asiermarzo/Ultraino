@@ -524,6 +524,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addKeyFrameMenuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="addKeyFrameNTimesMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="AddKeyFrameNTimes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addKeyFrameNTimesMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportToArduinoMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Export to ArduinoMega64"/>

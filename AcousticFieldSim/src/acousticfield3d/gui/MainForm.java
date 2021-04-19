@@ -335,6 +335,7 @@ public final class MainForm extends javax.swing.JFrame {
         pointsShapeMenu = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         addKeyFrameMenu = new javax.swing.JMenuItem();
+        addKeyFrameNTimesMenu = new javax.swing.JMenuItem();
         exportToArduinoMenu = new javax.swing.JMenuItem();
         exportNano8Menu = new javax.swing.JMenuItem();
         exportMatlabMenu = new javax.swing.JMenuItem();
@@ -1159,6 +1160,14 @@ public final class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu6.add(addKeyFrameMenu);
+
+        addKeyFrameNTimesMenu.setText("AddKeyFrameNTimes");
+        addKeyFrameNTimesMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addKeyFrameNTimesMenuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(addKeyFrameNTimesMenu);
 
         exportToArduinoMenu.setText("Export to ArduinoMega64");
         exportToArduinoMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -2105,6 +2114,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void offNextOnRealMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offNextOnRealMenuActionPerformed
         transControlPanel.offNextOnSpaceTransducerMenuActionPerformed();
     }//GEN-LAST:event_offNextOnRealMenuActionPerformed
+
+    private void addKeyFrameNTimesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addKeyFrameNTimesMenuActionPerformed
+        animPanel.addKeyFrameNTimes();
+    }//GEN-LAST:event_addKeyFrameNTimesMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2116,6 +2129,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem ImportAmpPhasesMenu;
     private javax.swing.JMenu PointsMenu;
     private javax.swing.JMenuItem addKeyFrameMenu;
+    private javax.swing.JMenuItem addKeyFrameNTimesMenu;
     private javax.swing.JMenu addTransMenu;
     private javax.swing.JMenuItem animExportRawMenu;
     private javax.swing.JMenuItem animImportRawMenu;

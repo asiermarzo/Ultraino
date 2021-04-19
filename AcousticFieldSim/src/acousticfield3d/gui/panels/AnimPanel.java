@@ -604,6 +604,13 @@ public class AnimPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup wraperGroup;
     // End of variables declaration//GEN-END:variables
 
+    public void addKeyFrameNTimes() {
+        final int nTimes = Parse.toInt( DialogUtils.getStringDialog(this, "Number of frames", "10") );
+        for (int i = 0; i < nTimes; i++) {
+            addKeyFrame();
+        }
+    }
+
    
 
 }
