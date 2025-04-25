@@ -4,6 +4,8 @@ import acousticfield3d.gui.MainForm;
 import acousticfield3d.scene.MeshEntity;
 import acousticfield3d.scene.Resources;
 import acousticfield3d.utils.Parse;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -11,7 +13,8 @@ import acousticfield3d.utils.Parse;
  */
 public class VolumetricPanel extends javax.swing.JPanel {
     final MainForm mf;
- 
+    Timer updateTimer;
+        
     public VolumetricPanel(MainForm mf) {
         this.mf = mf;
         initComponents();
@@ -156,6 +159,19 @@ public class VolumetricPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_volRenderComboActionPerformed
 
     private void timeDomainCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeDomainCheckBoxActionPerformed
+        if (updateTimer != null){
+            updateTimer.cancel();
+            updateTimer = null;
+        }
+        if (timeDomainCheckBox.isSelected()){
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    mf.needUpdate();
+                }
+            };
+            updateTimer = new Timer("updateVolTimer");
+            updateTimer.scheduleAtFixedRate(task, 0, 33);
+        }
         mf.needUpdate();
     }//GEN-LAST:event_timeDomainCheckBoxActionPerformed
 

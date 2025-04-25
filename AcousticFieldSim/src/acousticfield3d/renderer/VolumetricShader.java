@@ -1,6 +1,7 @@
 package acousticfield3d.renderer;
 
 import acousticfield3d.gui.panels.VolumetricPanel;
+import acousticfield3d.math.M;
 import acousticfield3d.math.Matrix4f;
 import acousticfield3d.math.Vector3f;
 import acousticfield3d.scene.MeshEntity;
@@ -8,10 +9,11 @@ import acousticfield3d.scene.Scene;
 import acousticfield3d.simulation.Simulation;
 import com.jogamp.opengl.GL2;
 import java.nio.FloatBuffer;
+import javax.swing.Timer;
 
 public class VolumetricShader extends ShaderTransducers{
-    int centerCube, sizeCube;
-    int raySteps;
+    int maxCube, minCube;
+    int rayStep;
     int isTimeDomain;
     int timestamp;
     int renderType;
@@ -20,9 +22,11 @@ public class VolumetricShader extends ShaderTransducers{
     int minPosColor, maxPosColor;
     int minNegColor, maxNegColor;
     int isoValue;
-     
+         
+    final long milliStart;
     public VolumetricShader(String vProgram, String fProgram) {
         super(vProgram, fProgram, ORDER_OPAQUE, 10);
+        milliStart = System.currentTimeMillis();
     }
         
     @Override
@@ -38,9 +42,9 @@ public class VolumetricShader extends ShaderTransducers{
     @Override
     void getUniforms(GL2 gl) {
         super.getUniforms(gl);
-        centerCube = gl.glGetUniformLocation(shaderProgramID, "cubeCenter");
-        sizeCube = gl.glGetUniformLocation(shaderProgramID, "cubeSize");
-        raySteps = gl.glGetUniformLocation(shaderProgramID, "raySteps");
+        maxCube = gl.glGetUniformLocation(shaderProgramID, "maxCube");
+        minCube = gl.glGetUniformLocation(shaderProgramID, "minCube");
+        rayStep = gl.glGetUniformLocation(shaderProgramID, "rayStep");
         isTimeDomain = gl.glGetUniformLocation(shaderProgramID, "isTimeDomain");
         timestamp = gl.glGetUniformLocation(shaderProgramID, "timestamp");
         renderType = gl.glGetUniformLocation(shaderProgramID, "renderType");
@@ -60,15 +64,17 @@ public class VolumetricShader extends ShaderTransducers{
        super.bindUniforms(gl, scene, renderer, s, me, projectionViewModel, viewModel, model, fb);
        
        final VolumetricPanel panel = renderer.getForm().volPanel;
-       Vector3f cubeT = scene.getCubeHelper().getTransform().getTranslation();
+       Vector3f cubePos = scene.getCubeHelper().getTransform().getTranslation();
        Vector3f cubeS = scene.getCubeHelper().getTransform().getScale();
-       gl.glUniform3f(centerCube, cubeT.x, cubeT.y, cubeT.z);
-       gl.glUniform3f(sizeCube, cubeS.x, cubeS.y, cubeS.z);
-       gl.glUniform1f(raySteps, 1.0f / panel.getDensity() );
+      
+       gl.glUniform3f(maxCube, cubePos.x + M.abs(cubeS.x) / 2f, cubePos.y + M.abs(cubeS.y) / 2f, cubePos.z + M.abs(cubeS.z) / 2f);
+       gl.glUniform3f(minCube, cubePos.x - M.abs(cubeS.x) / 2f, cubePos.y - M.abs(cubeS.y) / 2f, cubePos.z - M.abs(cubeS.z) / 2f);
+       gl.glUniform1f(rayStep, cubeS.length() / panel.getDensity() );
        
        gl.glUniform1i(renderType, panel.getRenderType() ); //1 MIPS, 2 ISO
        gl.glUniform1f(isoValue, panel.getIsoValue() );
-       gl.glUniform1f(timestamp, System.currentTimeMillis() / 1000 * panel.getTimeScale() );
+       final float tVal = (System.currentTimeMillis()-milliStart) / 1000.0f * panel.getTimeScale();
+       gl.glUniform1f(timestamp, tVal );
        gl.glUniform1i(isTimeDomain, panel.isTimeDomain() ? 1 : 0);
        
        final float minAmp = panel.getMinAmp();
