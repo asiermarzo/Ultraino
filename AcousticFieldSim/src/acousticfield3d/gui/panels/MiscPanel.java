@@ -296,8 +296,6 @@ public class MiscPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_maskAddSphereButtonActionPerformed
 
     private void reloadShadersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadShadersButtonActionPerformed
-        String templateFile = Resources.TEMPLATE_SHADERS_STENCILDIR;
-        Resources.get().initTemplates(templateFile);
         mf.renderer.reloadShaders();
     }//GEN-LAST:event_reloadShadersButtonActionPerformed
 

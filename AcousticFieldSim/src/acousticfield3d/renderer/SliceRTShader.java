@@ -105,7 +105,7 @@ public class SliceRTShader extends ShaderTransducers{
     @Override
     void render(GL2 gl, Simulation s, MeshEntity me) {
         //TimerUtil.get().tick("Render slice");
-        super.render(gl, s, me); //To change body of generated methods, choose Tools | Templates.
+        super.render(gl, s, me);
         //TimerUtil.get().tack("Render slice");
     }
     

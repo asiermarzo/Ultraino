@@ -264,12 +264,6 @@ public class Shader {
         ArrayList<Integer> positions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         
-        //insert templates
-        gatherMacros(input, Resources.TEMPLATE_TAG, positions, names);
-        if (! positions.isEmpty()){
-            input = replaceTemplates(input, positions, names, templates);
-        }
-        
         //insert includes
         gatherMacros(input, Resources.INCLUDE_TAG, positions, names);
         if (! positions.isEmpty()){
@@ -277,19 +271,6 @@ public class Shader {
         }
         
         return input;
-    }
-    
-    public static String replaceTemplates(String input, ArrayList<Integer> positions, ArrayList<String> names, HashMap<String, String> templates) {
-        StringBuilder sb = new StringBuilder();
-        sb.append( input );
-        for(int i = positions.size()-1; i >= 0; --i){
-            int pos = positions.get(i);
-            String name = names.get(i);
-            if (templates.containsKey( name )){
-                sb.insert(pos, templates.get(name));
-            }
-        }
-        return sb.toString();
     }
 
     public static String includeFiles(String input, ArrayList<Integer> positions, ArrayList<String> names) {

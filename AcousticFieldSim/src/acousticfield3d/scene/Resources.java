@@ -5,6 +5,7 @@ import acousticfield3d.renderer.SliceRTShader;
 import acousticfield3d.renderer.Shader;
 import acousticfield3d.renderer.ShaderTransducers;
 import acousticfield3d.renderer.SliceRTQuickAmpShader;
+import acousticfield3d.renderer.VolumetricShader;
 import acousticfield3d.shapes.Box;
 import acousticfield3d.shapes.Cylinder;
 import acousticfield3d.shapes.Mesh;
@@ -27,15 +28,14 @@ public class Resources {
     
     public static final int SHADER_SOLID = 1;
     public static final int SHADER_SOLID_SPEC = 2;
-    public static final int SHADER_SOLID_DIFF = 3;
-    
-    public static final int SHADER_SLICE_PRE = 5;
     public static final int SHADER_MASK = 9;
     
     public static final int SHADER_SLICE_RT_AMP = 10;
     public static final int SHADER_SLICE_RT_PHASE = 11;
     public static final int SHADER_SLICE_RT_AMPPHASE = 12;
     public static final int SHADER_SLICE_RT_QUICK_AMP = 27;
+    
+    public static final int SHADER_VOLUMETRIC = 30;
             
     public static final String MESH_CUSTOM = "custom";
     public static final String MESH_QUAD = "quad";
@@ -72,33 +72,15 @@ public class Resources {
         meshes = new HashMap<>();
         templates = new HashMap<>();
         
-        initTemplates(useStencil ? TEMPLATE_SHADERS_STENCILDIR : TEMPLATE_SHADERS_ANAL_NODIR);
         initResources(gl);
     }
 
-    public static final String BEGIN_TAG = "//BEGIN";
-    public static final String END_TAG = "//END";
-    public static final String TEMPLATE_TAG = "//TEMPLATE";
     public static final String INCLUDE_TAG = "//INCLUDE";
-    
-    public void initTemplates(String file){
-        templates.clear();
-        String content = Shader.getSourceCode( file );
-        int si = 0;
-        while ( (si = content.indexOf(BEGIN_TAG, si)) != -1){
-            String templateName = StringUtils.getBetween(content, BEGIN_TAG, "\n", si).trim();
-            
-            int endPosition = content.indexOf(END_TAG, si+1);
-            String templateContent = content.substring(si, endPosition);
-            templates.put(templateName, templateContent);
-            si = endPosition + 1;
-        }    
-    }
+   
     
     private void initResources(GL2 gl) {
         //load shaders
         shaders.put(SHADER_SOLID, new Shader("ColorPlain.vsh", "ColorPlain.fsh", Shader.ORDER_OPAQUE).init(gl, templates));
-        shaders.put(SHADER_SOLID_DIFF, new Shader("ColorDiff.vsh", "ColorDiff.fsh", Shader.ORDER_OPAQUE).init(gl, templates));
         shaders.put(SHADER_SOLID_SPEC, new Shader("ColorSpec.vsh", "ColorSpec.fsh", Shader.ORDER_OPAQUE).init(gl, templates));
         shaders.put(SHADER_MASK, new Shader("MatteMask.vsh", "MatteMask.fsh", Shader.ORDER_MASK).init(gl, templates));
         
@@ -106,8 +88,8 @@ public class Resources {
         shaders.put(SHADER_SLICE_RT_PHASE, new SliceRTShader("SliceRT_V.glsl", "SliceRT_F.glsl", FieldSource.sourcePhase).init(gl, templates));
         shaders.put(SHADER_SLICE_RT_AMPPHASE, new SliceRTShader("SliceRT_V.glsl", "SliceRT_F.glsl", FieldSource.sourceAmpPhase).init(gl, templates));
         shaders.put(SHADER_SLICE_RT_QUICK_AMP, new SliceRTQuickAmpShader("SliceRT_V.glsl", "SliceRTQuickAmp_F.glsl").init(gl, templates));
+        shaders.put(SHADER_VOLUMETRIC, new VolumetricShader("Volumetric_V.glsl", "Volumetric_F.glsl").init(gl, templates));
        
-      
         //load meshes
         meshes.put(MESH_BOX, new Box(0.5f, 0.5f, 0.5f) );
         meshes.put(MESH_SPHERE, new Sphere(8, 8, 0.5f) );

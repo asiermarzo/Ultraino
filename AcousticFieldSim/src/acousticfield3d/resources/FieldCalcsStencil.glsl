@@ -1,4 +1,4 @@
-//BEGIN FIELD
+//FOR INCLUDING
 vec2 fieldAt(vec3 point){
     vec2 field = vec2(0.0);
 
@@ -25,4 +25,3 @@ vec2 fieldAt(vec3 point){
 
     return field;
 }
-//END

@@ -30,6 +30,7 @@ import acousticfield3d.gui.panels.DomainPanel;
 import acousticfield3d.gui.panels.TransControlPanel;
 import acousticfield3d.gui.panels.TransducersPanel;
 import acousticfield3d.gui.panels.TrapsPanel;
+import acousticfield3d.gui.panels.VolumetricPanel;
 import acousticfield3d.math.M;
 import acousticfield3d.math.Quaternion;
 import acousticfield3d.math.Transform;
@@ -50,7 +51,6 @@ import acousticfield3d.utils.SimpleGUIPersistence;
 import acousticfield3d.utils.StringFormats;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -100,6 +100,7 @@ public final class MainForm extends javax.swing.JFrame {
     public final TransControlPanel transControlPanel;
     public final MovePanel movePanel;
     public final TrapsPanel trapsPanel;
+    public final VolumetricPanel volPanel;
     
     public final HoloPatternsForm holoPatternsForm;
     public final AddTransducersForm addTransducersForm;
@@ -128,6 +129,7 @@ public final class MainForm extends javax.swing.JFrame {
         transControlPanel = new TransControlPanel(this);
         movePanel = new MovePanel(this);
         trapsPanel = new TrapsPanel(this);
+        volPanel = new VolumetricPanel(this);
         
         holoPatternsForm = new HoloPatternsForm(this);
         simForm = new SimulationConfigForm(this);
@@ -170,6 +172,7 @@ public final class MainForm extends javax.swing.JFrame {
         mainTabPanel.addTab("Devs", transControlPanel);
         mainTabPanel.addTab("Move", movePanel);
         mainTabPanel.addTab("Traps", trapsPanel);
+        mainTabPanel.addTab("Vol", volPanel);
         
         initSimulation();
         
@@ -2289,10 +2292,11 @@ public final class MainForm extends javax.swing.JFrame {
         }else if (comp == domainPanel){
             tags |= Entity.TAG_CUBE_HELPER;
         }else if (comp == pointsPanel){
-     
             tags |= Entity.TAG_CONTROL_POINT;
         }else if (comp == movePanel){
             tags |= Entity.TAG_CONTROL_POINT;
+        }else if (comp == volPanel){
+            tags |= Entity.TAG_CUBE_HELPER;
         }
         
         return tags;

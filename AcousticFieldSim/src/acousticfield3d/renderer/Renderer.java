@@ -106,7 +106,7 @@ public class Renderer {
             Resources.get().updateShaderTransducers(nTransducers, gl);
         }
    
-        //tick the entities in case that they needed something to do, (probably not)
+        //tick the entities
         for(Entity e : scene.getEntities()){
             e.update( simulation );
         }
