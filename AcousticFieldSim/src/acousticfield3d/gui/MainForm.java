@@ -12,6 +12,7 @@ import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.GenerateComplexAnimations;
 import acousticfield3d.gui.misc.MoveOnTimerForm;
+import acousticfield3d.gui.misc.ParseCSVForm;
 import acousticfield3d.gui.misc.ScatterObjectForm;
 import acousticfield3d.gui.misc.ShapePointsFrame;
 import acousticfield3d.gui.misc.SliceExperiments;
@@ -350,6 +351,7 @@ public final class MainForm extends javax.swing.JFrame {
         arrayAddMenu = new javax.swing.JMenuItem();
         arrayFromObjMenu = new javax.swing.JMenuItem();
         importArrayMenu = new javax.swing.JMenuItem();
+        importCSVMenu = new javax.swing.JMenuItem();
         arrayExportMenu = new javax.swing.JMenuItem();
         optimizerMenu = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
@@ -1256,6 +1258,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         addTransMenu.add(importArrayMenu);
 
+        importCSVMenu.setText("Import CSV");
+        importCSVMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importCSVMenuActionPerformed(evt);
+            }
+        });
+        addTransMenu.add(importCSVMenu);
+
         arrayExportMenu.setText("Export");
         arrayExportMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2121,6 +2131,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void addKeyFrameNTimesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addKeyFrameNTimesMenuActionPerformed
         animPanel.addKeyFrameNTimes();
     }//GEN-LAST:event_addKeyFrameNTimesMenuActionPerformed
+
+    private void importCSVMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCSVMenuActionPerformed
+        showNewFrame( new ParseCSVForm(this) );
+    }//GEN-LAST:event_importCSVMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2159,6 +2173,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportTransPhasePointsMenu;
     private javax.swing.JMenuItem forcePlotsMenu;
     private javax.swing.JMenuItem importArrayMenu;
+    private javax.swing.JMenuItem importCSVMenu;
     private javax.swing.JMenuItem importTransMenu;
     private javax.swing.JMenuItem interpolateAnimMenu;
     private javax.swing.JLabel jLabel1;

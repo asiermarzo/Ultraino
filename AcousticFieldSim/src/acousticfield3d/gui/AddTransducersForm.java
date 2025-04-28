@@ -313,9 +313,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
                         }
                         if (len >= 14){
                             t.setType(Parse.toInt( s[9] ) );
-
                             t.getTransform().getScale().parse( s[10], s[12], s[11] );
-
                             t.setPhase(Parse.toFloat(  s[13] ) / M.PI );
                         }
                         
@@ -342,35 +340,33 @@ public class AddTransducersForm extends javax.swing.JFrame {
 
     void exportArray() {
         String file = FileUtils.selectNonExistingFile(this, ".csv");
-        if (file != null){
-            
-            StringBuilder sb = new StringBuilder();
-            
-            //x,y,z,nx,ny,nz,power,frequency,apperture,Type(0=circle,1=square),sx,sy,sz,phase
-            for(Transducer t : mf.simulation.transducers){
-                final Vector3f pos = t.getTransform().getTranslation();
-                final Vector3f n = t.getTransform().getRotation().mult( Vector3f.UNIT_Y ).normalizeLocal();
-                final Vector3f scale = t.getTransform().getScale();
-                
-                sb.append(pos.x + "," + (-pos.z) + "," + pos.y + ",");
-                sb.append(n.x + "," + (-n.z) + "," + n.y + ",");
-                
-                sb.append(t.getPower() + ",");
-                sb.append(t.getFrequency()+ ",");
-                sb.append(t.getApperture()+ ",");
-                sb.append(t.getType()+ ",");
-                sb.append(scale.x + "," + scale.z + "," + scale.y + ",");
-                sb.append(t.getPhase() * M.PI + "\n");
-                
-            }
-                    
-                    
-            try {
-                FileUtils.writeBytesInFile( file, sb.toString() );
-            } catch (IOException ex) {
-                Logger.getLogger(AddTransducersForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (file == null)
+            return;
+          
+        StringBuilder sb = new StringBuilder();
+        //x,y,z,nx,ny,nz,power,frequency,apperture,Type(0=circle,1=square),sx,sy,sz,phase
+        for (Transducer t : mf.simulation.transducers) {
+            final Vector3f pos = t.getTransform().getTranslation();
+            final Vector3f n = t.getTransform().getRotation().mult(Vector3f.UNIT_Y).normalizeLocal();
+            final Vector3f scale = t.getTransform().getScale();
+
+            sb.append(pos.x + "," + (-pos.z) + "," + pos.y + ",");
+            sb.append(n.x + "," + (-n.z) + "," + n.y + ",");
+
+            sb.append(t.getPower() + ",");
+            sb.append(t.getFrequency() + ",");
+            sb.append(t.getApperture() + ",");
+            sb.append(t.getType() + ",");
+            sb.append(scale.x + "," + scale.z + "," + scale.y + ",");
+            sb.append(t.getPhase() * M.PI + "\n");
         }
+
+        try {
+            FileUtils.writeBytesInFile(file, sb.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(AddTransducersForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     void exportTransducersMatlab() {
@@ -620,9 +616,9 @@ public class AddTransducersForm extends javax.swing.JFrame {
     }
 
     public Transducer createTransducer() {
-        final float freq = Float.parseFloat(freqText.getText());
-        final float apperture = Float.parseFloat(wText.getText());
-        final float power = Float.parseFloat(powerText.getText());
+        final float freq = Parse.toFloat(freqText.getText());
+        final float apperture = Parse.toFloat(wText.getText());
+        final float power = Parse.toFloat(powerText.getText());
         
         final Vector3f size = new Vector3f().parse( sizeText.getText() );
         
