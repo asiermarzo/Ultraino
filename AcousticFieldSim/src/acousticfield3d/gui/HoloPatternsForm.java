@@ -586,6 +586,32 @@ public class HoloPatternsForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loadPhasesButtonActionPerformed
 
+    void shiftPhasesTowardsCenter() {
+        final int nSignals = 2;
+
+        float disc = 1f / nSignals;
+        float lambda = form.simulation.getWavelenght();
+
+        float maxShift = lambda / nSignals;
+
+        for (var t : form.simulation.transducers) {
+            float phaseNorm = t.getPhase() / 2; //from 0 to 1 
+            float phaseMod = phaseNorm % disc;
+            float phase = phaseNorm - phaseMod;
+            float phaseDiff = phase - phaseNorm;
+
+            t.setPhase(phase * 2);
+            float distance = phaseDiff * lambda;
+
+            var pos = t.getTransform().getTranslation().clone();
+            pos.x = 0;
+            Vector3f awayFromCenter = pos.normalize().multLocal(maxShift - distance);
+            t.getTransform().getTranslation().addLocal(awayFromCenter);
+        }
+
+        form.needUpdate();
+    }
+      
     private void normalizePhaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalizePhaseButtonActionPerformed
         normalizePhase();
         form.needUpdate();

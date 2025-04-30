@@ -376,6 +376,7 @@ public final class MainForm extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         structuralStiffnessMenu = new javax.swing.JMenuItem();
         moveOnTimerMenu = new javax.swing.JMenuItem();
+        moveTowardsCenterPhaseMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("3D Acoustic SIM");
@@ -1452,6 +1453,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu7.add(moveOnTimerMenu);
 
+        moveTowardsCenterPhaseMenu.setText("MoveTowardsCenterPhase");
+        moveTowardsCenterPhaseMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveTowardsCenterPhaseMenuActionPerformed(evt);
+            }
+        });
+        jMenu7.add(moveTowardsCenterPhaseMenu);
+
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -2135,6 +2144,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void importCSVMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCSVMenuActionPerformed
         showNewFrame( new ParseCSVForm(this) );
     }//GEN-LAST:event_importCSVMenuActionPerformed
+
+    private void moveTowardsCenterPhaseMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveTowardsCenterPhaseMenuActionPerformed
+        holoPatternsForm.shiftPhasesTowardsCenter();
+    }//GEN-LAST:event_moveTowardsCenterPhaseMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2210,6 +2223,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem matlabPhasesMenu;
     private javax.swing.JMenuItem mergePointsMenu;
     private javax.swing.JMenuItem moveOnTimerMenu;
+    private javax.swing.JMenuItem moveTowardsCenterPhaseMenu;
     private javax.swing.JMenuItem offNextOnRealMenu;
     private javax.swing.JMenuItem offNextOnTransducerMenu;
     private javax.swing.JMenuItem optimizerMenu;
