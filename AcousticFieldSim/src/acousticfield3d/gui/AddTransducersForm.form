@@ -94,6 +94,8 @@
                               <Component id="radialCheck" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="circleCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="tubeCheck" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
@@ -124,6 +126,7 @@
                   <Component id="hexCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="radialCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="circleCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tubeCheck" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -348,6 +351,15 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="presetButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="tubeCheck">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="arrangementGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="tube"/>
+        <Property name="toolTipText" type="java.lang.String" value="just a circle of columns transducers"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

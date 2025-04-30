@@ -73,6 +73,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         presetsCombo = new javax.swing.JComboBox();
         presetButton = new javax.swing.JButton();
+        tubeCheck = new javax.swing.JRadioButton();
 
         setTitle("Add Trasnducers");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -95,11 +96,11 @@ public class AddTransducersForm extends javax.swing.JFrame {
             }
         });
 
-        colSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        colSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel2.setText("Rows:");
 
-        rowSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        rowSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel3.setText("Position:");
 
@@ -163,6 +164,10 @@ public class AddTransducersForm extends javax.swing.JFrame {
             }
         });
 
+        arrangementGroup.add(tubeCheck);
+        tubeCheck.setText("tube");
+        tubeCheck.setToolTipText("just a circle of columns transducers");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -221,7 +226,9 @@ public class AddTransducersForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(radialCheck)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(circleCheck))
+                                .addComponent(circleCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tubeCheck))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -243,7 +250,8 @@ public class AddTransducersForm extends javax.swing.JFrame {
                     .addComponent(gridCheck)
                     .addComponent(hexCheck)
                     .addComponent(radialCheck)
-                    .addComponent(circleCheck))
+                    .addComponent(circleCheck)
+                    .addComponent(tubeCheck))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -464,6 +472,8 @@ public class AddTransducersForm extends javax.swing.JFrame {
             radialArrangement();
         }else if (circleCheck.isSelected()){
             simpleCircleArrangement();
+        }else if (tubeCheck.isSelected()){
+           tubeArrangement();
         }
         
         if( wasEmpty || recenterSimCheck.isSelected()){
@@ -592,23 +602,52 @@ public class AddTransducersForm extends javax.swing.JFrame {
         }
     }
     
-    public void addTinyLevArrangement(final float radious, final float spread){
+     private void tubeArrangement() throws NumberFormatException {
+        final int columns = (Integer)colSpinner.getValue(); //emitters per ring
+        final int rows = (Integer)rowSpinner.getValue(); //number of rings
+        final float space = Float.parseFloat( spaceText.getText() );
         
-        /*
-        for (int c = 0; c < nTransducers; ++c){
-                final float cAngle = angle * c;
+        final boolean isHex = hexCheck.isSelected();
+        final float SQRT3_2 = M.sqrt(3.0f) / 2.0f;
+        final float spaceOdd = space * SQRT3_2;
+        
+        final Vector3f pos = new Vector3f().parse( posText.getText() );
+        final Vector3f rot = new Vector3f().parse( rotText.getText() ).multLocal(M.PI / 180.0f);
+        final Quaternion q = new Quaternion().fromAngles(rot.x, rot.y, rot.z);
+        Transform tr = new Transform(pos, q);
+       
+        //angle per emitter
+        float angleInc = M.TWO_PI / columns;
+        
+        //calculate radious of the ring
+        float radious = space/2 / M.tan( angleInc / 2);
+        System.out.println("Diameter is " + radious*2);
+        
+        float tubeLength = space * rows;
+        
+        float x = -(tubeLength/2);
+        for (int row = 0; row < rows; row++) {
+            final boolean oddRow = row % 2 == 0;
+            
+            float angle = 0;
+            for (int col = 0; col < columns; col++) { //one ring
+                float cAngle = oddRow ? angle : angle+angleInc/2;
+                
+                float y = M.sin(cAngle) * radious;
+                float z = M.cos(cAngle) * radious;
                 
                 Transducer t = createTransducer();
+                t.getTransform().setTranslation(x, y, z);
+                t.getTransform().getRotation().fromAngles(-cAngle + M.HALF_PI + M.PI, 0, 0);
+                t.setPhase( cAngle / M.PI);
+                addTransducer( t );
                 
-                t.getTransform().setTranslation(M.cos(cAngle) * radious, 0 , M.sin(cAngle) * radious );
-                
-                tr.transformPoint( t.getTransform().getTranslation() , t.getTransform().getTranslation());
-                t.getTransform().getRotation().set( q );
-                
-                addTransducer(t);
-        }*/
+                angle += angleInc;
+            }
+            x += spaceOdd;
+        }
     }
-    
+     
     public void addTransducer(final Transducer t){
         mf.simulation.transducers.add(t);
         mf.scene.getEntities().add(t);
@@ -666,6 +705,7 @@ public class AddTransducersForm extends javax.swing.JFrame {
     private javax.swing.JSpinner rowSpinner;
     private javax.swing.JTextField sizeText;
     private javax.swing.JTextField spaceText;
+    private javax.swing.JRadioButton tubeCheck;
     private javax.swing.JTextField wText;
     // End of variables declaration//GEN-END:variables
 
