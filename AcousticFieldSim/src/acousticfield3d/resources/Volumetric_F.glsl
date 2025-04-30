@@ -54,18 +54,18 @@ void main(){
 
     if (renderType == 1){ //MIPS
         float maxValue = 0.0;
-        while( (any(greaterThan(w, maxCube)) || any(lessThan(w, minCube))) == false ){
+        do{
             float amp = val( fieldAt(w)  );
             if ( abs(amp) > abs(maxValue)){
                 maxValue = amp;
             }
             w += rayInc;
-        }
+        }while ( (any(greaterThan(w, maxCube)) || any(lessThan(w, minCube))) == false );
         gl_FragColor = vec4(colorFunc(maxValue),  1.0);
     }else if (renderType == 2){ //ISO
         vec3 prevW = w;
         float prevAmp = 0.0;
-        while( (any(greaterThan(w, maxCube)) || any(lessThan(w, minCube))) == false ){    
+        do{    
             float amp = val( fieldAt(w) );
             float absAmp = abs(amp);
             if (absAmp >= isoValue){
@@ -86,7 +86,7 @@ void main(){
             prevAmp = absAmp;
             prevW = w;
             w += rayInc;
-        }
+        }while ( (any(greaterThan(w, maxCube)) || any(lessThan(w, minCube))) == false );
         //gl_FragColor = vec4(0.0);
         discard;
     }
