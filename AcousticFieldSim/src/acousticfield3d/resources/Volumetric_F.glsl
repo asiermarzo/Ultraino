@@ -25,6 +25,7 @@ uniform vec4 eyePos;
 uniform vec3 maxCube, minCube;
 uniform float rayStep;
 varying vec4 wPos;
+varying vec4 normal;
 
 #define PI 3.1415926535897932384626433832795
 
@@ -65,20 +66,26 @@ void main(){
     }else if (renderType == 2){ //ISO
         vec3 prevW = w;
         float prevAmp = 0.0;
+        bool firstIter = true;
         do{    
             float amp = val( fieldAt(w) );
             float absAmp = abs(amp);
             if (absAmp >= isoValue){
                 vec3 pos = mix(w,prevW, (isoValue-absAmp) / (prevAmp-absAmp) );
-                
-                vec3 N = getNormalAt(pos, length(rayInc) );
-                vec3 L = normalize(lightPos.xyz - wPos.xyz);
-                vec3 E = -rayDir; //same as normalize(eyePos.xyz - wPos.xyz);
-                vec3 HV = normalize(L + E);
+                vec3 N, color;
+                if (firstIter){
+                    N = normalize( normal.xyz );
+                    color = colorFunc( -amp );
+                }else{
+                    color = colorFunc(isoValue * sign(amp) );
+                    N = getNormalAt(pos, length(rayInc) );
+                }
 
+                vec3 L = normalize(lightPos.xyz - pos.xyz);
+                vec3 E = -rayDir; //same as normalize(eyePos.xyz - pos.xyz);
+                vec3 HV = normalize(L + E);
                 float lambertTerm = abs( dot(N,L) );
                 float specularTerm = pow( abs( dot(N, HV) ), shininess);
-                vec3 color = colorFunc(isoValue * sign(amp) );
                 vec3 fColor = (ambient + diffuse * lambertTerm) * color + specularTerm * specular * vec3(1.0);
                 gl_FragColor = vec4(fColor, colorMod.a);
                 return;
@@ -86,6 +93,7 @@ void main(){
             prevAmp = absAmp;
             prevW = w;
             w += rayInc;
+            firstIter = false;
         }while ( (any(greaterThan(w, maxCube)) || any(lessThan(w, minCube))) == false );
         //gl_FragColor = vec4(0.0);
         discard;
