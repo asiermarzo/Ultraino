@@ -11,6 +11,7 @@ import acousticfield3d.gui.misc.ImportExportPhasesMatlabForm;
 import acousticfield3d.gui.misc.ImportPhasesAmpForm;
 import acousticfield3d.gui.misc.RandPointsExpFrame;
 import acousticfield3d.gui.misc.GenerateComplexAnimations;
+import acousticfield3d.gui.misc.ImportAnimationForm;
 import acousticfield3d.gui.misc.MoveOnTimerForm;
 import acousticfield3d.gui.misc.ParseCSVForm;
 import acousticfield3d.gui.misc.ScatterObjectForm;
@@ -362,6 +363,7 @@ public final class MainForm extends javax.swing.JFrame {
         AmpLinePlotMenu = new javax.swing.JMenuItem();
         matlabFieldMenu = new javax.swing.JMenuItem();
         ImportAmpPhasesMenu = new javax.swing.JMenuItem();
+        importAnimMenu = new javax.swing.JMenuItem();
         auxKeyMenu = new javax.swing.JMenuItem();
         matlabPhasesMenu = new javax.swing.JMenuItem();
         udpControlMenu = new javax.swing.JMenuItem();
@@ -1344,6 +1346,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu9.add(ImportAmpPhasesMenu);
 
+        importAnimMenu.setText("Import Animations");
+        importAnimMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importAnimMenuActionPerformed(evt);
+            }
+        });
+        jMenu9.add(importAnimMenu);
+
         auxKeyMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         auxKeyMenu.setText("AuxKey");
         auxKeyMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -2148,6 +2158,10 @@ public final class MainForm extends javax.swing.JFrame {
     private void moveTowardsCenterPhaseMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveTowardsCenterPhaseMenuActionPerformed
         holoPatternsForm.shiftPhasesTowardsCenter();
     }//GEN-LAST:event_moveTowardsCenterPhaseMenuActionPerformed
+
+    private void importAnimMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importAnimMenuActionPerformed
+        showNewFrame( new ImportAnimationForm(this) );
+    }//GEN-LAST:event_importAnimMenuActionPerformed
  
     private void showNewFrame(final JFrame frame){
         frame.setLocationRelativeTo(this);
@@ -2185,6 +2199,7 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportToArduinoMenu;
     private javax.swing.JMenuItem exportTransPhasePointsMenu;
     private javax.swing.JMenuItem forcePlotsMenu;
+    private javax.swing.JMenuItem importAnimMenu;
     private javax.swing.JMenuItem importArrayMenu;
     private javax.swing.JMenuItem importCSVMenu;
     private javax.swing.JMenuItem importTransMenu;

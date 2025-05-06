@@ -4,3 +4,4 @@
 config.ini.xml
 *.log
 *.DS_Store
+/AcousticFieldSim/dist/
