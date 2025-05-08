@@ -9,6 +9,7 @@ uniform float maxNegColor;
 uniform float minPosColor;
 uniform float maxPosColor;
 uniform float isoValue;
+uniform float outlineCutSize;
 
 uniform mat4 viewMatrix;
 uniform mat4 projectionViewMatrix;
@@ -76,12 +77,16 @@ void main(){
             if (absAmp >= isoValue){
                 vec3 pos = mix(w,prevW, (isoValue-absAmp) / (prevAmp-absAmp) );
                 vec3 N, color;
-                if (firstIter){
-                    N = normalize( normal.xyz );
-                    color = colorFunc( -amp );
+                if (firstIter){ //this pixel is cutting the iso-surface
+                    N = normalize( normal.xyz ); //the normal is of the bounding volume
+                    if ( mod(abs(pos.y), outlineCutSize) > outlineCutSize * 0.5){
+                        color = colorFunc( amp );
+                    }else{
+                        color = vec3(0.25);
+                    }
                 }else{
                     color = colorFunc(isoValue * sign(amp) );
-                    N = getNormalAt(pos, length(rayInc) );
+                    N = getNormalAt(pos, length(rayInc/10.0) );
                 }
 
                 vec3 L = normalize(lightPos.xyz - pos.xyz);

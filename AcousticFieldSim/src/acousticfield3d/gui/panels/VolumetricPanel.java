@@ -34,6 +34,8 @@ public class VolumetricPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         rayStepsText = new javax.swing.JTextField();
         isoValSlider = new javax.swing.JSlider();
+        jLabel3 = new javax.swing.JLabel();
+        outlineCutSizeText = new javax.swing.JTextField();
 
         volRenderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Off", "Solid", "MIP", "ISO" }));
         volRenderCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -92,6 +94,15 @@ public class VolumetricPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setText("outline cutsize:");
+
+        outlineCutSizeText.setText("0.0025");
+        outlineCutSizeText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outlineCutSizeTextActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,17 +115,21 @@ public class VolumetricPanel extends javax.swing.JPanel {
                     .addComponent(timeDomainSpeed)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                             .addComponent(minAmpText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rayStepsText)
-                            .addComponent(maxAmpText, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)))
+                            .addComponent(maxAmpText, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(timeDomainCheckBox)
                             .addComponent(jLabel1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(outlineCutSizeText)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -130,7 +145,7 @@ public class VolumetricPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(isoValSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(minAmpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(maxAmpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -138,6 +153,10 @@ public class VolumetricPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(rayStepsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(outlineCutSizeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -199,6 +218,10 @@ public class VolumetricPanel extends javax.swing.JPanel {
         mf.needUpdate();
     }//GEN-LAST:event_isoValSliderStateChanged
 
+    private void outlineCutSizeTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outlineCutSizeTextActionPerformed
+        mf.needUpdate();
+    }//GEN-LAST:event_outlineCutSizeTextActionPerformed
+
     public float getMinAmp(){
         return Parse.toFloat( minAmpText.getText() );
     }
@@ -226,19 +249,25 @@ public class VolumetricPanel extends javax.swing.JPanel {
      public float getIsoValue() {
         return getMaxAmp() * isoValSlider.getValue() / 100f;
     }
-    
+    public float getOutlineCutSize() {
+        return Parse.toFloat( outlineCutSizeText.getText() );
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider isoValSlider;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField maxAmpText;
     private javax.swing.JTextField minAmpText;
+    private javax.swing.JTextField outlineCutSizeText;
     private javax.swing.JTextField rayStepsText;
     private javax.swing.JCheckBox timeDomainCheckBox;
     private javax.swing.JTextField timeDomainSpeed;
     private javax.swing.JComboBox<String> volRenderCombo;
     // End of variables declaration//GEN-END:variables
+
+    
 
    
 

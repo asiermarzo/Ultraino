@@ -19,6 +19,7 @@ public class VolumetricShader extends ShaderTransducers{
     int isTimeDomain;
     int timestamp;
     int renderType;
+    int outlineCutSize;
     
     int colouring;
     int minPosColor, maxPosColor;
@@ -53,6 +54,7 @@ public class VolumetricShader extends ShaderTransducers{
         timestamp = gl.glGetUniformLocation(shaderProgramID, "timestamp");
         renderType = gl.glGetUniformLocation(shaderProgramID, "renderType");
         isoValue = gl.glGetUniformLocation(shaderProgramID, "isoValue");
+        outlineCutSize = gl.glGetUniformLocation(shaderProgramID, "outlineCutSize");
         
         minPosColor = gl.glGetUniformLocation(shaderProgramID, "minPosColor");
         maxPosColor = gl.glGetUniformLocation(shaderProgramID, "maxPosColor");
@@ -91,6 +93,7 @@ public class VolumetricShader extends ShaderTransducers{
        gl.glUniform1f(minNegColor, -maxAmp);
        gl.glUniform1f(maxNegColor, -minAmp);
        gl.glUniform1i(colouring, 4); //fire/ice gradient
+       gl.glUniform1f(outlineCutSize, panel.getOutlineCutSize() );
        
     }
   
