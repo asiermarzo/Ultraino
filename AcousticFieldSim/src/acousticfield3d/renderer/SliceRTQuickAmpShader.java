@@ -34,7 +34,9 @@ public class SliceRTQuickAmpShader extends SliceRTShader{
     }
     
     @Override
-    void bindUniforms(GL2 gl, Scene scene, Renderer renderer,Simulation s, MeshEntity me, Matrix4f projectionViewModel, Matrix4f viewModel, Matrix4f model, FloatBuffer fb) {
+    void bindUniforms(GL2 gl, Scene scene,Renderer renderer, Simulation s, MeshEntity me, 
+            Matrix4f projectionViewModel, Matrix4f projectionView, Matrix4f viewModel, Matrix4f model, FloatBuffer fb) {
+        super.bindUniforms(gl, scene, renderer, s, me, projectionViewModel, projectionView, viewModel, model, fb);
        //Shader
         fb.rewind();
         gl.glUniformMatrix4fv(mvpMatrixHandle, 1, false, projectionViewModel.fillFloatBuffer(fb, true));

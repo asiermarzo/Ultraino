@@ -12,6 +12,8 @@ import java.nio.FloatBuffer;
 import javax.swing.Timer;
 
 public class VolumetricShader extends ShaderTransducers{
+    int vpMatrixHandle;
+        
     int maxCube, minCube;
     int rayStep;
     int isTimeDomain;
@@ -42,6 +44,8 @@ public class VolumetricShader extends ShaderTransducers{
     @Override
     void getUniforms(GL2 gl) {
         super.getUniforms(gl);
+        vpMatrixHandle = gl.glGetUniformLocation(shaderProgramID, "projectionViewMatrix");
+        
         maxCube = gl.glGetUniformLocation(shaderProgramID, "maxCube");
         minCube = gl.glGetUniformLocation(shaderProgramID, "minCube");
         rayStep = gl.glGetUniformLocation(shaderProgramID, "rayStep");
@@ -60,9 +64,12 @@ public class VolumetricShader extends ShaderTransducers{
     
     
     @Override
-    void bindUniforms(GL2 gl, Scene scene, Renderer renderer, Simulation s, MeshEntity me, Matrix4f projectionViewModel, Matrix4f viewModel, Matrix4f model, FloatBuffer fb) {
-       super.bindUniforms(gl, scene, renderer, s, me, projectionViewModel, viewModel, model, fb);
+    void bindUniforms(GL2 gl, Scene scene,Renderer renderer, Simulation s, MeshEntity me, 
+            Matrix4f projectionViewModel, Matrix4f projectionView, Matrix4f viewModel, Matrix4f model, FloatBuffer fb) {
+        super.bindUniforms(gl, scene, renderer, s, me, projectionViewModel, projectionView, viewModel, model, fb);
        
+       gl.glUniformMatrix4fv(vpMatrixHandle, 1, false, projectionView.fillFloatBuffer(fb, true));
+        
        final VolumetricPanel panel = renderer.getForm().volPanel;
        Vector3f cubePos = scene.getCubeHelper().getTransform().getTranslation();
        Vector3f cubeS = scene.getCubeHelper().getTransform().getScale();

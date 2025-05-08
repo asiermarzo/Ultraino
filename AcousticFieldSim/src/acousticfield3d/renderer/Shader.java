@@ -44,6 +44,7 @@ public class Shader {
     int mvMatrixHandle;
     int mMatrixHandle;
     
+    
     int colorHandle;
     int texDiffuse;
     int ambient, diffuse, specular, shininess;
@@ -74,13 +75,14 @@ public class Shader {
     }
     
     void bindUniforms(GL2 gl, Scene scene,Renderer renderer, Simulation s, MeshEntity me, 
-            Matrix4f projectionViewModel, Matrix4f viewModel, Matrix4f model,
+            Matrix4f projectionViewModel, Matrix4f projectionView, Matrix4f viewModel, Matrix4f model,
             FloatBuffer fb) {
         
         fb.rewind();
         gl.glUniformMatrix4fv(mvpMatrixHandle, 1, false, projectionViewModel.fillFloatBuffer(fb, true));
         gl.glUniformMatrix4fv(mvMatrixHandle, 1, false, viewModel.fillFloatBuffer(fb, true));
         gl.glUniformMatrix4fv(mMatrixHandle, 1, false, model.fillFloatBuffer(fb, true));
+        
         
         Vector3f lightPos = scene.getLight().getTransform().getTranslation();
         Vector3f eyePos = scene.getCamera().getTransform().getTranslation();

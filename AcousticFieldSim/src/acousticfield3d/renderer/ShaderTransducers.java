@@ -57,8 +57,9 @@ public class ShaderTransducers extends Shader{
     }
 
     @Override
-    void bindUniforms(GL2 gl, Scene scene, Renderer renderer, Simulation s, MeshEntity me, Matrix4f projectionViewModel, Matrix4f viewModel, Matrix4f model, FloatBuffer fb) {
-        super.bindUniforms(gl, scene, renderer, s, me, projectionViewModel, viewModel, model, fb);
+    void bindUniforms(GL2 gl, Scene scene,Renderer renderer, Simulation s, MeshEntity me, 
+            Matrix4f projectionViewModel, Matrix4f projectionView, Matrix4f viewModel, Matrix4f model, FloatBuffer fb) {
+        super.bindUniforms(gl, scene, renderer, s, me, projectionViewModel, projectionView, viewModel, model, fb);
         
         gl.glUniform3fv(transPosition, renderer.nTransducers, renderer.positions);
         gl.glUniform3fv(transNormal, renderer.nTransducers, renderer.normals);

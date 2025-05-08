@@ -10,6 +10,9 @@ uniform float minPosColor;
 uniform float maxPosColor;
 uniform float isoValue;
 
+uniform mat4 viewMatrix;
+uniform mat4 projectionViewMatrix;
+
 uniform vec4 lightPos;
 uniform float ambient;
 uniform float diffuse;
@@ -88,6 +91,11 @@ void main(){
                 float specularTerm = pow( abs( dot(N, HV) ), shininess);
                 vec3 fColor = (ambient + diffuse * lambertTerm) * color + specularTerm * specular * vec3(1.0);
                 gl_FragColor = vec4(fColor, colorMod.a);
+
+                vec4 clipPos = projectionViewMatrix * vec4(pos, 1.0);
+                float depth = (clipPos.z / clipPos.w) * 0.5 + 0.5; // Convert from [-1, 1] to [0, 1]
+                gl_FragDepth = depth;
+
                 return;
             }
             prevAmp = absAmp;
@@ -95,7 +103,8 @@ void main(){
             w += rayInc;
             firstIter = false;
         }while ( (any(greaterThan(w, maxCube)) || any(lessThan(w, minCube))) == false );
-        //gl_FragColor = vec4(0.0);
+        
+        gl_FragDepth = gl_FragCoord.z;
         discard;
     }
     

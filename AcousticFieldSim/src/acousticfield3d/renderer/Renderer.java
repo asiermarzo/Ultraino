@@ -33,7 +33,6 @@ public class Renderer {
     private boolean texture3d;
     private boolean writeColor;
     
-    
     int nTransducers;
     FloatBuffer positions;
     FloatBuffer normals;
@@ -194,7 +193,7 @@ public class Renderer {
         
         gl.glClear( GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT );
         
-        Matrix4f projection = scene.getCamera().getProjection();
+        Matrix4f projection = scene.getCamera().getProjection().clone();
         
         Matrix4f view = new Matrix4f();
         scene.getCamera().getTransform().copyTo(view);
@@ -214,7 +213,8 @@ public class Renderer {
 	Matrix4f model = tv.tempMat4;
         Matrix4f viewModel = tv.tempMat42;
         Matrix4f projectionViewModel = tv.tempMat43;
-
+        Matrix4f projectionView = projection.mult(view, null);
+        
         synchronized (form) {
             calcDistanceToCameraOfEntities();
             sortEntities();
@@ -251,7 +251,6 @@ public class Renderer {
                 //check for negative scale
                 boolean usesCull = true;
                 boolean needReverseCulling = usesCull && (model.get(0, 0) * model.get(1, 1) * model.get(2, 2) < 0);
-
                 if (needReverseCulling) {
                     //gl.glCullFace(GL2.GL_FRONT);
                 }
@@ -259,9 +258,10 @@ public class Renderer {
                 view.mult(model, viewModel);
                 projection.mult(viewModel, projectionViewModel);
 
+                
                 lastShader.bindAttribs(gl, form.getSimulation(), me);
 
-                lastShader.bindUniforms(gl, scene, this, form.getSimulation(), me, projectionViewModel, viewModel, model, tv.floatBuffer16);
+                lastShader.bindUniforms(gl, scene, this, form.getSimulation(), me, projectionViewModel, projectionView, viewModel, model, tv.floatBuffer16);
 
                 lastShader.render(gl, form.getSimulation(), me);
 
